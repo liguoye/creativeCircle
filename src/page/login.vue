@@ -91,49 +91,4 @@ export default {
 }
 </script>
 <style scoped lang="less">
-.home {
-  .banner {
-    height: 460px;
-    background-image: url("../assets/picture/banner.png");
-    background-repeat: no-repeat;
-    position: relative;
-    .loginBox {
-      .title {
-        font-size: 24px;
-        font-weight: 700;
-        text-align: center;
-        color: #fff;
-        line-height: 70px;
-      }
-      position: absolute;
-      right: 280px;
-      top: 50%;
-      background: hsla(0, 0%, 100%, 0.3);
-      border: 1px solid #c3c7d0;
-      border-radius: 5px;
-      width: 288px;
-      padding: 0px 30px 20px 30px;
-      margin-top: -164px;
-      .el-button {
-        width: 100%;
-      }
-      .regPass {
-        width: 270px;
-        height: 40px;
-        margin: 0 auto;
-        font-size: 13px;
-        line-height: 40px;
-        a {
-          user-select: none;
-          cursor: pointer;
-          text-decoration: none;
-          color: #fff;
-        }
-        .fr {
-          float: right;
-        }
-      }
-    }
-  }
-}
 </style>
