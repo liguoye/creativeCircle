@@ -1,0 +1,325 @@
+<template>
+  <div id="app">
+    <header-com></header-com>
+    <nav-bar></nav-bar>
+    <router-view/>
+  </div>
+</template>
+
+<script>
+import headerCom from '@/components/headerCom.vue'
+import navBar from '@/components/navBar.vue'
+export default {
+  name: 'App',
+  components: {
+    headerCom,
+    navBar
+  }
+}
+</script>
+
+<style lang="less">
+body {
+  margin: 0;
+  line-height: 1.5;
+  color: #333;
+  font-size: 12px;
+  padding: 0;
+}
+
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li,
+p {
+  padding: 0;
+  margin: 0;
+}
+.formGroup {
+  height: 40px;
+  line-height: 40px;
+  text-align: right;
+  > span {
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  .el-input__inner {
+    height: 36px;
+    line-height: 36px;
+    vertical-align: bottom;
+  }
+  .el-input {
+    width: 140px !important;
+    height: 36px;
+    input {
+      width: 140px !important;
+      height: 36px;
+      line-height: 36px !important;
+    }
+    .el-input__icon {
+      line-height: 36px !important;
+    }
+  }
+}
+.tableCom {
+  .el-table__header-wrapper {
+    background-color: #0099e5;
+    thead {
+      th {
+        background-color: #0099e5;
+        color: #fff;
+        border-right: 0;
+      }
+    }
+  }
+}
+.btnGroup {
+  margin-top: 20px;
+  padding: 8px 0;
+  text-align: right;
+}
+.tablebtnActive {
+  background: #0099e5;
+  color: #fff;
+  text-align: center;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.tablebtnFFF {
+  background: #fff;
+  color: #0099e5;
+  text-align: center;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #0099e5;
+}
+.funTable {
+  .el-input__inner {
+    height: 27px;
+  }
+  .section {
+    > .el-input {
+      width: 80px !important;
+      input {
+        width: 80px !important;
+      }
+    }
+  }
+  .flowEnterSelect {
+    padding: 0 8px;
+  }
+  .textInput {
+    padding: 0 5px;
+    > .el-input {
+      .el-input__inner {
+        padding: 0 3px;
+        border: 0;
+        border-bottom: 1px solid #ddd;
+      }
+    }
+  }
+}
+.settingDialogCom {
+  .el-dialog {
+    width: 450px;
+    .el-dialog__header {
+      background-color: #0099e5;
+      color: #fff !important;
+      padding: 0 16px;
+      font-weight: inherit;
+      line-height: 40px;
+      height: 40px;
+      .el-dialog__title,
+      .el-dialog__close {
+        color: #fff;
+      }
+      .el-dialog__headerbtn {
+        top: 13px;
+      }
+    }
+    .el-dialog__body {
+      padding-bottom: 0;
+      padding-top: 20px;
+    }
+    .rangeInput {
+      > .el-input {
+        width: 144px !important;
+        input {
+          width: 143px !important;
+        }
+      }
+    }
+    .content {
+      > .el-row {
+        .el-col {
+          margin-bottom: 8px;
+        }
+      }
+    }
+    .el-input {
+      .el-input__inner {
+        height: 35px;
+        width: 307px;
+      }
+    }
+  }
+}
+.choiceProductDialog {
+  .el-dialog__header {
+    background-color: #0099e5;
+    color: #fff !important;
+    padding: 0 16px;
+    font-weight: inherit;
+    line-height: 40px;
+    height: 40px;
+    .el-dialog__title,
+    .el-dialog__close {
+      color: #fff;
+    }
+    .el-dialog__headerbtn {
+      top: 13px;
+    }
+  }
+  .el-table {
+    thead {
+      th {
+        background-color: #f5f5f5;
+        padding: 6px 0;
+      }
+    }
+  }
+  .el-dialog__body {
+    padding-bottom: 10px;
+    padding-top: 20px;
+  }
+}
+.taskManagementNavList {
+  width: 1150px;
+  margin: 0 auto;
+  margin-top: 40px;
+  ul {
+    width: 100%;
+    font-size: 0;
+    border: 1px solid #ccebfa;
+    li {
+      font-size: 15px;
+      cursor: pointer;
+      display: inline-block;
+      width: 20%;
+      box-sizing: border-box;
+      height: 45px;
+      line-height: 45px;
+      text-align: center;
+      &:not(:last-child) {
+        border-right: 1px solid #ccebfa;
+      }
+      > span {
+        color: red;
+      }
+      &:hover {
+        color: #0099e5;
+      }
+    }
+    .current {
+      background: #0099e5 !important;
+      color: #fff !important;
+    }
+  }
+}
+
+.colTable {
+  margin-top: 20px;
+  .title {
+    border: 1px solid #ccebfa;
+    border-bottom: 0;
+    height: 50px;
+    box-sizing: border-box;
+    line-height: 50px;
+    .left {
+      text-align: left;
+      padding-left: 20px;
+    }
+    .right {
+      text-align: right;
+      padding-right: 20px;
+      .right-container {
+        font-size: 14px;
+        em {
+          color: red;
+          font-style: normal;
+        }
+      }
+    }
+  }
+  .table {
+    > .el-row {
+      > .el-col {
+        text-align: center;
+        border-left: 1px solid #ccebfa;
+        border-top: 1px solid #ccebfa;
+        height: 40px;
+        line-height: 40px;
+        &:first-child {
+          font-size: 14px;
+          background-color: #e7f4fc;
+        }
+        &:last-child {
+          border-right: 1px solid #ccebfa;
+          border-top: 0 !important;
+        }
+      }
+      &:last-child {
+        border-bottom: 1px solid #ccebfa;
+      }
+      &:first-child {
+        .el-col:last-child {
+          border-top: 1px solid #ccebfa !important;
+        }
+      }
+    }
+  }
+  .funTable {
+    > .el-row {
+      > .el-col {
+        text-align: center;
+        border-left: 1px solid #ccebfa;
+        border-top: 1px solid #ccebfa;
+        height: 40px;
+        line-height: 40px;
+        > span {
+          color: red;
+        }
+        &:last-child {
+          border-right: 1px solid #ccebfa;
+        }
+      }
+      &:last-child {
+        border-bottom: 1px solid #ccebfa;
+      }
+    }
+    .tableTitle {
+      font-size: 14px;
+      .el-col {
+        background-color: #e7f4fc;
+      }
+    }
+    .tableContent {
+      .section {
+        .el-input {
+          input {
+            height: 27px;
+            width: 50px;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
