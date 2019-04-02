@@ -5,111 +5,111 @@
         <li @click="navListClick('pubilcFlowTask')" class="current">发布流量任务</li>
         <li @click="navListClick('flowTaskManagement')">流量任务管理</li>
       </ul>
-
-      <div class="colTable">
-        <div class="title">
-          <el-row>
-            <el-col :span="12" class="left">选定商品</el-col>
-            <el-col :span="12" class="right">
-              <el-button class="tableBtn" type="primary" @click="choiceProductDialogShow=true">选择商品</el-button>
-            </el-col>
-          </el-row>
-        </div>
-        <div class="table">
-          <el-row>
-            <el-col :span="5">商品简称</el-col>
-            <el-col :span="14"></el-col>
-            <el-col :span="5"></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="5">商品ID</el-col>
-            <el-col :span="14"></el-col>
-            <el-col :span="5"></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="5">店铺名</el-col>
-            <el-col :span="14"></el-col>
-            <el-col :span="5"></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="5">商品标题</el-col>
-            <el-col :span="14"></el-col>
-            <el-col :span="5"></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="5">商品链接</el-col>
-            <el-col :span="14"></el-col>
-            <el-col :span="5"></el-col>
-          </el-row>
-        </div>
-      </div>
-      <div class="colTable">
-        <div class="title">
-          <el-row>
-            <el-col :span="12" class="left">来路设置</el-col>
-            <el-col :span="12" class="right">
-              <el-row>
-                <el-col :span="20">
-                  <div class="right-container">
-                    <span style="margin-right: 10px;">当前总数:
-                      <em class="red">0</em>
-                    </span>
-                    <span style="margin-right: 10px;">未来0天可发布总数:
-                      <em class="red">0</em>
-                    </span>
-                    <span style="margin-right: 10px;">PC:
-                      <em class="red">0</em>
-                    </span>
-                    <span style="margin-right: 10px;">无线端:
-                      <em class="red">0</em>
-                    </span>
-                    <a class="btn btn-small">新增</a>
-                  </div>
-                </el-col>
-                <el-col :span="4">
-                  <el-button class="tableBtn" type="primary">新增</el-button>
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-        </div>
-        <div class="funTable">
-          <el-row class="tableTitle">
-            <el-col :span="4">流量入口</el-col>
-            <el-col :span="10">关键字</el-col>
-            <el-col :span="4">数量</el-col>
-            <el-col :span="4">其他筛选条件
-              <!---->
-              <span>（可选）</span>
-            </el-col>
-            <el-col :span="2">操作</el-col>
-          </el-row>
-          <el-row class="tableContent">
-            <el-col :span="4" class="flowEnterSelect">
-              <el-select v-model="tableData.flowEnter.value" placeholder="请选择">
-                <el-option v-for="item in tableData.flowEnter.options" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="10" class="textInput">
-              <el-input v-model="tableData.orderKeyword" placeholder="请设置关键字"></el-input>
-            </el-col>
-            <el-col :span="4">
-              <el-input-number size="mini" v-model="tableData.account"></el-input-number>
-            </el-col>
-            <el-col :span="4">
-              <el-button class="tableBtn" type="primary" @click="settingClick">设置</el-button>
-            </el-col>
-            <el-col :span="2">操作</el-col>
-          </el-row>
-        </div>
-      </div>
-      <el-form ref="form" :model="form" label-width="150px" style="margin-top:20px;">
-        <el-form-item label="备注信息（选填）：">
-          <el-input type="textarea" v-model="form.note"></el-input>
-        </el-form-item>
-      </el-form>
     </div>
+
+    <div class="colTable">
+      <div class="title">
+        <el-row>
+          <el-col :span="12" class="left">选定商品</el-col>
+          <el-col :span="12" class="right">
+            <el-button class="tableBtn" type="primary" @click="choiceProductDialogShow=true">选择商品</el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="table">
+        <el-row>
+          <el-col :span="5">商品简称</el-col>
+          <el-col :span="14"></el-col>
+          <el-col :span="5"></el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">商品ID</el-col>
+          <el-col :span="14"></el-col>
+          <el-col :span="5"></el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">店铺名</el-col>
+          <el-col :span="14"></el-col>
+          <el-col :span="5"></el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">商品标题</el-col>
+          <el-col :span="14"></el-col>
+          <el-col :span="5"></el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">商品链接</el-col>
+          <el-col :span="14"></el-col>
+          <el-col :span="5"></el-col>
+        </el-row>
+      </div>
+    </div>
+    <div class="colTable">
+      <div class="title">
+        <el-row>
+          <el-col :span="12" class="left">来路设置</el-col>
+          <el-col :span="12" class="right">
+            <el-row>
+              <el-col :span="20">
+                <div class="right-container">
+                  <span style="margin-right: 10px;">当前总数:
+                    <em class="red">0</em>
+                  </span>
+                  <span style="margin-right: 10px;">未来0天可发布总数:
+                    <em class="red">0</em>
+                  </span>
+                  <span style="margin-right: 10px;">PC:
+                    <em class="red">0</em>
+                  </span>
+                  <span style="margin-right: 10px;">无线端:
+                    <em class="red">0</em>
+                  </span>
+                  <a class="btn btn-small">新增</a>
+                </div>
+              </el-col>
+              <el-col :span="4">
+                <el-button class="tableBtn" type="primary">新增</el-button>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="funTable">
+        <el-row class="tableTitle">
+          <el-col :span="4">流量入口</el-col>
+          <el-col :span="10">关键字</el-col>
+          <el-col :span="4">数量</el-col>
+          <el-col :span="4">其他筛选条件
+            <!---->
+            <span>（可选）</span>
+          </el-col>
+          <el-col :span="2">操作</el-col>
+        </el-row>
+        <el-row class="tableContent">
+          <el-col :span="4" class="flowEnterSelect">
+            <el-select v-model="tableData.flowEnter.value" placeholder="请选择">
+              <el-option v-for="item in tableData.flowEnter.options" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="10" class="textInput">
+            <el-input v-model="tableData.orderKeyword" placeholder="请设置关键字"></el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-input-number size="mini" v-model="tableData.account"></el-input-number>
+          </el-col>
+          <el-col :span="4">
+            <el-button class="tableBtn" type="primary" @click="settingClick">设置</el-button>
+          </el-col>
+          <el-col :span="2">操作</el-col>
+        </el-row>
+      </div>
+    </div>
+    <el-form ref="form" :model="form" label-width="150px" style="margin-top:20px;">
+      <el-form-item label="备注信息（选填）：">
+        <el-input type="textarea" v-model="form.note"></el-input>
+      </el-form-item>
+    </el-form>
     <div class="colTable">
       <div class="title">
         <el-row>
