@@ -8,7 +8,6 @@
     </div>
 
     <div class="evaluationManagement">
-
       <div class="btnGroup">
         <el-row>
           <el-col :span="18" class="formGroup" style="text-align:left !important">
