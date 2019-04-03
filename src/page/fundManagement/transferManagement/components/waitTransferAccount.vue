@@ -59,7 +59,7 @@
             请设置默认转账银行卡
           </span>
           &nbsp; 开户人：(请先设置默认转账银行卡)
-          <el-button class="tablebtnActive">设置</el-button>
+          <el-button class="tablebtnActive" @click="settingDialogShow=true">设置</el-button>
         </div>
         <el-row>
           <el-col :span="19" class="formGroup" style="text-align:left !important;width:calc(100% - 160px)">
@@ -94,6 +94,56 @@
         <table-com :columns="tableData.columns"></table-com>
       </div>
     </div>
+    <div class="settingDialogCom">
+      <el-dialog title="设置默认转账银行卡" :visible.sync="settingDialogShow">
+        <div class="content">
+          <div class="well">
+            <p>原转账银行卡：请设置默认转账银行卡</p>
+            <p>开户人：(请先设置默认转账银行卡)</p>
+          </div>
+          <p class="title">请在下方输入新的转账银行卡信息：</p>
+          <el-row>
+            <el-col :span="6">
+              <span>转账银行：</span>
+            </el-col>
+            <el-col :span="18">
+              <el-select v-model="sortOrder.value" placeholder="请选择开户行">
+                <el-option v-for="item in sortOrder.options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <span>转账银行卡号：</span>
+            </el-col>
+            <el-col :span="18">
+              <el-input v-model="priceRange.bottom" placeholder="请输入正确的卡号"></el-input>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <span>银行卡开户人：</span>
+            </el-col>
+            <el-col :span="18">
+              <el-input v-model="sendGoods.val" placeholder="请输入正常开户人姓名"></el-input>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <span>支付密码：</span>
+            </el-col>
+            <el-col :span="18">
+              <el-input v-model="others.value" placeholder="请输入在平台设置的密码"></el-input>
+            </el-col>
+          </el-row>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" type="primary">确 定</el-button>
+          <el-button @click="dialogFormVisible = false">返 回</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -104,18 +154,36 @@ export default {
   },
   data () {
     return {
-      msg: 'home',
+      settingDialogShow: false,
+      sortOrder: {
+        check: true,
+        value: '',
+        options: [
+          { label: '综合', value: '综合' },
+          { label: '销量', value: '销量' },
+          { label: '价格从低到高', value: '价格从低到高' },
+          { label: '价格从高到低', value: '价格从高到低' }
+        ]
+      },
+      priceRange: {
+        check: true,
+        bottom: '',
+        top: ''
+      },
+      sendGoods: {
+        check: true,
+        value: ''
+      },
+      others: {
+        check: true,
+        value: ''
+      },
       formData: {
         taskClass: {
-          value: '所有任务',
+          value: '',
           options: [
-            { label: '所有任务', value: '所有任务' },
-            { label: '未设置评价', value: '未设置评价' },
-            { label: '完成评价', value: '完成评价' },
-            { label: '等待评价', value: '等待评价' },
-            { label: '等待追评', value: '等待追评' },
-            { label: '完成追评', value: '完成追评' },
-            { label: '已取消评价', value: '已取消评价' }
+            { label: '等待转账', value: '等待转账' },
+            { label: '已导出', value: '已导出' }
           ]
         },
         taskNum: {
@@ -194,6 +262,24 @@ export default {
     font-size: 13px;
     .red {
       color: red;
+    }
+  }
+  .settingDialogCom {
+    .el-row {
+      .el-col:first-child {
+        text-align: right;
+      }
+    }
+    .well {
+      text-align: center;
+      margin: 10px auto;
+      padding: 15px;
+      background-color: #eee;
+      border-radius: 5px;
+    }
+    .title {
+      font-size: 16px;
+      margin: 5px 0 10px;
     }
   }
 }
