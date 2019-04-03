@@ -12,7 +12,7 @@
         <el-row>
           <el-col :span="12" class="left">选定商品</el-col>
           <el-col :span="12" class="right">
-            <el-button class="tableBtn" type="primary" @click="choiceProductDialogShow=true">选择商品</el-button>
+            <el-button class="tablebtnActive" type="primary" @click="choiceProductDialogShow=true">选择商品</el-button>
           </el-col>
         </el-row>
       </div>
@@ -68,7 +68,7 @@
                 </div>
               </el-col>
               <el-col :span="4">
-                <el-button class="tableBtn" type="primary">新增</el-button>
+                <el-button class="tablebtnActive" type="primary">新增</el-button>
               </el-col>
             </el-row>
           </el-col>
@@ -99,7 +99,7 @@
             <el-input-number size="mini" v-model="tableData.account"></el-input-number>
           </el-col>
           <el-col :span="4">
-            <el-button class="tableBtn" type="primary" @click="settingClick">设置</el-button>
+            <el-button class="tablebtnActive" type="primary" @click="settingClick">设置</el-button>
           </el-col>
           <el-col :span="2">操作</el-col>
         </el-row>
@@ -207,7 +207,8 @@
       </div>
     </div>
     <setting-dialog-com :dialog-table-visible="dialogTableVisible"></setting-dialog-com>
-    <choice-product-dialog :columns="choiceProductDialogData.columns" :data="choiceProductDialogData.data" :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
+    <choice-product-dialog :columns="choiceProductDialogData.columns" :data="choiceProductDialogData.data"
+      :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
   </div>
 </template>
 <script>
@@ -272,15 +273,6 @@ export default {
     > div {
       margin-bottom: 10px;
     }
-  }
-  .tableBtn {
-    background: #0099e5;
-    text-align: center;
-    color: #fff;
-    text-align: center;
-    border-radius: 25px;
-    padding: 8px 20px;
-    cursor: pointer;
   }
 }
 </style>

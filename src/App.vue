@@ -2,7 +2,7 @@
   <div id="app">
     <header-com></header-com>
     <nav-bar></nav-bar>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -44,6 +44,16 @@ p {
   height: 40px;
   line-height: 40px;
   text-align: right;
+  .el-date-editor {
+    width: 265px;
+    .el-range-input {
+      width: 110px;
+    }
+    .el-range-separator,
+    .el-input__icon {
+      line-height: 27px;
+    }
+  }
   > span {
     font-size: 14px;
     margin-top: 8px;
@@ -54,10 +64,10 @@ p {
     vertical-align: bottom;
   }
   .el-input {
-    width: 140px !important;
+    width: 130px !important;
     height: 36px;
     input {
-      width: 140px !important;
+      width: 130px !important;
       height: 36px;
       line-height: 36px !important;
     }
@@ -78,17 +88,34 @@ p {
     }
   }
 }
+.shopManagement {
+  .tableCom {
+    tbody {
+      td {
+        .cell {
+        }
+      }
+    }
+  }
+}
 .btnGroup {
   margin-top: 20px;
   padding: 8px 0;
   text-align: right;
+}
+.tableCellBtn {
+  padding: 5px 8px;
+  margin: 0 !important;
+  &:not(:last-child) {
+    margin-bottom: 5px !important;
+  }
 }
 .tablebtnActive {
   background: #0099e5;
   color: #fff;
   text-align: center;
   border-radius: 25px;
-  padding: 10px 20px;
+  padding: 6px 12px;
   cursor: pointer;
 }
 .tablebtnFFF {
@@ -96,7 +123,7 @@ p {
   color: #0099e5;
   text-align: center;
   border-radius: 25px;
-  padding: 10px 20px;
+  padding: 6px 12px;
   cursor: pointer;
   border: 1px solid #0099e5;
 }
@@ -233,7 +260,16 @@ p {
     }
   }
 }
-
+.topList {
+  width: 950px;
+  margin-top: 0;
+  ul {
+    width: 100%;
+    li {
+      width: 25%;
+    }
+  }
+}
 .colTable {
   margin-top: 20px;
   .title {
@@ -321,5 +357,12 @@ p {
       }
     }
   }
+}
+.red {
+  color: red;
+  font-size: 13px;
+}
+em {
+  font-style: normal;
 }
 </style>

@@ -1,11 +1,12 @@
 <template>
   <div class="tableCom">
-    <el-table :data="data" height="250" border style="width: 100%">
-      <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
+    <el-table :data="data" border style="width: 100%" :height="tableHeight">
+      <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name"
+        align="center"></el-table-column>
     </el-table>
     <div class="pagination">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]"
-        :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="0">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+        :page-sizes="[100, 200, 300, 400]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="0">
       </el-pagination>
     </div>
 
@@ -21,6 +22,12 @@ export default {
         ]
       }
     },
+    tableHeight: {
+      type: Number,
+      default () {
+        return 300
+      }
+    },
     data: {
       type: Array,
       default () {
@@ -28,7 +35,11 @@ export default {
         ]
       }
     }
-
+  },
+  watch: {
+    tableHeight (val) {
+      this.height = val
+    }
   },
   methods: {
     handleSizeChange (val) {
@@ -40,7 +51,8 @@ export default {
   },
   data () {
     return {
-      currentPage: 1
+      currentPage: 1,
+      height: 350
     }
   }
 }

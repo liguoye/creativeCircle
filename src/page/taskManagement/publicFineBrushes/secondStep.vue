@@ -169,11 +169,11 @@ export default {
   color: #fff;
   text-align: center;
   border-radius: 25px;
-  padding: 8px 13px;
+  padding: 5px 10px;
   cursor: pointer;
 }
-.secondStep {
-  .content {
-  }
-}
+// .secondStep {
+//   .content {
+//   }
+// }
 </style>

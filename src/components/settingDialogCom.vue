@@ -59,7 +59,6 @@ export default {
   data () {
     return {
       sortOrder: {
-
         check: true,
         value: '',
         options: [
