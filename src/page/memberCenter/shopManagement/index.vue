@@ -8,7 +8,8 @@
         <div class="evaluationManagement">
           <div class="btnGroup">
             <div class="defaultCard" style="text-align:left">
-              淘宝店铺： <span class="red">2 </span>个 &nbsp;
+              淘宝店铺：
+              <span class="red">2 </span>个 &nbsp;
               <el-button class="tablebtnActive">绑定新店铺</el-button>
             </div>
             <el-row>
@@ -26,7 +27,7 @@
                   <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                     <template slot-scope="scope">
                       <el-button class="tableCellBtn" type="primary" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                      <el-button class="tableCellBtn" type="danger" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+                      <el-button class="tableCellBtn" type="danger" size="mini" @click="lookDetailClick(scope.$index, scope.row)">查看详情</el-button>
                     </template>
                   </el-table-column>
                 </template>
@@ -37,7 +38,7 @@
                         <p>姓名：{{tableData[scope.$index]['shipper']}}</p>
                         <p>电话：{{tableData[scope.$index]['tel']}} </p>
                         <p>发货地址：{{tableData[scope.$index]['address']}}</p>
-                        <p>编辑</p>
+                        <p @click="editClick">编辑</p>
                       </div>
                     </template>
                   </el-table-column>
@@ -76,13 +77,19 @@
         </div>
       </el-col>
     </el-row>
+    <edit-dialog @dialogClose="editDialogClose" :dialog-table-visible="editDialogShow"></edit-dialog>
+    <look-detail-dialog @dialogClose="lookDetailDialogClose" :dialog-table-visible="lookDetailDialogShow"></look-detail-dialog>
   </div>
 </template>
 <script>
 import navList from '../components/treeNavList.vue'
+import editDialog from './components/editDialog.vue'
+import lookDetailDialog from './components/lookDetailDialog.vue'
 export default {
   components: {
-    navList
+    navList,
+    editDialog,
+    lookDetailDialog
   },
   props: {
   },
@@ -90,6 +97,8 @@ export default {
     return {
       currentTab: 'shopManagement',
       settingDialogShow: false,
+      editDialogShow: false,
+      lookDetailDialogShow: false,
       columns: [
         { name: '店铺名称', code: 'name', width: '190' },
         { name: '所属平台', code: 'childType', width: '80' },
@@ -166,11 +175,22 @@ export default {
     }
   },
   methods: {
+    editDialogClose (val) {
+      this.editDialogShow = val
+    },
+    lookDetailDialogClose (val) {
+      this.lookDetailDialogShow = val
+    },
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
     },
-    handleEdit (index, row) {
+    lookDetailClick (index, row) {
       console.log(index, row)
+      this.lookDetailDialogShow = true
+    },
+    editClick (index, row) {
+      console.log(index, row)
+      this.editDialogShow = true
     },
     handleDelete (index, row) {
       console.log(index, row)

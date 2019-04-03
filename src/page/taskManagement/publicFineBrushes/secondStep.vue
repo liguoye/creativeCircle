@@ -110,7 +110,7 @@
       </div>
     </div>
     <btn-group :btn-active="btnActive" @btnClick="btnClick"></btn-group>
-    <setting-dialog-com :dialog-table-visible="dialogTableVisible"></setting-dialog-com>
+    <setting-dialog-com @dialogClose="dialogClose" :dialog-table-visible="dialogTableVisible"></setting-dialog-com>
     <el-dialog title="请核对填写内容" :visible.sync="dialogVisible" width="30%">
       <span>请选择一个商品</span>
       <span slot="footer" class="dialog-footer">
@@ -159,6 +159,9 @@ export default {
           this.$emit('changeState', { state: 'thirdStep' })
         }
       }
+    },
+    dialogClose (val) {
+      this.dialogTableVisible = val
     }
   }
 }

@@ -59,7 +59,7 @@
             请设置默认转账银行卡
           </span>
           &nbsp; 开户人：(请先设置默认转账银行卡)
-          <el-button class="tablebtnActive" @click="settingDialogShow=true">设置</el-button>
+          <el-button class="tablebtnActive" @click="dialogFormVisible=true">设置</el-button>
         </div>
         <el-row>
           <el-col :span="19" class="formGroup" style="text-align:left !important;width:calc(100% - 160px)">
@@ -95,7 +95,7 @@
       </div>
     </div>
     <div class="settingDialogCom">
-      <el-dialog title="设置默认转账银行卡" :visible.sync="settingDialogShow">
+      <el-dialog title="设置默认转账银行卡" :visible.sync="dialogFormVisible">
         <div class="content">
           <div class="well">
             <p>原转账银行卡：请设置默认转账银行卡</p>
@@ -107,7 +107,7 @@
               <span>转账银行：</span>
             </el-col>
             <el-col :span="18">
-              <el-select v-model="sortOrder.value" placeholder="请选择开户行">
+              <el-select v-model="sortOrder.value" style="width:100%" placeholder="请选择开户行">
                 <el-option v-for="item in sortOrder.options" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
@@ -154,7 +154,7 @@ export default {
   },
   data () {
     return {
-      settingDialogShow: false,
+      dialogFormVisible: false,
       sortOrder: {
         check: true,
         value: '',
@@ -266,8 +266,12 @@ export default {
   }
   .settingDialogCom {
     .el-row {
+      .el-col {
+        margin-bottom: 10px;
+      }
       .el-col:first-child {
         text-align: right;
+        line-height: 35px;
       }
     }
     .well {
@@ -279,7 +283,7 @@ export default {
     }
     .title {
       font-size: 16px;
-      margin: 5px 0 10px;
+      margin: 10px 0 10px;
     }
   }
 }
