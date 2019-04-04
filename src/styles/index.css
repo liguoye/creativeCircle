@@ -1,0 +1,364 @@
+body {
+  margin: 0;
+  line-height: 1.5;
+  color: #333;
+  font-size: 12px;
+  padding: 0;
+}
+
+.must:before {
+  content: "*";
+  padding-right: 1px;
+  font-size: 23px;
+  vertical-align: middle;
+  color: red;
+}
+
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.formGroup {
+  height: 40px;
+  line-height: 40px;
+  text-align: right;
+}
+
+.formGroup .el-date-editor {
+  width: 265px;
+}
+
+.formGroup .el-date-editor .el-range-input {
+  width: 110px;
+}
+
+.formGroup .el-date-editor .el-range-separator,
+.formGroup .el-date-editor .el-input__icon {
+  line-height: 27px;
+}
+
+.formGroup>span {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.formGroup .el-input__inner {
+  height: 36px;
+  line-height: 36px;
+  vertical-align: bottom;
+}
+
+.formGroup .el-input {
+  width: 130px !important;
+  height: 36px;
+}
+
+.formGroup .el-input input {
+  width: 130px !important;
+  height: 36px;
+  line-height: 36px !important;
+}
+
+.formGroup .el-input .el-input__icon {
+  line-height: 36px !important;
+}
+
+.tableCom .el-table__header-wrapper {
+  background-color: #0099e5;
+}
+
+.tableCom .el-table__header-wrapper thead th {
+  background-color: #0099e5;
+  color: #fff;
+  border-right: 0;
+}
+
+.btnGroup {
+  margin-top: 20px;
+  padding: 8px 0;
+  text-align: right;
+}
+
+.tableCellBtn {
+  padding: 5px 8px;
+  margin: 0 !important;
+}
+
+.tableCellBtn:not(:last-child) {
+  margin-bottom: 5px !important;
+}
+
+.tablebtnActive {
+  background: #0099e5;
+  color: #fff;
+  text-align: center;
+  border-radius: 25px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.tablebtnFFF {
+  background: #fff;
+  color: #0099e5;
+  text-align: center;
+  border-radius: 25px;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: 1px solid #0099e5;
+}
+
+.funTable .el-input__inner {
+  height: 27px;
+}
+
+.funTable .section>.el-input {
+  width: 80px !important;
+}
+
+.funTable .section>.el-input input {
+  width: 80px !important;
+}
+
+.funTable .flowEnterSelect {
+  padding: 0 8px;
+}
+
+.funTable .textInput {
+  padding: 0 5px;
+}
+
+.funTable .textInput>.el-input .el-input__inner {
+  padding: 0 3px;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.settingDialogCom .el-dialog {
+  width: 570px;
+  min-width: 570;
+}
+
+.settingDialogCom .el-dialog .el-dialog__header {
+  background-color: #0099e5;
+  color: #fff !important;
+  padding: 0 16px;
+  font-weight: inherit;
+  line-height: 40px;
+  height: 40px;
+}
+
+.settingDialogCom .el-dialog .el-dialog__header .el-dialog__title,
+.settingDialogCom .el-dialog .el-dialog__header .el-dialog__close {
+  color: #fff;
+}
+
+.settingDialogCom .el-dialog .el-dialog__header .el-dialog__headerbtn {
+  top: 13px;
+}
+
+.settingDialogCom .el-dialog .el-dialog__body {
+  padding: 30px 30px 0 30px;
+  overflow: auto;
+}
+
+.settingDialogCom .el-dialog .el-dialog__footer {
+  padding: 30px 30px;
+}
+
+.settingDialogCom .el-dialog .content>.el-row .el-col {
+  margin-bottom: 8px;
+}
+
+.settingDialogCom .el-dialog .el-input .el-input__inner {
+  height: 35px;
+}
+
+.choiceProductDialog .el-dialog__header {
+  background-color: #0099e5;
+  color: #fff !important;
+  padding: 0 16px;
+  font-weight: inherit;
+  line-height: 40px;
+  height: 40px;
+}
+
+.choiceProductDialog .el-dialog__header .el-dialog__title,
+.choiceProductDialog .el-dialog__header .el-dialog__close {
+  color: #fff;
+}
+
+.choiceProductDialog .el-dialog__header .el-dialog__headerbtn {
+  top: 13px;
+}
+
+.choiceProductDialog .el-table thead th {
+  background-color: #f5f5f5;
+  padding: 6px 0;
+}
+
+.choiceProductDialog .el-dialog__body {
+  padding-bottom: 10px;
+  padding-top: 20px;
+}
+
+.taskManagementNavList {
+  width: 1150px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.taskManagementNavList ul {
+  width: 100%;
+  font-size: 0;
+  border: 1px solid #ccebfa;
+}
+
+.taskManagementNavList ul li {
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-block;
+  width: 20%;
+  box-sizing: border-box;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+}
+
+.taskManagementNavList ul li:not(:last-child) {
+  border-right: 1px solid #ccebfa;
+}
+
+.taskManagementNavList ul li>span {
+  color: red;
+}
+
+.taskManagementNavList ul li:hover {
+  color: #0099e5;
+}
+
+.taskManagementNavList ul .current {
+  background: #0099e5 !important;
+  color: #fff !important;
+}
+
+.topList {
+  width: 950px;
+  margin-top: 0;
+}
+
+.topList ul {
+  width: 100%;
+}
+
+.topList ul li {
+  width: 25%;
+}
+
+.colTable {
+  margin-top: 20px;
+}
+
+.colTable .title {
+  border: 1px solid #ccebfa;
+  border-bottom: 0;
+  height: 50px;
+  box-sizing: border-box;
+  line-height: 50px;
+}
+
+.colTable .title .left {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.colTable .title .right {
+  text-align: right;
+  padding-right: 20px;
+}
+
+.colTable .title .right .right-container {
+  font-size: 14px;
+}
+
+.colTable .title .right .right-container em {
+  color: red;
+  font-style: normal;
+}
+
+.colTable .table>.el-row>.el-col {
+  text-align: center;
+  border-left: 1px solid #ccebfa;
+  border-top: 1px solid #ccebfa;
+  height: 40px;
+  line-height: 40px;
+}
+
+.colTable .table>.el-row>.el-col:first-child {
+  font-size: 14px;
+  background-color: #e7f4fc;
+}
+
+.colTable .table>.el-row>.el-col:last-child {
+  border-right: 1px solid #ccebfa;
+  border-top: 0 !important;
+}
+
+.colTable .table>.el-row:last-child {
+  border-bottom: 1px solid #ccebfa;
+}
+
+.colTable .table>.el-row:first-child .el-col:last-child {
+  border-top: 1px solid #ccebfa !important;
+}
+
+.colTable .funTable>.el-row>.el-col {
+  text-align: center;
+  border-left: 1px solid #ccebfa;
+  border-top: 1px solid #ccebfa;
+  height: 40px;
+  line-height: 40px;
+}
+
+.colTable .funTable>.el-row>.el-col>span {
+  color: red;
+}
+
+.colTable .funTable>.el-row>.el-col:last-child {
+  border-right: 1px solid #ccebfa;
+}
+
+.colTable .funTable>.el-row:last-child {
+  border-bottom: 1px solid #ccebfa;
+}
+
+.colTable .funTable .tableTitle {
+  font-size: 14px;
+}
+
+.colTable .funTable .tableTitle .el-col {
+  background-color: #e7f4fc;
+}
+
+.colTable .funTable .tableContent .section .el-input input {
+  height: 27px;
+  width: 50px;
+}
+
+.red {
+  color: red;
+  font-size: 13px;
+}
+
+em {
+  font-style: normal;
+}
