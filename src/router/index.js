@@ -1,25 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import home from '@/page/home/index'
-import login from '@/page/login.vue'
-import register from '@/page/register.vue'
 
 Vue.use(Router)
 export default new Router({
   routes: [{
     path: '/',
     name: 'home',
-    component: home
+    component: () => import('@/page/home/index')
   },
   {
     path: '/register',
     name: 'register',
-    component: register
+    component: () => import('@/page/register.vue')
+  },
+  {
+    path: '/forgetPassword',
+    name: 'forgetPassword',
+    component: () => import('@/page/forgetPassword.vue')
   },
   {
     path: '/login',
     name: 'login',
-    component: login
+    component: () => import('@/page/login.vue')
   }, {
     path: '/customerWorkOrder',
     name: 'customerWorkOrder',
