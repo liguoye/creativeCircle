@@ -70,13 +70,15 @@
         </p>
       </div>
     </div>
-    <el-dialog title="密码重置成功" :visible.sync="dialogVisible" width="30%" :show-close="false" :close-on-click-modal="false"
-      :close-on-press-escape="false">
-      <p>请使用新密码进行登录</p>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">去登录看看</el-button>
-      </span>
-    </el-dialog>
+    <div class="settingDialogCom">
+      <el-dialog title="密码重置成功" :visible.sync="dialogVisible" width="30%" :show-close="false" :close-on-click-modal="false"
+        :close-on-press-escape="false">
+        <p>请使用新密码进行登录</p>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false">去登录看看</el-button>
+        </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
