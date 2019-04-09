@@ -71,7 +71,8 @@
             <span>订单编号</span>
             <el-input v-model="formData.keyWord" placeholder="请输入内容"></el-input>
             <span>转账截止时间</span>
-            <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+            <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期"
+              end-placeholder="结束日期">
             </el-date-picker>
           </el-col>
           <el-col :span="5" style="line-height:40px;width:160px;">
@@ -83,7 +84,7 @@
           <el-col style="text-align:left;margin-top:10px;">
             <span>操作按钮:</span>
             <el-button class="tablebtnActive">转账成功</el-button>
-            <el-button class="tablebtnActive">全部转账成功</el-button>
+            <el-button class="tablebtnActive" @click="allTransferSuccessShow=true">全部转账成功</el-button>
             <el-button class="tablebtnActive">转账失败</el-button>
             <el-button class="tablebtnActive">招商批量导出</el-button>
             <el-button class="tablebtnActive">浦发批量导出</el-button>
@@ -144,6 +145,25 @@
         </div>
       </el-dialog>
     </div>
+    <div class="settingDialogCom">
+      <el-dialog title="提示" :visible.sync="allTransferSuccessShow">
+        <div class="content">
+          <section>
+            <p>请确保<span class="red">已对买家成功转账</span>后再执行【转账成功】操作！并核实转账所使用的银行卡信息是否有误。</p>
+            <div class="well">
+              <p>转账银行卡：请设置默认转账银行卡</p>
+              <p>开户人：(请先设置默认转账银行卡)</p>
+            </div>
+            <p><span class="red">温馨提示：</span>若实际转账所使用的银行卡与上方展示的信息不一致，请返回至等待转账页面对默认转账银行卡进行修改。
+            </p>
+          </section>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="allTransferSuccessShow = false" type="primary">确认无误</el-button>
+          <el-button @click="allTransferSuccessShow = false">我再看看</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -155,6 +175,7 @@ export default {
   data () {
     return {
       dialogFormVisible: false,
+      allTransferSuccessShow: false,
       sortOrder: {
         check: true,
         value: '',

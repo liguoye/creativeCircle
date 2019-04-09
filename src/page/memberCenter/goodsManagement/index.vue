@@ -34,6 +34,7 @@
           </el-row>
           <el-row>
             <el-col :span="20" style="text-align:left;margin-top:10px;">
+              <el-button class="tablebtnActive" @click="addGoods">添加</el-button>
               <el-button class="tablebtnActive">编辑</el-button>
               <el-button class="tablebtnActive">删除</el-button>
               <el-button class="tablebtnActive">目标客户</el-button>
@@ -50,21 +51,25 @@
         </div>
       </el-col>
     </el-row>
+    <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow"></add-dialog>
   </div>
 </template>
 <script>
 import navList from '../components/treeNavList.vue'
 import tableCom from '@/components/tableCom.vue'
+import addDialog from './components/addDialog.vue'
 export default {
   components: {
     navList,
-    tableCom
+    tableCom,
+    addDialog
   },
   props: {
   },
   data () {
     return {
       currentTab: 'goodsManagement',
+      addDialogShow: false,
       formData: {
         manager: {
           value: '全部',
@@ -91,6 +96,12 @@ export default {
   methods: {
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
+    },
+    addDialogClose () {
+      this.addDialogShow = true
+    },
+    addGoods () {
+      this.addDialogShow = true
     }
   }
 }
