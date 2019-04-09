@@ -6,7 +6,7 @@
           <el-row>
             <el-col :span="12" class="left">选定商品</el-col>
             <el-col :span="12" class="right">
-              <el-button class="tableBtn" type="primary">选择商品</el-button>
+              <el-button class="tableBtn" type="primary" @click="choiceProductDialogShow=true">选择商品</el-button>
             </el-col>
           </el-row>
         </div>
@@ -111,6 +111,8 @@
     </div>
     <btn-group :btn-active="btnActive" @btnClick="btnClick"></btn-group>
     <setting-dialog-com @dialogClose="dialogClose" :dialog-table-visible="dialogTableVisible"></setting-dialog-com>
+    <choice-product-dialog :columns="choiceProductDialogData.columns" :data="choiceProductDialogData.data"
+      :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
     <el-dialog title="请核对填写内容" :visible.sync="dialogVisible" width="30%">
       <span>请选择一个商品</span>
       <span slot="footer" class="dialog-footer">
@@ -122,9 +124,11 @@
 <script>
 import btnGroup from './components/btnGroup.vue'
 import settingDialogCom from '@/components/settingDialogCom.vue'
+import choiceProductDialog from '@/components/choiceProductDialog.vue'
 export default {
   components: {
     btnGroup,
+    choiceProductDialog,
     settingDialogCom
   },
   data () {
@@ -132,6 +136,17 @@ export default {
       radio: '1',
       btnActive: 1,
       dialogTableVisible: false,
+      choiceProductDialogShow: false,
+      choiceProductDialogData: {
+        data: [],
+        columns: [
+          { name: '选择商品', code: 'task1', width: '' },
+          { name: '店铺名', code: 'task2', width: '' },
+          { name: '商品简称', code: 'task3', width: '' },
+          { name: '商品ID', code: 'task4', width: '' },
+          { name: '商品标题', code: 'task5', width: '' }
+        ]
+      },
       dialogVisible: false,
       tableData: {
         flowEnter: {
