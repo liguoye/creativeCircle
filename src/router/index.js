@@ -122,5 +122,13 @@ export default new Router({
     redirect: '/404',
     hidden: true
   }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      savedPosition;
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  }
 })

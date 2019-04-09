@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="banner">
-      <!-- <img src="../../assets/picture/banner.png" />> -->
+      <img class="banner-img" src="../../assets/picture/banner.png" />
       <div class="businessBox">
         <div class="con">
           <div class="H20"></div>
@@ -133,15 +133,22 @@ export default {
 .home {
   .banner {
     height: 460px;
-    background-image: url('../../assets/picture/banner.png');
-    background-repeat: no-repeat;
+    // background-image: url('../../assets/picture/banner.png');
+    // background-repeat: no-repeat;
     position: relative;
+    .banner-img{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: auto;
+        left: 0;
+    }
     .businessBox {
       width: 348px;
       height: 348px;
       position: absolute;
       right: 230px;
-      top: 50%;
+      top: 45%;
       margin-top: -200px;
       background: hsla(0, 0%, 100%, 0.3);
       border: 1px solid #fff;

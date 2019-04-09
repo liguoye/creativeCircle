@@ -9,6 +9,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
+import ajax from "./utils/ajax";
+Vue.use(ajax);
+
+import './utils/getToken'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -18,3 +23,5 @@ new Vue({
   },
   template: '<App/>'
 })
+
+
