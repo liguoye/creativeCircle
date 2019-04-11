@@ -26,12 +26,13 @@
             <el-input v-model="keyWord" placeholder=""></el-input>
           </el-col>
           <el-col :span="2">
-            <el-button type="primary">搜索</el-button>
+            <el-button type="primary" size="mini">搜索</el-button>
           </el-col>
         </el-row>
 
         <el-table :data="data" height="250" border style="width: 100%">
-          <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
+          <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name"
+            align="center"></el-table-column>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
