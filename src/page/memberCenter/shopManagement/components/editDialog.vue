@@ -152,10 +152,11 @@ export default {
   },
   methods: {
       submit(){
+          console.log()
           this.$ajax.get('shop/upd',{params:{
-              shopid:this.shopid,
+              shopid:this.passdata.id,
               name:this.name,
-              phone:this.others,
+              phone:this.others.value,
               province:this.province,
               city:this.city,
               area:this.area,
@@ -164,6 +165,7 @@ export default {
               console.log(res)
           })
       },
+    
     dialogClose() {
       this.$emit("dialogClose", false);
     },

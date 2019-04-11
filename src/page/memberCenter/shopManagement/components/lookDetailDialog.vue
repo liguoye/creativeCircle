@@ -6,51 +6,52 @@
           <el-col :span="6">
             <p>店铺类型：</p>
           </el-col>
-          <el-col :span="18"> 天猫</el-col>
+          <el-col :span="18">淘宝</el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <p>掌柜号：</p>
           </el-col>
-          <el-col :span="18">tourmate途美利威专卖店</el-col>
+          <el-col :span="18">{{passdata.username}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <p>店铺名：</p>
           </el-col>
-          <el-col :span="18">tourmate途美利威专卖店</el-col>
+          <el-col :span="18">{{passdata.shop_name}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <p>店铺性质：</p>
           </el-col>
-          <el-col :span="18">公司</el-col>
+          <el-col :span="18" v-if="passdata.type==1">个人</el-col>
+          <el-col :span="18" v-else>公司</el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <p>发货人：</p>
           </el-col>
-          <el-col :span="18">冷先生</el-col>
+          <el-col :span="18">{{passdata.name}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <p>发货人手机号码：</p>
           </el-col>
-          <el-col :span="18">17665265388</el-col>
+          <el-col :span="18">{{passdata.phone}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <p>发货省市区：</p>
           </el-col>
-          <el-col :span="18">广东省 深圳市 龙岗区</el-col>
+          <el-col :span="18">{{passdata.province}}{{passdata.city}}{{passdata.area}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <p>发货详细地址：</p>
           </el-col>
-          <el-col :span="18">坂田街道大发路29号金豪毅工业园B栋2层（途美）</el-col>
+          <el-col :span="18">{{passdata.address}}</el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="6">
             <p>所在类目：</p>
           </el-col>
@@ -61,19 +62,19 @@
             <p>所在层级：</p>
           </el-col>
           <el-col :span="18"></el-col>
-        </el-row>
-        <el-row>
+        </el-row> -->
+        <!-- <el-row>
           <el-col :span="6">
             <p>备注：</p>
           </el-col>
           <el-col :span="18"></el-col>
-        </el-row>
+        </el-row> -->
         <el-row>
           <el-col :span="6">
             <p>店铺截图：</p>
           </el-col>
           <el-col :span="18">
-            <img src="../../../../assets/picture/ex01.png" />
+            <img :src="passdata.img" />
           </el-col>
         </el-row>
       </div>
@@ -90,6 +91,12 @@ export default {
       type: Boolean,
       default () {
         return false
+      }
+    },
+    passdata: {
+      type: Object,
+      default () {
+        return {}
       }
     }
   },

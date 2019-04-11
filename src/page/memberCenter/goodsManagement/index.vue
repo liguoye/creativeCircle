@@ -22,7 +22,7 @@
             <el-col :span="18" class="formGroup" style="text-align:left !important">
               <span>掌柜号: </span>
               <el-select v-model="formData.manager.value" placeholder="请选择">
-                <el-option v-for="item in formData.manager.options" :key="item.value" :label="item.label" :value="item.value">
+                <el-option v-for="(item,index) in formData.manager.options" :key="index" :label="item.shop_name" :value="item.id">
                 </el-option>
               </el-select>
               <el-input v-model="formData.name" placeholder="简称/名称"></el-input>
@@ -51,7 +51,7 @@
         </div>
       </el-col>
     </el-row>
-    <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow"></add-dialog>
+    <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow" :passdata='formData.manager.options'></add-dialog>
   </div>
 </template>
 <script>
@@ -62,7 +62,8 @@ export default {
   components: {
     navList,
     tableCom,
-    addDialog
+    addDialog,
+    
   },
   props: {
   },
@@ -73,11 +74,7 @@ export default {
       formData: {
         manager: {
           value: '全部',
-          options: [
-            { label: '全部', value: '全部' },
-            { label: 'tourmate途美利威专卖店', value: 'tourmate途美利威专卖店' },
-            { label: '羽马汽车用品专营店', value: '羽马汽车用品专营店' }
-          ]
+          options: []
         },
         name: '',
         GoodId: ''
@@ -93,6 +90,9 @@ export default {
       }
     }
   },
+  created() {
+      this.getShopId()
+  },
   methods: {
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
@@ -102,6 +102,14 @@ export default {
     },
     addGoods () {
       this.addDialogShow = true
+    },
+    getShopId(){
+        this.$ajax('shop/index').then(res=>{
+            // console.log(res)
+            if(res&&res.data&&res.data.code==1){
+                this.formData.manager.options=res.data.data
+            }
+        })
     }
   }
 }

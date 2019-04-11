@@ -61,10 +61,12 @@
                       <div class="tableCellMsg">
                         <p>姓名：{{tableData[scope.$index]['name']}}</p>
                         <p>电话：{{tableData[scope.$index]['phone']}}</p>
-                        <p>发货地址：{{tableData[scope.$index]['province']}}
-                            {{tableData[scope.$index]['city']}}
-                            {{tableData[scope.$index]['area']}}
-                            {{tableData[scope.$index]['address']}}</p>
+                        <p>
+                          发货地址：{{tableData[scope.$index]['province']}}
+                          {{tableData[scope.$index]['city']}}
+                          {{tableData[scope.$index]['area']}}
+                          {{tableData[scope.$index]['address']}}
+                        </p>
                         <p @click="editClick(tableData[scope.$index])">编辑</p>
                       </div>
                     </template>
@@ -110,6 +112,40 @@
                     </template>
                   </el-table-column>
                 </template>
+                <template v-else-if="item.com=='plate'">
+                  <el-table-column
+                    :key="index"
+                    :width="item.width"
+                    :prop="item.code"
+                    :label="item.name"
+                    align="center"
+                  >
+                    <template slot-scope="scope">
+                      <div class="plate">
+                            <p v-if="tableData[scope.$index]['type']==1">淘宝</p>
+                            <p v-else>其他</p>
+                      </div>
+                    </template>
+                  </el-table-column>
+                </template>
+                <template v-else-if="item.com=='flag'">
+                  <el-table-column
+                    :key="index"
+                    :width="item.width"
+                    :prop="item.code"
+                    :label="item.name"
+                    align="center"
+                  >
+                    <template slot-scope="scope">
+                      <div class="plate">
+                            <p v-if="tableData[scope.$index]['status']==0">未审核</p>
+                            <p v-else-if="tableData[scope.$index]['status']==1">审核不通过</p>
+                            <p v-else-if="tableData[scope.$index]['status']==2">审核通过</p>
+                            <p v-else>其他</p>
+                      </div>
+                    </template>
+                  </el-table-column>
+                </template>
                 <template v-else>
                   <el-table-column
                     :key="index"
@@ -125,10 +161,15 @@
         </div>
       </el-col>
     </el-row>
-    <edit-dialog @dialogClose="editDialogClose" :passdata="editData" :dialog-table-visible="editDialogShow"></edit-dialog>
+    <edit-dialog
+      @dialogClose="editDialogClose"
+      :passdata="editData"
+      :dialog-table-visible="editDialogShow"
+    ></edit-dialog>
     <look-detail-dialog
       @dialogClose="lookDetailDialogClose"
       :dialog-table-visible="lookDetailDialogShow"
+      :passdata="editData"
     ></look-detail-dialog>
     <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow"></add-dialog>
   </div>
@@ -155,14 +196,14 @@ export default {
       addDialogShow: false,
       columns: [
         { name: "店铺名称", code: "shop_name", width: "190" },
-        { name: "所属平台", code: "type", width: "80" },
-        { name: "状态", code: "status", width: "80" },
+        { name: "所属平台", code: "type", width: "80",com:'plate' },
+        { name: "状态", code: "status", width: "80",com:'flag' },
         { name: "发货人信息", code: "sendMsg", width: "350", com: "msg" },
         { name: "店铺推广状态", code: "shopState", width: "", com: "state" },
         { name: "操作", code: "handle", width: "100", com: "btn" }
       ],
       tableData: [],
-      editData:{},
+      editData: {},
       tableHeight: 500
     };
   },
@@ -187,20 +228,52 @@ export default {
     },
     lookDetailClick(index, row) {
       console.log(index, row);
+      this.$ajax
+        .get("shop/shopInfo", {
+          params: { shopid: row.id}
+        })
+        .then(res => {
+          //   console.log(res)
+          this.editData = res.data.data;
+          //   console.log(this.editData)
+        });
       this.lookDetailDialogShow = true;
     },
     editClick(index, row) {
-    //   console.log(index, row);
-      this.$ajax.get('shop/shopInfo',{params:{shopid:index.id,token:this.$getToken()}}).then(res=>{
-        //   console.log(res)
-          this.editData=res.data.data
-        //   console.log(this.editData)
-      })
+      //   console.log(index, row);
+      this.$ajax
+        .get("shop/shopInfo", {
+          params: { shopid: index.id}
+        })
+        .then(res => {
+          //   console.log(res)
+          this.editData = res.data.data;
+          //   console.log(this.editData)
+        });
       this.editDialogShow = true;
-      
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      console.log(row);
+      this.$confirm("确认删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$ajax
+            .get("shop/delete", { params: { shopid: row.id } })
+            .then(res => {
+              console.log(res);
+              if (res && res.data && res.data.code == 1) {
+                this.$notify({
+                  title: "删除成功",
+                  type: "success"
+                });
+                this.getShopList()
+              }
+            });
+        })
+        .catch(() => {});
     },
     shopStateChange(index, row) {
       console.log(index, row);
@@ -208,7 +281,8 @@ export default {
     addDialogClose(val) {
       this.addDialogShow = val;
       this.getShopList();
-    }
+    },
+    delete(id) {}
   },
   mounted() {
     this.getShopList();
@@ -225,6 +299,12 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.plate{
+    p{
+        height: 100%;
+        line-height: 115px;
+    }
+}
 .shopManagement {
   width: 1200px;
   margin: 0 auto;
