@@ -1,12 +1,33 @@
 <template>
   <div class="tableCom">
-    <el-table :data="data" border style="width: 100%" :height="tableHeight">
-      <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name"
-        align="center"></el-table-column>
+    <el-table :data="data" border style="width: 100%" :height="tableHeight" v-if="!tableEdit">
+      <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
+    </el-table>
+    <el-table :data="data" border style="width: 100%" :height="tableHeight" v-if="tableEdit">
+      <template v-for="(item,index) in columns">
+        <template v-if="item.com=='input'">
+          <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="data[scope.$index][item.code]"></el-input>
+            </template>
+          </el-table-column>
+        </template>
+        <template v-else-if="item.com=='select'">
+          <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="data[scope.$index][item.code]"></el-input>
+            </template>
+          </el-table-column>
+        </template>
+        <template v-else>
+          <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+          </el-table-column>
+        </template>
+      </template>
     </el-table>
     <div class="pagination">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="0">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]"
+        :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="0">
       </el-pagination>
     </div>
 
@@ -28,6 +49,12 @@ export default {
         return 300
       }
     },
+    edit: {
+      type: Boolean,
+      default () {
+        return false
+      }
+    },
     data: {
       type: Array,
       default () {
@@ -39,6 +66,9 @@ export default {
   watch: {
     tableHeight (val) {
       this.height = val
+    },
+    edit (val) {
+      this.tableEdit = val
     }
   },
   methods: {
@@ -52,7 +82,8 @@ export default {
   data () {
     return {
       currentPage: 1,
-      height: 350
+      height: 350,
+      tableEdit: false
     }
   }
 }
