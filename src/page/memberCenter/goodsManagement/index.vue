@@ -10,9 +10,12 @@
             <el-col :span="4" class="title"> 添加商品步骤：</el-col>
             <el-col :span="20" class="step">
               <ul>
-                <li><em>1</em>添加商品</li>
-                <li><em>2</em>设置目标客户</li>
-                <li><em>3</em>设置购买行为</li>
+                <li>
+                  <em>1</em>添加商品</li>
+                <li>
+                  <em>2</em>设置目标客户</li>
+                <li>
+                  <em>3</em>设置购买行为</li>
               </ul>
             </el-col>
           </el-row>
@@ -62,8 +65,7 @@ export default {
   components: {
     navList,
     tableCom,
-    addDialog,
-    
+    addDialog
   },
   props: {
   },
@@ -90,26 +92,26 @@ export default {
       }
     }
   },
-  created() {
-      this.getShopId()
+  created () {
+    this.getShopId()
   },
   methods: {
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
     },
     addDialogClose () {
-      this.addDialogShow = true
+      this.addDialogShow = false
     },
     addGoods () {
       this.addDialogShow = true
     },
-    getShopId(){
-        this.$ajax('shop/index').then(res=>{
-            // console.log(res)
-            if(res&&res.data&&res.data.code==1){
-                this.formData.manager.options=res.data.data
-            }
-        })
+    getShopId () {
+      this.$ajax('shop/index').then(res => {
+        // console.log(res)
+        if (res && res.data && res.data.code === 1) {
+          this.formData.manager.options = res.data.data
+        }
+      })
     }
   }
 }
@@ -135,7 +137,7 @@ export default {
     box-sizing: border-box;
     border-left: 1px solid #dfe6ec;
     .hyzx_bz {
-      background: url("../../../assets/picture/kjk.jpg") no-repeat 130px 10px;
+      background: url('../../../assets/picture/kjk.jpg') no-repeat 130px 10px;
       height: 84px;
       margin-bottom: 29px;
       .title {
