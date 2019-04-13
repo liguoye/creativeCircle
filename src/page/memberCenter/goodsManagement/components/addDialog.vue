@@ -133,10 +133,9 @@ export default {
       fileList: [],
       dialogShow: false,
       ruleForm: {
-        shop_id: '1111',
+        shop_id: '',
         goods_url: '',
         goods_name: '',
-        shop_name: '',
         goods_img: '',
         unless_img: '',
         simple_name: '',
@@ -157,12 +156,6 @@ export default {
         ],
         goods_name: [
           { required: true, message: '请输入商品名称', trigger: 'blur' }
-        ],
-        goods_img: [
-          { required: true, message: '请上传商品主图', trigger: 'blur' }
-        ],
-        unless_img: [
-          { required: true, message: '无线端商品主图', trigger: 'blur' }
         ],
         simple_name: [
           { required: true, message: '请输入商品简称', trigger: 'blur' }
@@ -192,7 +185,6 @@ export default {
     },
     removePic () { },
     uploadGoods (data) {
-      console.log('uploadGoods', data)
       if (data.code === 1) {
         this.ruleForm.goods_img = data.data
       } else {
@@ -203,21 +195,40 @@ export default {
       }
     },
     uploadUnless (data) {
-      console.log('uploadUnless', data)
+      if (data.code === 1) {
+        this.ruleForm.unless_img = data.data
+      } else {
+        this.$notify.error({
+          title: '上传图片失败'
+        })
+        this.goodsImgList = []
+      }
     },
     uploadTianmao (data) {
-      console.log('uploadTianmao', data)
+      if (data.code === 1) {
+        this.ruleForm.tianmao_img = data.data
+      } else {
+        this.$notify.error({
+          title: '上传图片失败'
+        })
+        this.goodsImgList = []
+      }
     },
     uploadZhitongche (data) {
-      console.log('uploadZhitongche', data)
+      if (data.code === 1) {
+        this.ruleForm.zhitongche_img = data.data
+      } else {
+        this.$notify.error({
+          title: '上传图片失败'
+        })
+        this.goodsImgList = []
+      }
     },
     dialogClose () {
       this.$emit('dialogClose', false)
     },
     submitForm (formName) {
-      console.log(this.ruleForm)
       this.$refs[formName].validate(valid => {
-        console.log(valid)
         if (valid) {
           this.submit()
         } else {
@@ -227,48 +238,40 @@ export default {
       })
     },
     submit () {
-      //   if (this.ruleForm.img === "") {
-      //     this.$notify.error({
-      //       title: "请上传图片"
-      //     });
-      //     return "";
-      //   }
       this.$ajax
         .get('goods/add', {
           params: {
             token: this.$getToken(),
-            shopid: this.ruleForm.type,
-            username: this.ruleForm.username,
-            url: this.ruleForm.shop_name,
-            title: this.ruleForm.nature,
-            name: this.ruleForm.name,
+            shopid: this.ruleForm.shop_id,
+            url: this.ruleForm.goods_url,
+            title: this.ruleForm.goods_name,
             img: this.ruleForm.goods_img,
             mobile_img: this.ruleForm.unless_img,
-            abbreviation: this.ruleForm.city,
-            kg: this.ruleForm.area,
-            class_name: this.ruleForm.address,
+            abbreviation: this.ruleForm.simple_name,
+            kg: this.ruleForm.goods_weight,
+            class_name: this.ruleForm.goods_cate,
             tmall_img: this.ruleForm.tianmao_img,
             through_train_img: this.ruleForm.zhitongche_img
           }
         })
         .then(res => {
           if (res && res.data && res.data.code === 1) {
+            this.$emit('submitSuccess')
             this.$notify({
               title: '提交成功',
               type: 'success'
             })
             this.ruleForm = {
-              type: '1',
-              username: '',
-              shop_name: '',
-              nature: '1',
-              name: '',
-              phone: '',
-              province: '',
-              city: '',
-              area: '',
-              address: '',
-              img: ''
+              shop_id: '',
+              goods_url: '',
+              goods_name: '',
+              goods_img: '',
+              unless_img: '',
+              simple_name: '',
+              goods_weight: '',
+              goods_cate: '',
+              tianmao_img: '',
+              zhitongche_img: ''
             }
             this.dialogShow = false
           }

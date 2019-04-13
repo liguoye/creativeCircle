@@ -32,29 +32,29 @@
               <el-input v-model="formData.GoodId" placeholder="商品ID"></el-input>
             </el-col>
             <el-col :span="6" style="line-height:40px">
-              <el-button class="tablebtnFFF">刷新</el-button>
+              <el-button class="tablebtnFFF" @click="getGoodsData()">刷新</el-button>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="20" style="text-align:left;margin-top:10px;">
               <el-button class="tablebtnActive" @click="addGoods">添加</el-button>
-              <el-button class="tablebtnActive">编辑</el-button>
+              <el-button class="tablebtnActive" @click="editClick">编辑</el-button>
               <el-button class="tablebtnActive">删除</el-button>
               <el-button class="tablebtnActive">目标客户</el-button>
               <el-button class="tablebtnActive">购买行为</el-button>
               <el-button class="tablebtnActive">查看详情</el-button>
             </el-col>
             <el-col :span="4" style="line-height:40px">
-              <el-button class="tablebtnActive">查询</el-button>
+              <el-button class="tablebtnActive" @click="getGoodsData('param')">查询</el-button>
             </el-col>
           </el-row>
         </div>
         <div class="table">
-          <table-com :columns="tableData.columns"></table-com>
+          <table-com :columns="tableData.columns" :data="tableData.data" :edit="tableData.edit"></table-com>
         </div>
       </el-col>
     </el-row>
-    <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow" :passdata='formData.manager.options'></add-dialog>
+    <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow" :passdata='formData.manager.options' @submitSuccess="getGoodsData"></add-dialog>
   </div>
 </template>
 <script>
@@ -82,12 +82,13 @@ export default {
         GoodId: ''
       },
       tableData: {
+        edit: false, // 切换表格为可编辑
         data: [],
         columns: [
-          { name: '简称', code: 'task1', width: '' },
-          { name: '商品名称', code: 'task2', width: '' },
-          { name: '商品ID', code: 'task3', width: '' },
-          { name: '状态', code: 'task4', width: '' }
+          { name: '简称', code: 'abbreviation', width: '', com: 'input' },
+          { name: '商品名称', code: 'title', width: '', com: 'input' },
+          { name: '商品ID', code: 'shopid', width: '' },
+          { name: '状态', code: 'status', width: '' }
         ]
       }
     }
@@ -96,6 +97,9 @@ export default {
     this.getShopId()
   },
   methods: {
+    editClick () {
+      this.tableData.edit = true
+    },
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
     },
@@ -105,14 +109,40 @@ export default {
     addGoods () {
       this.addDialogShow = true
     },
+    getGoodsData (param) { // 获取商品table数据
+      let paramData = {}
+      if (param === 'param') {
+        paramData = {
+          token: this.$getToken(),
+          shopid: this.formData.manager.value,
+          title: this.formData.name,
+          goodsid: this.formData.GoodId
+        }
+      } else {
+        paramData = {
+          token: this.$getToken()
+        }
+      }
+      this.$ajax('goods/index', {
+        params: paramData
+      }).then(res => {
+        console.log('goods', res)
+        if (res && res.data && res.data.code === 1) {
+          this.tableData.data = res.data.data
+        }
+      })
+    },
     getShopId () {
       this.$ajax('shop/index').then(res => {
-        // console.log(res)
+        console.log('shopshop', res)
         if (res && res.data && res.data.code === 1) {
           this.formData.manager.options = res.data.data
         }
       })
     }
+  },
+  mounted () {
+    this.getGoodsData()
   }
 }
 </script>
