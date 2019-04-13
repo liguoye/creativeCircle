@@ -247,7 +247,7 @@ export default {
       }
       let sign = data + value;
       this.sign = sign;
-      this.src = "http://h5om.knowsea.cn/api/login/Verify?sign=" + sign;
+      this.src = "http://h5om.knowsea.cn/shop/login/Verify?sign=" + sign;
     }
   }
 };

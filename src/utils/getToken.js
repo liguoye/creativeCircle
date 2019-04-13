@@ -11,7 +11,7 @@ function getToken(){
             title: '错误',
             message: '登陆过期，请重新登陆'
           });
-        Router.push("/login")
+          Router.push('/login')
         return
     }
     return token

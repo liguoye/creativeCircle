@@ -1,44 +1,54 @@
 <template>
   <div class="home">
     <div class="banner">
-      <img class="banner-img" src="../../assets/picture/banner.png" />
-      <div class="businessBox">
+      <img class="banner-img" src="../../assets/picture/banner.png">
+      <div class="businessBox" v-if="detail">
         <div class="con">
           <div class="H20"></div>
           <div class="con-left">
-            <p>愉快合作第
-              <span class="red">537</span>天</p>
-            <p>存款：
-              <span class="red">0</span>元</p>
-            <p>发布点：
-              <span class="red">0</span>个</p>
-            <p>绑定店铺：
-              <span class="red">2</span>个</p>
-            <p>高危预警：
-              <a href="#/business/premium-task/warning" class="red">0</a>个</p>
             <p>
-              <a href="#/business/premium-task/manage?type=true" class="">
+              愉快合作第
+              <span class="red">{{detail.day}}</span>天
+            </p>
+            <p>
+              存款：
+              <span class="red">{{detail.Money}}</span>元
+            </p>
+            <p>
+              发布点：
+              <span class="red">{{detail.MinLi}}</span>个
+            </p>
+            <p>
+              绑定店铺：
+              <span class="red">{{detail.shop_num}}</span>个
+            </p>
+            <p>
+              高危预警：
+              <a href="#/business/premium-task/warning" class="red">{{detail.warning}}</a>个
+            </p>
+            <p>
+              <a href="#/business/premium-task/manage?type=true" class>
                 已隐藏任务数：
-                <span class="red">0</span>条
+                <span class="red">{{detail.hide}}</span>条
               </a>
             </p>
             <p>
-              <a href="#/business/member/assistant" class="">
+              <a href="#/business/member/assistant" class>
                 智能助手店铺过期数：
-                <span class="red">0</span>个
+                <span class="red">{{detail.end_shop}}</span>个
               </a>
             </p>
             <p>
-              <a href="#/business/member/assistant" class="">
+              <a href="#/business/member/assistant" class>
                 订单助手店铺过期数：
-                <span class="red">0</span>个
+                <span class="red">{{detail.end_shops}}</span>个
               </a>
             </p>
           </div>
         </div>
       </div>
     </div>
-    <div class="businessAccount">
+    <div class="businessAccount" v-if="detail">
       <div class="content">
         <el-row>
           <el-col :span="8" class="colSty">
@@ -46,29 +56,45 @@
             <div class="tabContent">
               <el-row>
                 <el-col :span="12">
-                  <a href="#/business/funds/transfer/pending" class="woent_a" style="padding-left: 20px; display: block;">
+                  <a
+                    href="#/business/funds/transfer/pending"
+                    class="woent_a"
+                    style="padding-left: 20px; display: block;"
+                  >
                     <div class="qoanet">等待转账</div>
-                    <div class="" style="font-size: 21px; font-weight: 900;">0</div>
+                    <div class style="font-size: 21px; font-weight: 900;">{{detail.order.order_one}}</div>
                   </a>
                 </el-col>
                 <el-col :span="12">
-                  <a href="#/business/funds/transfer/pending" class="woent_a" style="padding-left: 20px; display: block;">
+                  <a
+                    href="#/business/funds/transfer/pending"
+                    class="woent_a"
+                    style="padding-left: 20px; display: block;"
+                  >
                     <div class="qoanet">超时未转账</div>
-                    <div class="" style="font-size: 21px; font-weight: 900;">0</div>
+                    <div class style="font-size: 21px; font-weight: 900;">{{detail.order.order_two}}</div>
                   </a>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <a href="#/business/funds/transfer/pending" class="woent_a" style="padding-left: 20px; display: block;">
+                  <a
+                    href="#/business/funds/transfer/pending"
+                    class="woent_a"
+                    style="padding-left: 20px; display: block;"
+                  >
                     <div class="qoanet">等待上传凭证</div>
-                    <div class="" style="font-size: 21px; font-weight: 900;">0</div>
+                    <div class style="font-size: 21px; font-weight: 900;">{{detail.order.order_thr}}</div>
                   </a>
                 </el-col>
                 <el-col :span="12">
-                  <a href="#/business/funds/transfer/pending" class="woent_a" style="padding-left: 20px; display: block;">
+                  <a
+                    href="#/business/funds/transfer/pending"
+                    class="woent_a"
+                    style="padding-left: 20px; display: block;"
+                  >
                     <div class="qoanet">超时未上传凭证</div>
-                    <div class="" style="font-size: 21px; font-weight: 900;">0</div>
+                    <div class style="font-size: 21px; font-weight: 900;">{{detail.order.order_fou}}</div>
                   </a>
                 </el-col>
               </el-row>
@@ -79,36 +105,52 @@
             <div class="tabContent">
               <el-row>
                 <el-col :span="12">
-                  <a href="#/business/funds/transfer/pending" class="woent_a" style="padding-left: 20px; display: block;">
+                  <a
+                    href="#/business/funds/transfer/pending"
+                    class="woent_a"
+                    style="padding-left: 20px; display: block;"
+                  >
                     <div class="qoanet">未标记</div>
-                    <div class="" style="font-size: 21px; font-weight: 900;">0</div>
+                    <div class style="font-size: 21px; font-weight: 900;">{{detail.biaoji}}</div>
                   </a>
                 </el-col>
               </el-row>
             </div>
           </el-col>
           <el-col :span="8" class="colSty">
-            <div class="tabHeader">订单标记</div>
+            <div class="tabHeader">公告</div>
             <div class="tabContent">
               <el-row>
                 <el-col :span="8">
                   <a href="#/business/member/notice" style="text-align: center;">
-                    <div class="wcpwoet" style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;">
-                      <img src="../../assets/picture/iconett_6.png" /></div>
+                    <div
+                      class="wcpwoet"
+                      style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;"
+                    >
+                      <img src="../../assets/picture/iconett_6.png">
+                    </div>
                     <div class="qoanet" style="margin-top: 5px;">平台公告</div>
                   </a>
                 </el-col>
                 <el-col :span="8">
                   <a href="#/business/member/notice" style="text-align: center;">
-                    <div class="wcpwoet" style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;">
-                      <img src="../../assets/picture/iconett_1.png" /></div>
+                    <div
+                      class="wcpwoet"
+                      style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;"
+                    >
+                      <img src="../../assets/picture/iconett_1.png">
+                    </div>
                     <div class="qoanet" style="margin-top: 5px;">收费标准</div>
                   </a>
                 </el-col>
                 <el-col :span="8">
                   <a href="#/business/member/notice" style="text-align: center;">
-                    <div class="wcpwoet" style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;">
-                      <img src="../../assets/picture/iconett_4.png" /></div>
+                    <div
+                      class="wcpwoet"
+                      style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;"
+                    >
+                      <img src="../../assets/picture/iconett_4.png">
+                    </div>
                     <div class="qoanet" style="margin-top: 5px;">新手教程</div>
                   </a>
                 </el-col>
@@ -122,12 +164,24 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      msg: 'home'
+      detail: null
+    };
+  },
+  created(){
+      this.getHome()
+  },
+  methods: {
+    getHome() {
+      this.$ajax.get("/shopmember/index").then(res => {
+        if (res && res.data && res.data.code == 1) {
+          this.detail = res.data.data;
+        }
+      });
     }
   }
-}
+};
 </script>
 <style scoped lang="less">
 .home {
@@ -136,12 +190,12 @@ export default {
     // background-image: url('../../assets/picture/banner.png');
     // background-repeat: no-repeat;
     position: relative;
-    .banner-img{
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: auto;
-        left: 0;
+    .banner-img {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: auto;
+      left: 0;
     }
     .businessBox {
       width: 348px;

@@ -74,6 +74,11 @@ export default new Router({
     component: () => import('@/page/memberCenter/platformNotice/index')
   },
   {
+    path: '/noticeDetail/:id',
+    name: 'noticeDetail',
+    component: () => import('@/page/memberCenter/platformNotice/noticeDetail')
+  },
+  {
     path: '/shopManagement',
     name: 'shopManagement',
     component: () => import('@/page/memberCenter/shopManagement/index')
