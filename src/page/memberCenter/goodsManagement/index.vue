@@ -56,7 +56,7 @@
     </el-row>
     <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow" :passdata='formData.manager.options' @submitSuccess="getGoodsData"></add-dialog>
     <edit-dialog @dialogClose="editDialogClose" :table-row-data="tableData.data[tableData.rowIndex]" :dialog-table-visible="editDialogShow"
-      :passdata='formData.manager.options' @submitSuccess="getGoodsData"></edit-dialog>
+      :passdata='formData.manager.options' @editConfirm="editConfirm"></edit-dialog>
   </div>
 </template>
 <script>
@@ -104,6 +104,9 @@ export default {
     this.getShopId()
   },
   methods: {
+    editConfirm (val) {
+      this.tableData.data[this.tableData.rowIndex] = val
+    },
     editClick () {
       this.editDialogShow = true
     },

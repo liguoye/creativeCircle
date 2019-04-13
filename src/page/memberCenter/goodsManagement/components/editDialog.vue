@@ -82,7 +82,7 @@ export default {
     },
     tableRowData (val) {
       if (val) {
-        for (let item in this.rowData) {
+        for (let item in val) {
           if (typeof val[item] !== 'undefined' && val[item] !== null && val[item] !== '') {
             this.rowData[item] = val[item]
           } else {
