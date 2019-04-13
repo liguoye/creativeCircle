@@ -50,21 +50,25 @@
           </el-row>
         </div>
         <div class="table">
-          <table-com :columns="tableData.columns" :data="tableData.data" :edit="tableData.edit"></table-com>
+          <table-com :columns="tableData.columns" :data="tableData.data" :edit="tableData.edit" @rowClick="tableRowClick"></table-com>
         </div>
       </el-col>
     </el-row>
     <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow" :passdata='formData.manager.options' @submitSuccess="getGoodsData"></add-dialog>
+    <edit-dialog @dialogClose="editDialogClose" :table-row-data="tableData.data[tableData.rowIndex]" :dialog-table-visible="editDialogShow"
+      :passdata='formData.manager.options' @submitSuccess="getGoodsData"></edit-dialog>
   </div>
 </template>
 <script>
 import navList from '../components/treeNavList.vue'
 import tableCom from '@/components/tableCom.vue'
 import addDialog from './components/addDialog.vue'
+import editDialog from './components/editDialog.vue'
 export default {
   components: {
     navList,
     tableCom,
+    editDialog,
     addDialog
   },
   props: {
@@ -73,6 +77,7 @@ export default {
     return {
       currentTab: 'goodsManagement',
       addDialogShow: false,
+      editDialogShow: false,
       formData: {
         manager: {
           value: '全部',
@@ -84,6 +89,8 @@ export default {
       tableData: {
         edit: false, // 切换表格为可编辑
         data: [],
+        rowData: {},
+        rowIndex: 0,
         columns: [
           { name: '简称', code: 'abbreviation', width: '', com: 'input' },
           { name: '商品名称', code: 'title', width: '', com: 'input' },
@@ -98,13 +105,19 @@ export default {
   },
   methods: {
     editClick () {
-      this.tableData.edit = true
+      this.editDialogShow = true
+    },
+    tableRowClick (row, index) {
+      this.tableData.rowIndex = index
     },
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
     },
     addDialogClose () {
       this.addDialogShow = false
+    },
+    editDialogClose () {
+      this.editDialogShow = false
     },
     addGoods () {
       this.addDialogShow = true

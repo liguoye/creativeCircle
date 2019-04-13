@@ -1,6 +1,7 @@
 <template>
   <div class="tableCom">
-    <el-table :data="data" border style="width: 100%" :height="tableHeight" v-if="!tableEdit">
+    <el-table :data="data" border style="width: 100%" :height="tableHeight" v-if="!tableEdit" :row-class-name="tableRowClassName"
+      @row-click="onRowClick">
       <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
     </el-table>
     <el-table :data="data" border style="width: 100%" :height="tableHeight" v-if="tableEdit">
@@ -77,6 +78,13 @@ export default {
     },
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
+    },
+    tableRowClassName ({ row, rowIndex }) {
+      // 把每一行的索引放进row
+      row.index = rowIndex
+    },
+    onRowClick (row) {
+      this.$emit('rowClick', row, row.index)
     }
   },
   data () {
