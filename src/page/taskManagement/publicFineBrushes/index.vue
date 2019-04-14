@@ -11,8 +11,10 @@
         </ul>
       </div>
       <div class="stateContent">
-        <first-step v-if="orderProgressState=='firstStep'" @changeState="changeState"></first-step>
-        <second-step v-if="orderProgressState=='secondStep'" @changeState="changeState"></second-step>
+        <first-step v-if="orderProgressState=='firstStep'" @changeState="firstStepChange"></first-step>
+        <brush-order v-if="orderProgressState=='secondStep' && radio=='1'" @changeState="changeState"></brush-order>
+        <specify-push-task v-if="orderProgressState=='secondStep' && radio=='2'" @changeState="changeState"></specify-push-task>
+        <re-buy-task v-if="orderProgressState=='secondStep' && radio=='3'" @changeState="changeState"></re-buy-task>
         <third-step v-if="orderProgressState=='thirdStep'" @changeState="changeState"></third-step>
         <four-step v-if="orderProgressState=='fourStep'" @changeState="changeState"></four-step>
       </div>
@@ -22,26 +24,35 @@
 <script>
 import navList from '@/components/taskManagementNavList.vue'
 import firstStep from './firstStep.vue'
-import secondStep from './secondStep.vue'
+import brushOrder from './secondStep/brushOrder.vue'
+import specifyPushTask from './secondStep/specifyPushTask.vue'
+import reBuyTask from './secondStep/reBuyTask.vue'
 import thirdStep from './thirdStep.vue'
 import fourStep from './fourStep.vue'
 export default {
   components: {
     navList,
     firstStep,
-    secondStep,
+    brushOrder,
+    specifyPushTask,
+    reBuyTask,
     thirdStep,
     fourStep
   },
   data () {
     return {
       currentTab: 'publicFineBrushes',
-      orderProgressState: 'firstStep'
+      orderProgressState: 'firstStep',
+      radio: '1'
     }
   },
   methods: {
     changeState (val) {
       this.orderProgressState = val.state
+    },
+    firstStepChange (val) {
+      this.orderProgressState = val.state
+      this.radio = val.radio
     }
   }
 }

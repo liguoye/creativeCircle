@@ -4,7 +4,7 @@
       <div class="colTable">
         <div class="title">
           <el-row>
-            <el-col :span="12" class="left">选定商品</el-col>
+            <el-col :span="12" class="left">选定商品2222222222222222222222222222222</el-col>
             <el-col :span="12" class="right">
               <el-button class="tablebtnActive" type="primary" @click="choiceProductDialogShow=true">选择商品</el-button>
             </el-col>
@@ -126,7 +126,7 @@
   </div>
 </template>
 <script>
-import btnGroup from './components/btnGroup.vue'
+import btnGroup from '../components/btnGroup.vue'
 import settingDialogCom from '@/components/settingDialogCom.vue'
 import choiceProductDialog from '@/components/choiceProductDialog.vue'
 export default {

@@ -28,7 +28,7 @@
       </el-col>
       <el-col :span="8">
         <div class="title">
-          <el-radio v-model="radio" label="1">复购任务</el-radio>
+          <el-radio v-model="radio" label="3">复购任务</el-radio>
         </div>
         <div class="content">
           <p class="detail">特点</p>
@@ -60,7 +60,7 @@ export default {
       if (val === 'back') {
         return ''
       } else {
-        this.$emit('changeState', { state: 'secondStep' })
+        this.$emit('changeState', { state: 'secondStep', radio: this.radio })
       }
     }
   }
