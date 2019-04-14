@@ -320,10 +320,10 @@ export default {
       tableData: {
         data: [],
         columns: [
-          { name: "任务编号", code: "taskerid", width: "180" },
+          { name: "任务编号", code: "taskerid", width: "60" },
           { name: "店铺名称", code: "shop_name", width: "" },
           { name: "买号名称", code: "task3", width: "" },
-          { name: "订单编号", code: "id", width: "" },
+          { name: "订单编号", code: "id", width: "180" },
           { name: "标记反馈状态", code: "task5", width: "" },
           { name: "下单支付时间", code: "ct", width: "" },
           { name: "操作", code: "task7", width: "" }
@@ -350,9 +350,9 @@ export default {
     },
     getShopList() {
       this.$ajax.get("shop/index").then(res => {
-        console.log('店铺管理',res);
+        console.log('店铺列表',res);
         if (res && res.data && res.data.code == 1) {
-          this.shopMsgData.data = res.data.data;
+          this.shopMsgData.data = res.data.data.data;
         }
       });
     },
@@ -360,7 +360,7 @@ export default {
       this.$ajax.get("shopmember/releaseList").then(res => {
         console.log('订单列表',res);
         if (res && res.data && res.data.code == 1) {
-          this.tableData.data = res.data.data;
+          this.tableData.data = res.data.data.data;
         }
       });
     },

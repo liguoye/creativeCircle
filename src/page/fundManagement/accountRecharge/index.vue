@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span="18" class="accountManage">
         <el-row>
-          <el-col :span="13" class="accountManageLeft">
+          <el-col :span="14" class="accountManageLeft">
             <p>
               <span class="left">账户余额：</span>
               <span class="right">
@@ -51,7 +51,7 @@
               <el-button type="primary" size="mini" style="margin-left:120px;margin-bottom:40px;" class="submitBtn" disabled>确认提交</el-button>
             </p>
           </el-col>
-          <el-col :span="11" class="accountManageRight">
+          <el-col :span="10" class="accountManageRight">
             <div class="tieshi">
               <div class="titleNotice">
                 <span class="left"></span>
@@ -120,12 +120,24 @@ export default {
     return {
       currentTab: 'accountRecharge',
       name: '',
-      money: ''
+      money: '',
+      user:{}
     }
+  },
+  created(){
+      this.getUserInfo()
   },
   methods: {
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
+    },
+    getUserInfo() {
+      this.$ajax.get("shopmember/index").then(res => {
+        console.log("余额", res);
+        if (res && res.data && res.data.code == 1) {
+          this.user = res.data.data;
+        }
+      });
     }
   }
 }
@@ -160,7 +172,7 @@ export default {
           text-align: right;
           padding-right: 5px;
           display: inline-block;
-          width: 80px;
+          width: 90px;
           font-size: 13px;
         }
         em {
