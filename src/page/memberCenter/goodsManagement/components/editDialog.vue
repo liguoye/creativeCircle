@@ -1,25 +1,25 @@
 <template>
   <div class="settingDialogCom">
-    <el-dialog title="添加商品" :visible.sync="dialogShow" @close="dialogClose" width="60%" style="margin-top:20px;">
+    <el-dialog title="修改商品" :visible.sync="dialogShow" @close="dialogClose" width="60%" style="margin-top:20px;">
       <div class="horizontal-rule">
         <span>商品基本信息</span>
       </div>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="140px" class="demo-ruleForm">
-        <el-form-item label="掌柜号：" prop="shop_id">
-          <el-select v-model="ruleForm.shop_id" placeholder="请选择掌柜号" style="width:100%">
+        <el-form-item label="掌柜号：" prop="shopid">
+          <el-select v-model="ruleForm.shopid" placeholder="请选择掌柜号" style="width:100%" :disabled="checkDetail">
             <el-option :label="item.shop_name" v-for="(item,index) in passdata" :key="index" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品链接：" prop="goods_url">
-          <el-input v-model="ruleForm.goods_url" style="width:calc(100% - 110px) " placeholder="请在输入商品链接后点击获取详情按钮"></el-input>
-          <el-button type="primary" @click="openGoodsDetail" size="mini" style="height:35px;">获取商品详情</el-button>
+        <el-form-item label="商品链接：" prop="url">
+          <el-input v-model="ruleForm.url" style="width:calc(100% - 110px) " placeholder="请在输入商品链接后点击获取详情按钮" :disabled="checkDetail"></el-input>
+          <el-button type="primary" @click="openGoodsDetail" size="mini" style="height:35px;" :disabled="checkDetail">获取商品详情</el-button>
         </el-form-item>
-        <el-form-item label="商品名称：" prop="goods_name">
-          <el-input v-model="ruleForm.goods_name"></el-input>
+        <el-form-item label="商品名称：" prop="title">
+          <el-input v-model="ruleForm.title" :disabled="checkDetail"></el-input>
         </el-form-item>
-        <el-form-item label="商品主图：" prop="goods_img">
+        <el-form-item label="商品主图：" prop="img">
           <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadGoods"
-            :file-list="goodsImgList" list-type="picture" :on-remove="removePic">
+            :file-list="goodsImgList" list-type="picture" :on-remove="removePic" :disabled="checkDetail">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
               将文件拖到此处，或
@@ -31,7 +31,7 @@
             </div>
           </el-upload>
         </el-form-item>
-        <el-form-item label="无线端商品主图：" prop="unless_img">
+        <el-form-item label="无线端商品主图：" prop="mobile_img">
           <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadUnless"
             :file-list="unlessList" list-type="picture" :on-remove="removePic">
             <i class="el-icon-upload"></i>
@@ -48,22 +48,22 @@
         <div class="horizontal-rule">
           <span>商品自定义信息</span>
         </div>
-        <el-form-item label="商品简称：" prop="simple_name">
-          <el-input v-model="ruleForm.simple_name" placeholder="请输入2-10位中文、数字、英文，简称可以帮助你快速识别商品"></el-input>
+        <el-form-item label="商品简称：" prop="abbreviation">
+          <el-input v-model="ruleForm.abbreviation" placeholder="请输入2-10位中文、数字、英文，简称可以帮助你快速识别商品" :disabled="checkDetail"></el-input>
         </el-form-item>
-        <el-form-item label="商品重量：" prop="goods_weight">
-          <el-input v-model="ruleForm.goods_weight" placeholder="请输入单件商品的重量(KG)"></el-input>
+        <el-form-item label="商品重量：" prop="kg">
+          <el-input v-model="ruleForm.kg" placeholder="请输入单件商品的重量(KG)" :disabled="checkDetail"></el-input>
           <p class="tip red">温馨提醒：物品重量会显示在物流公司内网中，可在0.5KG至40.00KG之间自行设定</p>
         </el-form-item>
-        <el-form-item label="商品类别：" prop="goods_cate">
-          <el-input type="textarea" v-model="ruleForm.goods_cate" placeholder="请输入商品中文类别名称，此信息会展示在物流公司内网中"></el-input>
+        <el-form-item label="商品类别：" prop="class_name">
+          <el-input type="textarea" v-model="ruleForm.class_name" placeholder="请输入商品中文类别名称，此信息会展示在物流公司内网中" :disabled="checkDetail"></el-input>
         </el-form-item>
         <div class="horizontal-rule">
           <span>商品图片信息 ( 选填 )</span>
         </div>
-        <el-form-item label="天猫展示图：" prop="tianmao_img">
+        <el-form-item label="天猫展示图：" prop="tmall_img">
           <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadTianmao"
-            :file-list="tianmaoList" list-type="picture" :on-remove="removePic">
+            :file-list="tianmaoList" list-type="picture" :on-remove="removePic" :disabled="checkDetail">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
               将文件拖到此处，或
@@ -75,9 +75,9 @@
             </div>
           </el-upload>
         </el-form-item>
-        <el-form-item label="直通车展示图：" prop="zhitongche_img">
+        <el-form-item label="直通车展示图：" prop="through_train_img">
           <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadZhitongche"
-            :file-list="zhitongcheList" list-type="picture" :on-remove="removePic">
+            :file-list="zhitongcheList" list-type="picture" :on-remove="removePic" :disabled="checkDetail">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
               将文件拖到此处，或
@@ -89,19 +89,24 @@
             </div>
           </el-upload>
         </el-form-item>
-        <div style="text-align:center;margin-bottom:50px;">
+        <div style="text-align:center;margin-bottom:50px;" v-if="!checkDetail">
           <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-          <el-button @click="resetForm('ruleForm')">取消</el-button>
+          <el-button @click="dialogClose">取消</el-button>
         </div>
       </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
-import json from '../../../../utils/province'
 export default {
   props: {
     dialogTableVisible: {
+      type: Boolean,
+      default () {
+        return false
+      }
+    },
+    checkDetail: {
       type: Boolean,
       default () {
         return false
@@ -112,38 +117,37 @@ export default {
       default () {
         return []
       }
+    },
+    tableRowData: {
+      type: Object,
+      default () {
+        return {}
+      }
     }
   },
   watch: {
     dialogTableVisible (val) {
       this.dialogShow = val
     },
-    'ruleForm.province' (newValue, oldValue) {
-      this.getCity(newValue)
-      this.ruleForm.city = ''
-      this.ruleForm.area = ''
+    checkDetail (val) {
+      console.log('check', val)
     },
-    'ruleForm.city' (newValue, oldValue) {
-      this.getDis(newValue)
-      this.ruleForm.area = ''
+    tableRowData (val) {
+      if (val) {
+        for (let item in val) {
+          if (typeof val[item] !== 'undefined' && val[item] !== null && val[item] !== '') {
+            this.ruleForm[item] = val[item]
+          } else {
+            this.ruleForm[item] = ''
+          }
+        }
+      }
     }
   },
   data () {
     return {
       fileList: [],
       dialogShow: false,
-      ruleForm: {
-        shop_id: '',
-        goods_url: '',
-        goods_name: '',
-        goods_img: '',
-        unless_img: '',
-        simple_name: '',
-        goods_weight: '',
-        goods_cate: '',
-        tianmao_img: '',
-        zhitongche_img: ''
-      },
       goodsImgList: [],
       unlessList: [],
       tianmaoList: [],
@@ -166,12 +170,22 @@ export default {
         goods_cate: [
           { required: true, message: '请输入商品类型', trigger: 'blur' }
         ]
+      },
+      ruleForm: {
+        shopid: '',
+        url: '',
+        title: '',
+        img: '',
+        mobile_img: '',
+        abbreviation: '',
+        kg: '',
+        class_name: '',
+        tmall_img: '',
+        through_train_img: ''
       }
     }
   },
   created () {
-    this.allList = json
-    this.getProvince()
   },
   methods: {
     openGoodsDetail () {
@@ -183,9 +197,7 @@ export default {
       }
       window.open(this.ruleForm.goods_url)
     },
-    removePic () {
-
-    },
+    removePic () { },
     uploadGoods (data) {
       if (data.code === 1) {
         this.ruleForm.goods_img = data.data
@@ -226,98 +238,38 @@ export default {
         this.goodsImgList = []
       }
     },
-    dialogClose () {
-      this.$emit('dialogClose', false)
-    },
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.submit()
+          this.editConfirm()
         } else {
-          console.log('error submit!!')
+          console.log('error edit!!')
           return false
         }
       })
     },
-    submit () {
+    dialogClose () {
+      this.$emit('dialogClose', false)
+    },
+    editConfirm () {
       this.$ajax
-        .get('goods/add', {
+        .get('goods/upd', {
           params: {
             token: this.$getToken(),
-            shopid: this.ruleForm.shop_id,
-            url: this.ruleForm.goods_url,
-            title: this.ruleForm.goods_name,
-            img: this.ruleForm.goods_img,
-            mobile_img: this.ruleForm.unless_img,
-            abbreviation: this.ruleForm.simple_name,
-            kg: this.ruleForm.goods_weight,
-            class_name: this.ruleForm.goods_cate,
-            tmall_img: this.ruleForm.tianmao_img,
-            through_train_img: this.ruleForm.zhitongche_img
+            ...this.ruleForm
           }
         })
         .then(res => {
           if (res && res.data && res.data.code === 1) {
             this.$emit('submitSuccess')
             this.$notify({
-              title: '提交成功',
+              title: '成功修改商品',
               type: 'success'
             })
-            this.ruleForm = {
-              shop_id: '',
-              goods_url: '',
-              goods_name: '',
-              goods_img: '',
-              unless_img: '',
-              simple_name: '',
-              goods_weight: '',
-              goods_cate: '',
-              tianmao_img: '',
-              zhitongche_img: ''
-            }
             this.dialogShow = false
+            this.$emit('editConfirm', this.ruleForm)
           }
         })
-    },
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
-    },
-    // 获取省
-    getProvince () {
-      let all = this.allList
-      let proList = []
-      all.forEach(item => {
-        proList.push(item.name)
-      })
-      this.provinceList = proList
-    },
-    // 获取市
-    getCity (newValue) {
-      let list = this.provinceList
-      let city = []
-      for (let i in list) {
-        if (list[i] === newValue) {
-          city = this.allList[i].city
-          this.saveList = this.allList[i]
-        }
-      }
-      let cList = []
-      city.forEach(item => {
-        cList.push(item.name)
-      })
-      this.cityList = cList
-    },
-    // 获取区
-    getDis (newValue) {
-      let list = this.saveList.city
-      let dis = []
-      for (let i in list) {
-        if (list[i].name === newValue) {
-          console.log(list[i].name)
-          dis = list[i].area
-        }
-      }
-      this.disList = dis
     }
   }
 }
@@ -334,6 +286,9 @@ export default {
     position: relative;
     background-color: #fff;
   }
+}
+.el-col {
+  margin-bottom: 10px;
 }
 .horizontal-rule::before {
   content: '';

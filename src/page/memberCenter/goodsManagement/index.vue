@@ -39,10 +39,10 @@
             <el-col :span="20" style="text-align:left;margin-top:10px;">
               <el-button class="tablebtnActive" @click="addGoods">添加</el-button>
               <el-button class="tablebtnActive" @click="editClick">编辑</el-button>
-              <el-button class="tablebtnActive">删除</el-button>
+              <el-button class="tablebtnActive" @click="deleteGoods">删除</el-button>
               <el-button class="tablebtnActive">目标客户</el-button>
               <el-button class="tablebtnActive">购买行为</el-button>
-              <el-button class="tablebtnActive">查看详情</el-button>
+              <el-button class="tablebtnActive" @click="editClick('check')">查看详情</el-button>
             </el-col>
             <el-col :span="4" style="line-height:40px">
               <el-button class="tablebtnActive" @click="getGoodsData('param')">查询</el-button>
@@ -50,21 +50,26 @@
           </el-row>
         </div>
         <div class="table">
-          <table-com :columns="tableData.columns" :data="tableData.data" :edit="tableData.edit"></table-com>
+          <table-com :columns="tableData.columns" :data="tableData.data" :edit="tableData.edit" @rowClick="tableRowClick" :total="pagination.total"
+            :current-page="pagination.currentPage" @handleCurrentChange="handleCurrentChange"></table-com>
         </div>
       </el-col>
     </el-row>
     <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow" :passdata='formData.manager.options' @submitSuccess="getGoodsData"></add-dialog>
+    <edit-dialog @dialogClose="editDialogClose" :table-row-data="tableData.data[tableData.rowIndex]" :dialog-table-visible="editDialogShow"
+      :check-detail="tableData.check" :passdata='formData.manager.options' @editConfirm="editConfirm"></edit-dialog>
   </div>
 </template>
 <script>
 import navList from '../components/treeNavList.vue'
 import tableCom from '@/components/tableCom.vue'
 import addDialog from './components/addDialog.vue'
+import editDialog from './components/editDialog.vue'
 export default {
   components: {
     navList,
     tableCom,
+    editDialog,
     addDialog
   },
   props: {
@@ -73,6 +78,11 @@ export default {
     return {
       currentTab: 'goodsManagement',
       addDialogShow: false,
+      editDialogShow: false,
+      pagination: {
+        currentPage: 1,
+        total: 100
+      },
       formData: {
         manager: {
           value: '全部',
@@ -84,6 +94,9 @@ export default {
       tableData: {
         edit: false, // 切换表格为可编辑
         data: [],
+        rowData: {},
+        check: false,
+        rowIndex: 0,
         columns: [
           { name: '简称', code: 'abbreviation', width: '', com: 'input' },
           { name: '商品名称', code: 'title', width: '', com: 'input' },
@@ -97,8 +110,21 @@ export default {
     this.getShopId()
   },
   methods: {
-    editClick () {
-      this.tableData.edit = true
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+      this.pagination.currentPage = val
+    },
+    editConfirm (val) {
+      this.getGoodsData()
+    },
+    editClick (param) {
+      if (param === 'check') {
+        this.tableData.check = true
+      }
+      this.editDialogShow = true
+    },
+    tableRowClick (row, index) {
+      this.tableData.rowIndex = index
     },
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
@@ -106,8 +132,41 @@ export default {
     addDialogClose () {
       this.addDialogShow = false
     },
+    editDialogClose () {
+      this.tableData.check = false
+      this.editDialogShow = false
+    },
     addGoods () {
       this.addDialogShow = true
+    },
+    deleteGoods () {
+      this.$confirm('将删除商品:' + this.tableData.data[this.tableData.rowIndex]['title'] + ', 是否继续 ? ', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$ajax
+          .get('goods/delete', {
+            params: {
+              token: this.$getToken(),
+              goodsid: this.tableData.data[this.tableData.rowIndex]['goodsid']
+            }
+          })
+          .then(res => {
+            if (res && res.data && res.data.code === 1) {
+              this.$notify({
+                title: '成功删除商品',
+                type: 'success'
+              })
+              this.getGoodsData()
+            }
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     getGoodsData (param) { // 获取商品table数据
       let paramData = {}
@@ -116,7 +175,8 @@ export default {
           token: this.$getToken(),
           shopid: this.formData.manager.value,
           title: this.formData.name,
-          goodsid: this.formData.GoodId
+          goodsid: this.formData.GoodId,
+          page: this.pagination.currentPage
         }
       } else {
         paramData = {
@@ -129,6 +189,7 @@ export default {
         console.log('goods', res)
         if (res && res.data && res.data.code === 1) {
           this.tableData.data = res.data.data
+          this.pagination.total = res.data.total
         }
       })
     },
