@@ -79,7 +79,7 @@
     </div>
 
     <div class="evaluationManagement">
-      <div class="btnGroup" v-if="user.bank_number">
+      <div class="btnGroup" v-if="user&&user.bank_number">
         <div class="defaultCard" v-if="user">
           默认转账银行卡：
           <span class="red">{{user.bank_name}}</span>
@@ -137,25 +137,31 @@
       </div>
       <div class="table">
         <table-com :columns="tableData.columns" :data="tableData.data">
-            <el-table-column v-for="(item,index) in tableData.columns" :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
-                <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
-                    <template slot-scope="scope">
-                    <template v-if="item=='status'">
-                    <span v-if=" data[scope.$index][item.code]==1 ">状态1</span>
-                    <span v-if=" data[scope.$index][item.code]==1 ">状态1</span>
-                    <span v-if=" data[scope.$index][item.code]==1 ">状态1</span>
-                    <span v-if=" data[scope.$index][item.code]==1 ">状态1</span>
-                    </template>
-                    </template>
-                </el-table-column>
-            </el-table-column>
+          <el-table-column
+            v-for="(item,index) in tableData.columns"
+            :key="index"
+            :width="item.width"
+            :prop="item.code"
+            :label="item.name"
+            align="center"
+          >
+            <template v-if="item.com=='status'">
+              
+                <template slot-scope="scope">
+                  <span v-if=" data[scope.$index]['status']==1 ">状态1</span>
+                  <span v-if=" data[scope.$index]['stutas']==2 ">状态1</span>
+                  <span v-if=" data[scope.$index]['stutas']==3 ">状态1</span>
+                  <span v-else>状态1</span>
+                </template>
+            </template>
+          </el-table-column>
         </table-com>
       </div>
     </div>
     <div class="settingDialogCom">
       <el-dialog title="设置默认转账银行卡" :visible.sync="dialogFormVisible">
         <div class="content">
-          <div class="well" v-if="user.bank_number">
+          <div class="well" v-if="user&&user.bank_number">
             <p>{{user.bank_name}}</p>
             <p>尾号：{{user.bank_number}}</p>
           </div>
@@ -316,7 +322,7 @@ export default {
           { name: "银行卡号", code: "bank_account.bank_number", width: "" },
           { name: "开户行", code: "bank_account.bank_name", width: "" },
           { name: "支行名称", code: "bank_account.branch", width: "" },
-          { name: "转账状态", code: "status", width: "" },
+          { name: "转账状态", code: "status", width: "", com: "stutas" },
           { name: "转账截止时间", code: "bank_account.endtime", width: "" }
         ]
       },
@@ -325,14 +331,14 @@ export default {
       branchBank: "",
       bankId: "",
       bankName: "",
-      cardName:'',
-      chargeList:null
+      cardName: "",
+      chargeList: null
     };
   },
   created() {
     this.getUserInfo();
     this.getBankList();
-    this.getchargeList()
+    this.getchargeList();
   },
   methods: {
     changeCard(type) {
@@ -353,7 +359,7 @@ export default {
           bank_name: this.bankName,
           branch: this.branchBank,
           paypwd: this.others.value,
-          card_name:this.cardName,
+          card_name: this.cardName,
           id: this.sortOrder.value
         })
         .then(res => {
@@ -390,7 +396,7 @@ export default {
           this.tableData.data = res.data.data;
         }
       });
-    },
+    }
   }
 };
 </script>
