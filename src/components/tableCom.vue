@@ -1,10 +1,5 @@
 <template>
   <div class="tableCom">
-<<<<<<< HEAD
-    <el-table :data="data" border style="width: 100%" :height="tableHeight">
-      <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width"  :prop="item.code" :label="item.name"
-        align="center"></el-table-column>
-=======
     <el-table :data="data" border style="width: 100%" :height="tableHeight" v-if="!tableEdit">
       <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
     </el-table>
@@ -29,7 +24,6 @@
           </el-table-column>
         </template>
       </template>
->>>>>>> ef648b7e1a82efe296a8dab08d8658465be448d8
     </el-table>
     <div class="pagination">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]"
