@@ -19,27 +19,27 @@
       <div class="table">
         <el-row>
           <el-col :span="5">商品简称</el-col>
-          <el-col :span="14"></el-col>
+          <el-col :span="14">{{goodsData.abbreviation}}</el-col>
           <el-col :span="5"></el-col>
         </el-row>
         <el-row>
           <el-col :span="5">商品ID</el-col>
-          <el-col :span="14"></el-col>
+          <el-col :span="14">{{goodsData.goodsid}}</el-col>
           <el-col :span="5"></el-col>
         </el-row>
         <el-row>
           <el-col :span="5">店铺名</el-col>
-          <el-col :span="14"></el-col>
+          <el-col :span="14">{{goodsData.shop_name}}</el-col>
           <el-col :span="5"></el-col>
         </el-row>
         <el-row>
           <el-col :span="5">商品标题</el-col>
-          <el-col :span="14"></el-col>
+          <el-col :span="14">{{goodsData.title}}</el-col>
           <el-col :span="5"></el-col>
         </el-row>
         <el-row>
           <el-col :span="5">商品链接</el-col>
-          <el-col :span="14"></el-col>
+          <el-col :span="14">{{goodsData.url}}</el-col>
           <el-col :span="5"></el-col>
         </el-row>
       </div>
@@ -201,14 +201,15 @@
         </span>
       </div>
       <div class="goet" style="text-align: right;">
-        <span>支付密码：</span> <input type="password" v-model="password"></div>
+        <span>支付密码：</span>
+        <el-input v-model="password" size="mini" style="width:160px;"></el-input>
+      </div>
       <div>
         <el-button type="primary">确认发布</el-button>
       </div>
     </div>
     <setting-dialog-com :dialog-table-visible="dialogTableVisible"></setting-dialog-com>
-    <choice-product-dialog :columns="choiceProductDialogData.columns" :data="choiceProductDialogData.data"
-      :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
+    <choice-product-dialog @dialogClose="dialogClose" @dialogConfirm="choiceDialogConfirm" :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
   </div>
 </template>
 <script>
@@ -226,16 +227,7 @@ export default {
       dialogTableVisible: false,
       dialogVisible: false,
       choiceProductDialogShow: false,
-      choiceProductDialogData: {
-        data: [],
-        columns: [
-          { name: '选择商品', code: 'task1', width: '' },
-          { name: '店铺名', code: 'task2', width: '' },
-          { name: '商品简称', code: 'task3', width: '' },
-          { name: '商品ID', code: 'task4', width: '' },
-          { name: '商品标题', code: 'task5', width: '' }
-        ]
-      },
+      goodsData: {},
       tableData: {
         flowEnter: {
           value: '',
@@ -253,6 +245,12 @@ export default {
     }
   },
   methods: {
+    choiceDialogConfirm (row) {
+      this.goodsData = row
+    },
+    dialogClose () {
+      this.choiceProductDialogShow = false
+    },
     settingClick () {
       this.dialogTableVisible = true
     },

@@ -81,7 +81,7 @@ export default {
       editDialogShow: false,
       pagination: {
         currentPage: 1,
-        total: 100
+        total: 0
       },
       formData: {
         manager: {
@@ -100,7 +100,7 @@ export default {
         columns: [
           { name: '简称', code: 'abbreviation', width: '', com: 'input' },
           { name: '商品名称', code: 'title', width: '', com: 'input' },
-          { name: '商品ID', code: 'shopid', width: '' },
+          { name: '商品ID', code: 'goodsid', width: '' },
           { name: '状态', code: 'status', width: '' }
         ]
       }
@@ -197,7 +197,7 @@ export default {
       this.$ajax('shop/index').then(res => {
         console.log('shopshop', res)
         if (res && res.data && res.data.code === 1) {
-          this.formData.manager.options = res.data.data
+          this.formData.manager.options = res.data.data.data
         }
       })
     }
