@@ -229,7 +229,7 @@
     </div>
     <setting-dialog-com :dialog-table-visible="dialogTableVisible" @dialogClose="settingDialogClose" @dialogConfirm="settingDialogConfirm"
       :setting-data="pathSettingIndexData"></setting-dialog-com>
-    <choice-product-dialog @dialogClose="dialogClose" @dialogConfirm="choiceDialogConfirm" :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
+    <choice-product-dialog @dialogClose="choiceDialogClose" @dialogConfirm="choiceDialogConfirm" :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
   </div>
 </template>
 <script>
@@ -286,7 +286,7 @@ export default {
     choiceDialogConfirm (row) {
       this.goodsData = row
     },
-    dialogClose () {
+    choiceDialogClose () {
       this.choiceProductDialogShow = false
     },
     settingDialogClose () {
