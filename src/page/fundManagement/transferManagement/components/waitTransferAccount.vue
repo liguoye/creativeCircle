@@ -20,26 +20,17 @@
           </p>
           <p>
             批量转账流程：只支持招商银行，请点击查看教程。
-            <a
-              href="#/business/funds/transfer/pending"
-              class="router-link-exact-active router-link-active"
-            >如何使用招商银行批量转账？</a>
+            <a href="#/business/funds/transfer/pending" class="router-link-exact-active router-link-active">如何使用招商银行批量转账？</a>
           </p>
         </el-col>
         <el-col :span="8" class="help-links">
           <p>
-            <a
-              href="#/business/member/noticeDetail?noticeId=31c1c7def9f1417ea31ff29c4c881ecd"
-              class
-            >
+            <a href="#/business/member/noticeDetail?noticeId=31c1c7def9f1417ea31ff29c4c881ecd" class>
               <i class="el-icon-info"></i>招商银行批量转账问题汇总
             </a>
           </p>
           <p>
-            <a
-              href="#/business/member/noticeDetail?noticeId=3573fca671be4d79a16817151c2c1d9d"
-              class
-            >
+            <a href="#/business/member/noticeDetail?noticeId=3573fca671be4d79a16817151c2c1d9d" class>
               <i class="el-icon-info"></i>卖家转账常见问题
             </a>
           </p>
@@ -59,18 +50,12 @@
             </a>
           </p>
           <p>
-            <a
-              href="#/business/member/noticeDetail?noticeId=7b9976596fb541f5b0c819f444f87baf"
-              class
-            >
+            <a href="#/business/member/noticeDetail?noticeId=7b9976596fb541f5b0c819f444f87baf" class>
               <i class="el-icon-info"></i>浦发银行批量转账说明
             </a>
           </p>
           <p>
-            <a
-              href="#/business/member/noticeDetail?noticeId=6593f4791444469cafd2f2e4ba7bc8ca"
-              class
-            >
+            <a href="#/business/member/noticeDetail?noticeId=6593f4791444469cafd2f2e4ba7bc8ca" class>
               <i class="el-icon-info"></i>浦发银行批量转账问题详解
             </a>
           </p>
@@ -94,30 +79,15 @@
         </div>
 
         <el-row>
-          <el-col
-            :span="19"
-            class="formGroup"
-            style="text-align:left !important;width:calc(100% - 160px)"
-          >
+          <el-col :span="19" class="formGroup" style="text-align:left !important;width:calc(100% - 160px)">
             <span>转账状态</span>
             <el-select v-model="formData.taskClass.value" placeholder="请选择">
-              <el-option
-                v-for="item in formData.taskClass.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
+              <el-option v-for="item in formData.taskClass.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
             <span>订单编号</span>
             <el-input v-model="formData.keyWord" placeholder="请输入内容"></el-input>
             <span>转账截止时间</span>
-            <el-date-picker
-              v-model="formData.date"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            ></el-date-picker>
+            <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
           </el-col>
           <el-col :span="5" style="line-height:40px;width:160px;">
             <el-button class="tablebtnActive">查询</el-button>
@@ -136,26 +106,30 @@
         </el-row>
       </div>
       <div class="table">
-        <table-com :columns="tableData.columns" :data="tableData.data">
-          <el-table-column
-            v-for="(item,index) in tableData.columns"
-            :key="index"
-            :width="item.width"
-            :prop="item.code"
-            :label="item.name"
-            align="center"
-          >
-            <template v-if="item.com=='status'">
-              
+        <el-table :data="tableData.data" border style="width: 100%">
+          <template v-for="(item,index) in tableData.columns">
+            <!-- <template v-if="item.com=='input'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
-                  <span v-if=" data[scope.$index]['status']==1 ">状态1</span>
-                  <span v-if=" data[scope.$index]['stutas']==2 ">状态1</span>
-                  <span v-if=" data[scope.$index]['stutas']==3 ">状态1</span>
-                  <span v-else>状态1</span>
+                  <el-input v-model="tableData.data[scope.$index][item.code]"></el-input>
                 </template>
+              </el-table-column>
+            </template> -->
+            <template v-if="item.com=='status'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <span v-if=" tableData.data[scope.$index]['status']==1 ">状态1</span>
+                  <span v-if=" tableData.data[scope.$index]['stutas']==2 ">状态1</span>
+                  <span v-if=" tableData.data[scope.$index]['stutas']==3 ">状态1</span>
+                </template>
+              </el-table-column>
             </template>
-          </el-table-column>
-        </table-com>
+            <template v-else>
+              <el-table-column :key="index " :width="item.width " :prop="item.code " :label="item.name " align="center ">
+              </el-table-column>
+            </template>
+          </template>
+        </el-table>
       </div>
     </div>
     <div class="settingDialogCom">
@@ -177,12 +151,7 @@
             </el-col>
             <el-col :span="18">
               <el-select v-model="sortOrder.value" style="width:100%" placeholder="请选择开户行">
-                <el-option
-                  v-for="item in sortOrder.options"
-                  :key="item.id"
-                  :label="item.bank_name"
-                  :value="item.id"
-                ></el-option>
+                <el-option v-for="item in sortOrder.options" :key="item.id" :label="item.bank_name" :value="item.id"></el-option>
               </el-select>
             </el-col>
           </el-row>
@@ -259,102 +228,102 @@
   </div>
 </template>
 <script>
-import tableCom from "@/components/tableCom.vue";
+import tableCom from '@/components/tableCom.vue'
 export default {
   components: {
     tableCom
   },
-  data() {
+  data () {
     return {
       dialogFormVisible: false,
       allTransferSuccessShow: false,
       sortOrder: {
         check: true,
-        value: "",
+        value: '',
         options: [
-          { label: "综合", value: "综合" },
-          { label: "销量", value: "销量" },
-          { label: "价格从低到高", value: "价格从低到高" },
-          { label: "价格从高到低", value: "价格从高到低" }
+          { label: '综合', value: '综合' },
+          { label: '销量', value: '销量' },
+          { label: '价格从低到高', value: '价格从低到高' },
+          { label: '价格从高到低', value: '价格从高到低' }
         ]
       },
       priceRange: {
         check: true,
-        bottom: "",
-        top: ""
+        bottom: '',
+        top: ''
       },
       sendGoods: {
         check: true,
-        value: ""
+        value: ''
       },
       others: {
         check: true,
-        value: ""
+        value: ''
       },
       formData: {
         taskClass: {
-          value: "",
+          value: '',
           options: [
-            { label: "等待转账", value: "等待转账" },
-            { label: "已导出", value: "已导出" }
+            { label: '等待转账', value: '等待转账' },
+            { label: '已导出', value: '已导出' }
           ]
         },
         taskNum: {
-          value: "任务编号",
+          value: '任务编号',
           options: [
-            { label: "任务编号", value: "任务编号" },
-            { label: "订单编号", value: "订单编号" },
-            { label: "运单号", value: "运单号" },
-            { label: "店铺名称", value: "店铺名称" },
-            { label: "买号名称", value: "买号名称" },
-            { label: "商品编号", value: "商品编号" }
+            { label: '任务编号', value: '任务编号' },
+            { label: '订单编号', value: '订单编号' },
+            { label: '运单号', value: '运单号' },
+            { label: '店铺名称', value: '店铺名称' },
+            { label: '买号名称', value: '买号名称' },
+            { label: '商品编号', value: '商品编号' }
           ]
         },
-        keyWord: "",
-        date: ""
+        keyWord: '',
+        date: ''
       },
       tableData: {
         data: [],
         columns: [
-          { name: "订单编号", code: "orderid", width: "" },
-          { name: "转账金额", code: "price", width: "" },
-          { name: "提现人", code: "bank_account.card_name", width: "" },
-          { name: "银行卡号", code: "bank_account.bank_number", width: "" },
-          { name: "开户行", code: "bank_account.bank_name", width: "" },
-          { name: "支行名称", code: "bank_account.branch", width: "" },
-          { name: "转账状态", code: "status", width: "", com: "stutas" },
-          { name: "转账截止时间", code: "bank_account.endtime", width: "" }
+          { name: '订单编号', code: 'orderid', width: '' },
+          { name: '转账金额', code: 'price', width: '' },
+          { name: '提现人', code: 'bank_account.card_name', width: '' },
+          { name: '银行卡号', code: 'bank_account.bank_number', width: '' },
+          { name: '开户行', code: 'bank_account.bank_name', width: '' },
+          { name: '支行名称', code: 'bank_account.branch', width: '' },
+          { name: '转账状态', code: 'status', width: '', com: 'status' },
+          { name: '转账截止时间', code: 'bank_account.endtime', width: '' }
         ]
       },
       bankList: null,
       user: null,
-      branchBank: "",
-      bankId: "",
-      bankName: "",
-      cardName: "",
+      branchBank: '',
+      bankId: '',
+      bankName: '',
+      cardName: '',
       chargeList: null
-    };
+    }
   },
-  created() {
-    this.getUserInfo();
-    this.getBankList();
-    this.getchargeList();
+  created () {
+    this.getUserInfo()
+    this.getBankList()
+    this.getchargeList()
   },
   methods: {
-    changeCard(type) {
-      this.dialogFormVisible = true;
+    changeCard (type) {
+      this.dialogFormVisible = true
     },
-    bindCard() {
-      let id = this.sortOrder.value;
-      let list = this.sortOrder.options;
-      console.log(list);
+    bindCard () {
+      let id = this.sortOrder.value
+      let list = this.sortOrder.options
+      console.log(list)
       list.forEach(item => {
-        if (item.id == id) {
-          this.bankName = item.bank_name;
+        if (item.id === id) {
+          this.bankName = item.bank_name
         }
-      });
+      })
       this.$ajax
-        .post("member/updBank", {
+        .post('member/updBank', {
           bank_number: this.priceRange.bottom,
           bank_name: this.bankName,
           branch: this.branchBank,
@@ -363,42 +332,42 @@ export default {
           id: this.sortOrder.value
         })
         .then(res => {
-          console.log("结果", res);
-          if (res && res.data && res.data.code == 1) {
+          console.log('结果', res)
+          if (res && res.data && res.data.code === 1) {
             this.$notify({
-              title: "修改成功",
-              type: "success"
-            });
-            this.getUserInfo();
+              title: '修改成功',
+              type: 'success'
+            })
+            this.getUserInfo()
           }
-        });
+        })
     },
-    getUserInfo() {
-      this.$ajax.get("shopmember/index").then(res => {
-        console.log("余额", res);
-        if (res && res.data && res.data.code == 1) {
-          this.user = res.data.data;
+    getUserInfo () {
+      this.$ajax.get('shopmember/index').then(res => {
+        console.log('余额', res)
+        if (res && res.data && res.data.code === 1) {
+          this.user = res.data.data
         }
-      });
+      })
     },
-    getBankList() {
-      this.$ajax.get("/member/bankList").then(res => {
-        console.log("银行列表", res);
-        if (res && res.data && res.data.code == 1) {
-          this.sortOrder.options = res.data.data;
+    getBankList () {
+      this.$ajax.get('/member/bankList').then(res => {
+        console.log('银行列表', res)
+        if (res && res.data && res.data.code === 1) {
+          this.sortOrder.options = res.data.data
         }
-      });
+      })
     },
-    getchargeList() {
-      this.$ajax.get("shopmember/accountsList").then(res => {
-        console.log("转账列表", res);
-        if (res && res.data && res.data.code == 1) {
-          this.tableData.data = res.data.data;
+    getchargeList () {
+      this.$ajax.get('shopmember/accountsList').then(res => {
+        console.log('转账列表', res)
+        if (res && res.data && res.data.code === 1) {
+          this.tableData.data = res.data.data
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .waitTransferAccount {

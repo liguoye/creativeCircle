@@ -125,7 +125,7 @@
           </el-col>
           <el-col :span="12" class="right">
             <el-row>
-              <el-col :span="24">
+              <el-col :span="20">
                 <div class="right-container">
                   <span style="margin-right: 10px;">总数:
                     <em class="red">0</em>
@@ -137,6 +137,9 @@
                     <em class="red">0</em>
                   </span>
                 </div>
+              </el-col>
+              <el-col :span="4">
+                <el-button class="tablebtnActive" type="primary" @click="addTimeData">新增</el-button>
               </el-col>
             </el-row>
           </el-col>
@@ -150,16 +153,28 @@
           <el-col :span="4">结束时间</el-col>
           <el-col :span="4">超时取消</el-col>
         </el-row>
-        <el-row class="tableContent">
-          <el-col :span="6">
-          </el-col>
-          <el-col :span="6">
-          </el-col>
-          <el-col :span="4">
-          </el-col>
-          <el-col :span="4">
-          </el-col>
-          <el-col :span="4">基础费用合计：0元</el-col>
+        <template v-for="(item,index) in timeData">
+          <el-row class="tableContent" :key="index">
+            <el-col :span="6">
+              <el-date-picker v-model="timeData[index].releaseDay" type="date" placeholder="选择日期">
+              </el-date-picker>
+            </el-col>
+            <el-col :span="6">
+              <el-input v-model="timeData[index].taskNum" style="width:90%"></el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-input v-model="timeData[index].beginTime" style="width:90%"></el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-input v-model="timeData[index].endTime" style="width:90%"></el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-input v-model="timeData[index].tiemout" style="width:90%"></el-input>
+            </el-col>
+          </el-row>
+        </template>
+        <el-row>
+          <el-col style="text-align:right">基础费用合计：0元</el-col>
         </el-row>
       </div>
     </div>
@@ -254,7 +269,11 @@ export default {
         otherCondition: '' // 其他
       }],
       timeData: [{
-
+        'taskNum': 0,
+        'beginTime': '',
+        'endTime': '',
+        'tiemout': '',
+        'releaseDay': ''
       }],
       form: {
         sellerRemark: ''
@@ -297,6 +316,15 @@ export default {
         endPrice: 0, // 价格区间最大值
         shipment: '', // 发货地
         otherCondition: '' // 其他
+      })
+    },
+    addTimeData () {
+      this.timeData.push({
+        'taskNum': 0,
+        'beginTime': '',
+        'endTime': '',
+        'tiemout': '',
+        'releaseDay': ''
       })
     },
     deletePathData (index) {
