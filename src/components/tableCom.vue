@@ -27,8 +27,8 @@
       </template>
     </el-table>
     <div class="pagination">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]"
-        :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="0">
+      <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[20]" :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
 
@@ -48,6 +48,24 @@ export default {
       type: Number,
       default () {
         return 300
+      }
+    },
+    pageSize: {
+      type: Number,
+      default () {
+        return 20
+      }
+    },
+    currentPage: {
+      type: Number,
+      default () {
+        return 1
+      }
+    },
+    total: {
+      type: Number,
+      default () {
+        return 0
       }
     },
     edit: {
@@ -73,11 +91,8 @@ export default {
     }
   },
   methods: {
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
-    },
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+      this.$emit('handleCurrentChange', val)
     },
     tableRowClassName ({ row, rowIndex }) {
       // 把每一行的索引放进row
@@ -89,7 +104,6 @@ export default {
   },
   data () {
     return {
-      currentPage: 1,
       height: 350,
       tableEdit: false
     }

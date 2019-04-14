@@ -50,7 +50,8 @@
           </el-row>
         </div>
         <div class="table">
-          <table-com :columns="tableData.columns" :data="tableData.data" :edit="tableData.edit" @rowClick="tableRowClick"></table-com>
+          <table-com :columns="tableData.columns" :data="tableData.data" :edit="tableData.edit" @rowClick="tableRowClick" :total="pagination.total"
+            :current-page="pagination.currentPage" @handleCurrentChange="handleCurrentChange"></table-com>
         </div>
       </el-col>
     </el-row>
@@ -78,6 +79,10 @@ export default {
       currentTab: 'goodsManagement',
       addDialogShow: false,
       editDialogShow: false,
+      pagination: {
+        currentPage: 1,
+        total: 100
+      },
       formData: {
         manager: {
           value: '全部',
@@ -105,6 +110,10 @@ export default {
     this.getShopId()
   },
   methods: {
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+      this.pagination.currentPage = val
+    },
     editConfirm (val) {
       this.getGoodsData()
     },
@@ -166,7 +175,8 @@ export default {
           token: this.$getToken(),
           shopid: this.formData.manager.value,
           title: this.formData.name,
-          goodsid: this.formData.GoodId
+          goodsid: this.formData.GoodId,
+          page: this.pagination.currentPage
         }
       } else {
         paramData = {
@@ -179,6 +189,7 @@ export default {
         console.log('goods', res)
         if (res && res.data && res.data.code === 1) {
           this.tableData.data = res.data.data
+          this.pagination.total = res.data.total
         }
       })
     },
