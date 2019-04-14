@@ -1,7 +1,7 @@
 <template>
   <div class="tableCom">
     <el-table :data="data" border style="width: 100%" :height="tableHeight" v-if="!tableEdit" :row-class-name="tableRowClassName"
-      @row-click="onRowClick">
+      :highlight-current-row="true" @row-click="onRowClick">
       <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
     </el-table>
     <el-table :data="data" border style="width: 100%" :height="tableHeight" v-if="tableEdit">

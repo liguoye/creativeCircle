@@ -39,10 +39,10 @@
             <el-col :span="20" style="text-align:left;margin-top:10px;">
               <el-button class="tablebtnActive" @click="addGoods">添加</el-button>
               <el-button class="tablebtnActive" @click="editClick">编辑</el-button>
-              <el-button class="tablebtnActive">删除</el-button>
+              <el-button class="tablebtnActive" @click="deleteGoods">删除</el-button>
               <el-button class="tablebtnActive">目标客户</el-button>
               <el-button class="tablebtnActive">购买行为</el-button>
-              <el-button class="tablebtnActive">查看详情</el-button>
+              <el-button class="tablebtnActive" @click="editClick('check')">查看详情</el-button>
             </el-col>
             <el-col :span="4" style="line-height:40px">
               <el-button class="tablebtnActive" @click="getGoodsData('param')">查询</el-button>
@@ -56,7 +56,7 @@
     </el-row>
     <add-dialog @dialogClose="addDialogClose" :dialog-table-visible="addDialogShow" :passdata='formData.manager.options' @submitSuccess="getGoodsData"></add-dialog>
     <edit-dialog @dialogClose="editDialogClose" :table-row-data="tableData.data[tableData.rowIndex]" :dialog-table-visible="editDialogShow"
-      :passdata='formData.manager.options' @editConfirm="editConfirm"></edit-dialog>
+      :check-detail="tableData.check" :passdata='formData.manager.options' @editConfirm="editConfirm"></edit-dialog>
   </div>
 </template>
 <script>
@@ -90,6 +90,7 @@ export default {
         edit: false, // 切换表格为可编辑
         data: [],
         rowData: {},
+        check: false,
         rowIndex: 0,
         columns: [
           { name: '简称', code: 'abbreviation', width: '', com: 'input' },
@@ -105,9 +106,12 @@ export default {
   },
   methods: {
     editConfirm (val) {
-      this.tableData.data[this.tableData.rowIndex] = val
+      this.getGoodsData()
     },
-    editClick () {
+    editClick (param) {
+      if (param === 'check') {
+        this.tableData.check = true
+      }
       this.editDialogShow = true
     },
     tableRowClick (row, index) {
@@ -120,10 +124,40 @@ export default {
       this.addDialogShow = false
     },
     editDialogClose () {
+      this.tableData.check = false
       this.editDialogShow = false
     },
     addGoods () {
       this.addDialogShow = true
+    },
+    deleteGoods () {
+      this.$confirm('将删除商品:' + this.tableData.data[this.tableData.rowIndex]['title'] + ', 是否继续 ? ', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$ajax
+          .get('goods/delete', {
+            params: {
+              token: this.$getToken(),
+              goodsid: this.tableData.data[this.tableData.rowIndex]['goodsid']
+            }
+          })
+          .then(res => {
+            if (res && res.data && res.data.code === 1) {
+              this.$notify({
+                title: '成功删除商品',
+                type: 'success'
+              })
+              this.getGoodsData()
+            }
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     getGoodsData (param) { // 获取商品table数据
       let paramData = {}

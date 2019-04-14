@@ -183,7 +183,9 @@ export default {
       }
       window.open(this.ruleForm.goods_url)
     },
-    removePic () { },
+    removePic () {
+
+    },
     uploadGoods (data) {
       if (data.code === 1) {
         this.ruleForm.goods_img = data.data
