@@ -44,8 +44,13 @@ export default {
       currentTab: 'transferManagement',
       topTabCurrent: '1',
       name: '',
-      money: ''
+      money: '',
+      bankList:[],
+      user:{}
     }
+  },
+  created(){
+    //   this.getUserInfo()
   },
   methods: {
     navListClick (val) {
@@ -54,7 +59,8 @@ export default {
     toPNavChangeTab (val) {
       console.log(val)
       this.topTabCurrent = val
-    }
+    },
+    
   }
 }
 </script>

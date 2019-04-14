@@ -13,13 +13,15 @@
         <div class="tabContent">
           <p>
             <span class="left W210px">资金余额：</span>
-            <span class="right">0 元
+            <span class="right">
+              0 元
               <em class="red">（存款用于支付贷款）</em>
             </span>
           </p>
           <p>
             <span class="left W210px">可用发布点：</span>
-            <span class="right">0 点
+            <span class="right">
+              0 点
               <em class="red">（发布点用于支付佣金）</em>
             </span>
           </p>
@@ -44,13 +46,11 @@
         <div class="tabContent">
           <p>
             <span class="left W210px">可用发布点:</span>
-            <span class="right">0 点
-            </span>
+            <span class="right">0 点</span>
           </p>
           <p>
             <span class="left W210px">资金余额：</span>
-            <span class="right">0 元
-            </span>
+            <span class="right">0 元</span>
           </p>
           <p>
             <span class="left W210px">&nbsp;</span>
@@ -70,31 +70,42 @@
   </div>
 </template>
 <script>
-import navList from '../components/treeNavList.vue'
+import navList from "../components/treeNavList.vue";
 export default {
   components: {
     navList
   },
-  props: {
-  },
-  data () {
+  props: {},
+  data() {
     return {
-      currentTab: 'publicPointExchange',
-      topTabCurrent: '1',
+      currentTab: "publicPointExchange",
+      topTabCurrent: "1",
       pubPoint: 0,
-      pubMoney: 0
-    }
+      pubMoney: 0,
+      user: {}
+    };
+  },
+  created() {
+    this.getUserInfo();
   },
   methods: {
-    navListClick (val) {
-      this.$router.push({ name: val, param: { tab: val } })
+    navListClick(val) {
+      this.$router.push({ name: val, param: { tab: val } });
     },
-    toPNavChangeTab (val) {
-      console.log(val)
-      this.topTabCurrent = val
+    toPNavChangeTab(val) {
+      console.log(val);
+      this.topTabCurrent = val;
+    },
+    getUserInfo() {
+      this.$ajax.get("shopmember/index").then(res => {
+        console.log("余额", res);
+        if (res && res.data && res.data.code == 1) {
+          this.user = res.data.data;
+        }
+      });
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .publicPointExchange {

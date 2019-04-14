@@ -213,7 +213,7 @@ export default {
       this.$ajax.get("shop/index").then(res => {
         console.log(res);
         if (res && res.data && res.data.code == 1) {
-          this.tableData = res.data.data;
+          this.tableData = res.data.data.data;
         }
       });
     },
