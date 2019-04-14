@@ -188,8 +188,8 @@ export default {
       }).then(res => {
         console.log('goods', res)
         if (res && res.data && res.data.code === 1) {
-          this.tableData.data = res.data.data
-          this.pagination.total = res.data.total
+          this.tableData.data = res.data.data.data
+          this.pagination.total = res.data.data.total
         }
       })
     },

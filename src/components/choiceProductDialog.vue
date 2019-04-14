@@ -6,7 +6,7 @@
           <el-col :span="3">选择店铺:</el-col>
           <el-col :span="6">
             <el-select v-model="shop_name.value" placeholder="请选择店铺">
-              <el-option v-for="item in shop_name.options" :key="item.shop_name" :label="item.shop_name" :value="item.shop_name">
+              <el-option v-for="item in shop_name.options" :key="item.shop_name" :label="item.shop_name" :value="item.shopid">
               </el-option>
             </el-select>
           </el-col>
@@ -26,6 +26,11 @@
           </el-table-column>
           <el-table-column v-for="(item,index) in columns" :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
         </el-table>
+        <div class="pagination" style="margin-top:10px;text-align:right">
+          <el-pagination @current-change="handleCurrentChange" :current-page="pagination.currentPage" :page-sizes="[20]" layout="total, sizes, prev, pager, next, jumper"
+            :total="pagination.total">
+          </el-pagination>
+        </div>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogClose">取 消</el-button>
@@ -54,7 +59,7 @@ export default {
       dialogShow: false,
       pagination: {
         currentPage: 1,
-        total: 100
+        total: 0
       },
       data: [],
       columns: [
@@ -76,6 +81,10 @@ export default {
     }
   },
   methods: {
+    handleCurrentChange (val) {
+      this.pagination.currentPage = val
+      this.getGoodsData()
+    },
     getShop () {
       this.$ajax('shop/index').then(res => {
         console.log('shopshop', res)
@@ -96,8 +105,8 @@ export default {
       }).then(res => {
         console.log('goods', res)
         if (res && res.data && res.data.code === 1) {
-          this.data = res.data.data
-          this.pagination.total = res.data.total
+          this.data = res.data.data.data
+          this.pagination.total = res.data.data.total
         }
       })
     },
