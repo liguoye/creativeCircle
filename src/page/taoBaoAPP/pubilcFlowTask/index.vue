@@ -68,7 +68,7 @@
                 </div>
               </el-col>
               <el-col :span="4">
-                <el-button class="tablebtnActive" type="primary">新增</el-button>
+                <el-button class="tablebtnActive" type="primary" @click="addPathData">新增</el-button>
               </el-col>
             </el-row>
           </el-col>
@@ -85,29 +85,33 @@
           </el-col>
           <el-col :span="2">操作</el-col>
         </el-row>
-        <el-row class="tableContent">
-          <el-col :span="4" class="flowEnterSelect">
-            <el-select v-model="tableData.flowEnter.value" placeholder="请选择">
-              <el-option v-for="item in tableData.flowEnter.options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="10" class="textInput">
-            <el-input v-model="tableData.orderKeyword" placeholder="请设置关键字"></el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-input-number size="mini" v-model="tableData.account"></el-input-number>
-          </el-col>
-          <el-col :span="4">
-            <el-button class="tablebtnActive" type="primary" @click="settingClick">设置</el-button>
-          </el-col>
-          <el-col :span="2">操作</el-col>
-        </el-row>
+        <template v-for="(item,index) in pathSettingData">
+          <el-row class="tableContent" :key="index">
+            <el-col :span="4" class="flowEnterSelect">
+              <el-select v-model="pathSettingData[index].flowid.value" placeholder="请选择">
+                <el-option v-for="list in pathSettingData[index].flowid.options" :key="list.value" :label="list.label" :value="list.value">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="10" class="textInput">
+              <el-input v-model="pathSettingData[index].keyword" placeholder="请设置关键字"></el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-input-number size="mini" v-model="pathSettingData[index].taskNum"></el-input-number>
+            </el-col>
+            <el-col :span="4">
+              <el-button class="tablebtnActive" type="primary" @click="settingClick(index)">设置</el-button>
+            </el-col>
+            <el-col :span="2">
+              <el-button type="danger" size='mini' @click="deletePathData(index)" style="border-radius:25px">删除</el-button>
+            </el-col>
+          </el-row>
+        </template>
       </div>
     </div>
     <el-form ref="form" :model="form" label-width="150px" style="margin-top:20px;">
       <el-form-item label="备注信息（选填）：">
-        <el-input type="textarea" v-model="form.note"></el-input>
+        <el-input type="textarea" v-model="form.sellerRemark"></el-input>
       </el-form-item>
     </el-form>
     <div class="colTable">
@@ -208,7 +212,8 @@
         <el-button type="primary">确认发布</el-button>
       </div>
     </div>
-    <setting-dialog-com :dialog-table-visible="dialogTableVisible"></setting-dialog-com>
+    <setting-dialog-com :dialog-table-visible="dialogTableVisible" @dialogClose="settingDialogClose" @dialogConfirm="settingDialogConfirm"
+      :setting-data="pathSettingIndexData"></setting-dialog-com>
     <choice-product-dialog @dialogClose="dialogClose" @dialogConfirm="choiceDialogConfirm" :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
   </div>
 </template>
@@ -227,18 +232,32 @@ export default {
       dialogTableVisible: false,
       dialogVisible: false,
       choiceProductDialogShow: false,
+      pathSettingIndexData: {},
       goodsData: {},
-      tableData: {
-        flowEnter: {
+      pathSettingIndex: 0,
+      pathSettingData: [{
+        flowid: {
           value: '',
-          options: []
+          options: [
+            { label: 'APP自然搜索', value: 1 },
+            { label: '淘口令', value: 2 },
+            { label: '直通车', value: 3 },
+            { label: '二维码', value: 4 }
+          ]
         },
-        browseKeyword: '',
-        orderKeyword: '',
-        account: ''
-      },
+        keyword: '',
+        taskNum: '',
+        sortOrder: '', // 排序方式(综合，销量，价格高到低，价格低到高)
+        beginPrice: 0, // 价格区间起始
+        endPrice: 0, // 价格区间最大值
+        shipment: '', // 发货地
+        otherCondition: '' // 其他
+      }],
+      timeData: [{
+
+      }],
       form: {
-        note: ''
+        sellerRemark: ''
       },
       publicTiem: '',
       password: ''
@@ -251,7 +270,41 @@ export default {
     dialogClose () {
       this.choiceProductDialogShow = false
     },
-    settingClick () {
+    settingDialogClose () {
+      this.dialogTableVisible = false
+    },
+    settingDialogConfirm (param) {
+      console.log(param)
+      for (let item in param) {
+        this.pathSettingData[this.pathSettingIndex][item] = param[item]
+      }
+    },
+    addPathData () {
+      this.pathSettingData.push({
+        flowid: {
+          value: '',
+          options: [
+            { label: 'APP自然搜索', value: 1 },
+            { label: '淘口令', value: 2 },
+            { label: '直通车', value: 3 },
+            { label: '二维码', value: 4 }
+          ]
+        },
+        keyword: '',
+        taskNum: '',
+        sortOrder: '', // 排序方式(综合，销量，价格高到低，价格低到高)
+        beginPrice: 0, // 价格区间起始
+        endPrice: 0, // 价格区间最大值
+        shipment: '', // 发货地
+        otherCondition: '' // 其他
+      })
+    },
+    deletePathData (index) {
+      this.pathSettingData.splice(index, 1)
+    },
+    settingClick (index) {
+      this.pathSettingIndex = index
+      this.pathSettingIndexData = this.pathSettingData[index]
       this.dialogTableVisible = true
     },
     navListClick (val) {

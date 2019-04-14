@@ -21,14 +21,14 @@
           </el-table-column>
         </template>
         <template v-else>
-          <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+          <el-table-column :key="index " :width="item.width " :prop="item.code " :label="item.name " align="center ">
           </el-table-column>
         </template>
       </template>
     </el-table>
-    <div class="pagination">
-      <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[20]" :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper" :total="total">
+    <div class="pagination ">
+      <el-pagination @current-change="handleCurrentChange " :current-page="currentPage" :page-sizes="[20]" :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper " :total="total ">
       </el-pagination>
     </div>
 
