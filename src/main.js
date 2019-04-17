@@ -14,14 +14,20 @@ Vue.use(ajax);
 
 import './utils/getToken'
 
+import * as custom from './utils/filter'
+
+Object.keys(custom).forEach(key => {
+  Vue.filter(key, custom[key])
+})
+
+import store from './store/index'; //引入store
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: {
     App
   },
   template: '<App/>'
 })
-
-

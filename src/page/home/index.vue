@@ -8,11 +8,11 @@
           <div class="con-left">
             <p>
               愉快合作第
-              <span class="red">{{detail.day}}</span>天
+              <span class="red">{{detail.days}}</span>天
             </p>
             <p>
               存款：
-              <span class="red">{{detail.Money}}</span>元
+              <span class="red">{{detail.Money|percent}}</span>元
             </p>
             <p>
               发布点：
@@ -151,7 +151,8 @@
                     >
                       <img src="../../assets/picture/iconett_4.png">
                     </div>
-                    <div class="qoanet" style="margin-top: 5px;">新手教程</div>
+                    <div class="qoanet" style="margin-top: 5px;">新手教程<span>{{getdata}}</span></div>
+                    
                   </a>
                 </el-col>
               </el-row>
@@ -163,15 +164,18 @@
   </div>
 </template>
 <script>
+import {mapGetters} from 'vuex';
 export default {
   data() {
     return {
       detail: null
     };
   },
-  created(){
-      this.getHome()
+  created() {
+    this.getHome();
+    console.log(this.getdata)
   },
+  computed: {...mapGetters(['getdata'])},
   methods: {
     getHome() {
       this.$ajax.get("/shopmember/index").then(res => {

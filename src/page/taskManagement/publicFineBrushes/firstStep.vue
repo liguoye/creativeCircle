@@ -40,7 +40,7 @@
         </div>
       </el-col>
     </el-row>
-    <btn-group :btn-active="btnActive" @btnClick="btnClick" :show-back-btn="false"></btn-group>
+    <btn-group show-back-btn="2" show-go-btn="2" @btnClick="btnClick" ></btn-group>
   </div>
 </template>
 <script>

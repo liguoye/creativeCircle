@@ -118,9 +118,11 @@
             <template v-if="item.com=='status'">
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
-                  <span v-if=" tableData.data[scope.$index]['status']==1 ">状态1</span>
-                  <span v-if=" tableData.data[scope.$index]['stutas']==2 ">状态1</span>
-                  <span v-if=" tableData.data[scope.$index]['stutas']==3 ">状态1</span>
+                  <span v-if=" tableData.data[scope.$index]['status']==1 ">等待转账</span>
+                  <span v-if=" tableData.data[scope.$index]['stutas']==2 ">已转账</span>
+                  <span v-if=" tableData.data[scope.$index]['stutas']==3 ">转账失败</span>
+                  <span v-if=" tableData.data[scope.$index]['stutas']==4 ">未转账</span>
+                  <span v-if=" tableData.data[scope.$index]['stutas']==5 ">已退款</span>
                 </template>
               </el-table-column>
             </template>
@@ -285,7 +287,7 @@ export default {
       tableData: {
         data: [],
         columns: [
-          { name: '订单编号', code: 'orderid', width: '' },
+          { name: '订单编号', code: 'orderid', width: '180' },
           { name: '转账金额', code: 'price', width: '' },
           { name: '提现人', code: 'bank_account.card_name', width: '' },
           { name: '银行卡号', code: 'bank_account.bank_number', width: '' },

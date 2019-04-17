@@ -12,23 +12,38 @@
       </div>
       <div class="stateContent">
         <first-step v-if="orderProgressState=='firstStep'" @changeState="firstStepChange"></first-step>
-        <brush-order v-if="orderProgressState=='secondStep' && radio=='1'" @changeState="changeState"></brush-order>
-        <specify-push-task v-if="orderProgressState=='secondStep' && radio=='2'" @changeState="changeState"></specify-push-task>
-        <re-buy-task v-if="orderProgressState=='secondStep' && radio=='3'" @changeState="changeState"></re-buy-task>
+        <brush-order
+          v-if="orderProgressState=='secondStep' && radio=='1'"
+          @changeState="changeState"
+        ></brush-order>
+        <keep-alive>
+          <specify-push-task
+            v-if="orderProgressState=='secondStep' && radio=='2'"
+            @changeState="changeState"
+          ></specify-push-task>
+        </keep-alive>
+
+        <re-buy-task
+          v-if="orderProgressState=='secondStep' && radio=='3'"
+          @changeState="changeState"
+        ></re-buy-task>
         <third-step v-if="orderProgressState=='thirdStep'" @changeState="changeState"></third-step>
         <four-step v-if="orderProgressState=='fourStep'" @changeState="changeState"></four-step>
       </div>
+
+      <div>所有数据{{getall}}</div>
     </div>
   </div>
 </template>
 <script>
-import navList from '@/components/taskManagementNavList.vue'
-import firstStep from './firstStep.vue'
-import brushOrder from './secondStep/brushOrder.vue'
-import specifyPushTask from './secondStep/specifyPushTask.vue'
-import reBuyTask from './secondStep/reBuyTask.vue'
-import thirdStep from './thirdStep.vue'
-import fourStep from './fourStep.vue'
+import navList from "@/components/taskManagementNavList.vue";
+import firstStep from "./firstStep.vue";
+import brushOrder from "./secondStep/brushOrder.vue";
+import specifyPushTask from "./secondStep/specifyPushTask.vue";
+import reBuyTask from "./secondStep/reBuyTask.vue";
+import thirdStep from "./thirdStep.vue";
+import fourStep from "./fourStep.vue";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
     navList,
@@ -39,23 +54,31 @@ export default {
     thirdStep,
     fourStep
   },
-  data () {
+  data() {
     return {
-      currentTab: 'publicFineBrushes',
-      orderProgressState: 'firstStep',
-      radio: '1'
-    }
+      currentTab: "publicFineBrushes",
+      orderProgressState: "firstStep",
+      radio: "1"
+    };
   },
+  computed: { ...mapGetters(["getdata"]), ...mapGetters(["getall"]) },
   methods: {
-    changeState (val) {
-      this.orderProgressState = val.state
+    change() {
+      this.$store.commit("update", { name: "releaseFlowList", value: "" });
     },
-    firstStepChange (val) {
-      this.orderProgressState = val.state
-      this.radio = val.radio
+    ...mapMutations({
+      update: "update"
+    }),
+    changeState(val) {
+      this.orderProgressState = val.state;
+    },
+    firstStepChange(val) {
+      this.orderProgressState = val.state;
+      this.radio = val.radio;
+      this.$store.commit("update", { name: "type", value: val.radio });
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .taskManagement {

@@ -1,29 +1,17 @@
 <template>
   <div class="btnGroup">
-    <p :class="btnActive==2?'disabled':''" v-if="showBackBtn" @click="btnClick('back')">上一步</p>
-    <p :class="btnActive==1?'disabled':''" v-if="showGoBtn" @click="btnClick('go')">下一步</p>
+    <p :class="showBackBtn=='1'?'disabled':''" @click="btnClick('back')">上一步</p>
+    <p :class="showGoBtn=='1'?'disabled':''"  @click="btnClick('go')">下一步</p>
   </div>
 </template>
 <script>
 export default {
   props: {
-    btnActive: {
-      type: Number,
-      default () {
-        return 0
-      }
-    },
     showBackBtn: {
-      type: Boolean,
-      default () {
-        return true
-      }
     },
     showGoBtn: {
-      type: Boolean,
-      default () {
-        return true
-      }
+      type: String,
+      default:'1'
     }
   },
   methods: {
