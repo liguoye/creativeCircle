@@ -10,7 +10,7 @@
             <p>
               <span class="left">账户余额：</span>
               <span class="right">
-                <em class="red">0</em>元</span>
+                <em class="red">{{user.Money}}</em>元</span>
             </p>
             <p>
               <span class="left">充值方式：</span>
@@ -19,20 +19,20 @@
             </p>
             <p>
               <span class="left">支付宝账号：</span>
-              <span class="right">18160982062</span>
+              <span class="right">{{user.alipay}}</span>
             </p>
             <p>
               <span class="left">开户人：</span>
-              <span class="right">曾晶晶</span>
+              <span class="right">{{user.alipay_name}}</span>
             </p>
             <p>
               <span class="left">支付宝昵称：</span>
 
               <span class="right" style="display:inline-block;width:200px;">
-                <el-input placeholder="请输入支付宝昵称" v-model="name" clearable size="mini">
+                <el-input placeholder="请输入支付宝昵称" v-model="alipay" clearable size="mini">
                 </el-input>
               </span>
-              <el-button type="primary" size="mini" class="submitBtn" disabled>保存修改</el-button>
+              <el-button type="primary" size="mini" class="submitBtn" :disabled="!alipay" @click="saveAlipay">保存修改</el-button>
             </p>
             <p>
               <span class="left red">特别提醒：</span>
@@ -43,12 +43,13 @@
               <span class="left">充值金额：</span>
 
               <span class="right" style="display:inline-block;width:200px;">
-                <el-input-number size="mini" v-model="money"></el-input-number>
+                <el-input-number size="mini" v-model="price"></el-input-number>
               </span>
             </p>
 
             <p style="margin-top:15px">
-              <el-button type="primary" size="mini" style="margin-left:120px;margin-bottom:40px;" class="submitBtn" disabled>确认提交</el-button>
+              <el-button type="primary" size="mini" style="margin-left:120px;margin-bottom:40px;" class="submitBtn" @click="submitConfirm"
+                :disabled="!price||!alipay">确认提交</el-button>
             </p>
           </el-col>
           <el-col :span="10" class="accountManageRight">
@@ -119,25 +120,57 @@ export default {
   data () {
     return {
       currentTab: 'accountRecharge',
-      name: '',
-      money: '',
-      user:{}
+      alipay: '',
+      price: '',
+      user: {}
     }
   },
-  created(){
-      this.getUserInfo()
+  created () {
+    this.getUser()
   },
   methods: {
     navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } })
     },
-    getUserInfo() {
-      this.$ajax.get("shopmember/index").then(res => {
-        console.log("余额", res);
-        if (res && res.data && res.data.code == 1) {
-          this.user = res.data.data;
+    saveAlipay () {
+      this.$ajax.get('ShopMember/upd', {
+        params: {
+          token: this.$getToken(),
+          alipay: this.alipay
+          // weixin: '',
+          // qq: ''
         }
-      });
+      }).then(res => {
+        console.log('zhifubao', res)
+        if (res && res.data && res.data.code === 1) {
+          this.getUser()
+          this.$notify({
+            title: '支付宝号修改保存成功',
+            type: 'success'
+          })
+        }
+      })
+    },
+    getUser () {
+      this.$ajax.get('shopmember/index').then(res => {
+        console.log('yonghuxinxi', res)
+        if (res && res.data && res.data.code === 1) {
+          this.user = res.data.data
+        }
+      })
+    },
+    submitConfirm () {
+      this.$ajax.get('shopmember/alipay', {
+        params: {
+          token: this.$getToken(),
+          alipay: this.alipay,
+          price: this.price
+        }
+      }).then(res => {
+        console.log('tijiaoprice', res)
+        if (res && res.data && res.data.code === 1) {
+        }
+      })
     }
   }
 }

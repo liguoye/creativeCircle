@@ -81,32 +81,35 @@
         <el-row>
           <el-col :span="19" class="formGroup" style="text-align:left !important;width:calc(100% - 160px)">
             <span>转账状态</span>
-            <el-select v-model="formData.taskClass.value" placeholder="请选择">
-              <el-option v-for="item in formData.taskClass.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="formData.type.value" placeholder="请选择">
+              <el-option v-for="item in formData.type.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
             <span>订单编号</span>
-            <el-input v-model="formData.keyWord" placeholder="请输入内容"></el-input>
+            <el-input v-model="formData.orderid" placeholder="请输入内容"></el-input>
             <span>转账截止时间</span>
             <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
           </el-col>
           <el-col :span="5" style="line-height:40px;width:160px;">
-            <el-button class="tablebtnActive">查询</el-button>
-            <el-button class="tablebtnFFF">刷新</el-button>
+            <el-button class="tablebtnActive" @click="getchargeList('param')">查询</el-button>
+            <el-button class="tablebtnFFF" @click="getchargeList()">刷新</el-button>
           </el-col>
         </el-row>
         <el-row>
           <el-col style="text-align:left;margin-top:10px;">
             <span>操作按钮:</span>
-            <el-button class="tablebtnActive">转账成功</el-button>
+            <el-button class="tablebtnActive" @click="changeAccount( '1')">转账成功</el-button>
             <el-button class="tablebtnActive" @click="allTransferSuccessShow=true">全部转账成功</el-button>
-            <el-button class="tablebtnActive">转账失败</el-button>
+            <el-button class="tablebtnActive" @click="changeAccount( '2')">转账失败</el-button>
             <el-button class="tablebtnActive">招商批量导出</el-button>
             <el-button class="tablebtnActive">浦发批量导出</el-button>
           </el-col>
         </el-row>
       </div>
-      <div class="table">
-        <el-table :data="tableData.data" border style="width: 100%">
+      <div class="tableCom">
+        <el-table :data="tableData.data" border style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55">
+          </el-table-column>
+
           <template v-for="(item,index) in tableData.columns">
             <!-- <template v-if="item.com=='input'">
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
@@ -118,11 +121,11 @@
             <template v-if="item.com=='status'">
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
-                  <span v-if=" tableData.data[scope.$index]['status']==1 ">等待转账</span>
-                  <span v-if=" tableData.data[scope.$index]['stutas']==2 ">已转账</span>
-                  <span v-if=" tableData.data[scope.$index]['stutas']==3 ">转账失败</span>
-                  <span v-if=" tableData.data[scope.$index]['stutas']==4 ">未转账</span>
-                  <span v-if=" tableData.data[scope.$index]['stutas']==5 ">已退款</span>
+                  <span v-if=" tableData.data[scope.$index]['status'] == 1 ">等待转账</span>
+                  <span v-else-if=" tableData.data[scope.$index]['status'] == 2 ">已转账</span>
+                  <span v-else-if=" tableData.data[scope.$index]['status'] == 3 ">转账失败</span>
+                  <span v-else-if=" tableData.data[scope.$index]['status'] == 4 ">未转账</span>
+                  <span v-else-if=" tableData.data[scope.$index]['status'] == 5 ">已退款</span>
                 </template>
               </el-table-column>
             </template>
@@ -222,7 +225,7 @@
           </section>
         </div>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="allTransferSuccessShow = false" type="primary">确认无误</el-button>
+          <el-button type="primary" @click="changeAccount('all')">确认无误</el-button>
           <el-button @click="allTransferSuccessShow = false">我再看看</el-button>
         </div>
       </el-dialog>
@@ -263,25 +266,14 @@ export default {
         value: ''
       },
       formData: {
-        taskClass: {
+        type: {
           value: '',
           options: [
             { label: '等待转账', value: '等待转账' },
             { label: '已导出', value: '已导出' }
           ]
         },
-        taskNum: {
-          value: '任务编号',
-          options: [
-            { label: '任务编号', value: '任务编号' },
-            { label: '订单编号', value: '订单编号' },
-            { label: '运单号', value: '运单号' },
-            { label: '店铺名称', value: '店铺名称' },
-            { label: '买号名称', value: '买号名称' },
-            { label: '商品编号', value: '商品编号' }
-          ]
-        },
-        keyWord: '',
+        orderid: '',
         date: ''
       },
       tableData: {
@@ -294,9 +286,10 @@ export default {
           { name: '开户行', code: 'bank_account.bank_name', width: '' },
           { name: '支行名称', code: 'bank_account.branch', width: '' },
           { name: '转账状态', code: 'status', width: '', com: 'status' },
-          { name: '转账截止时间', code: 'bank_account.endtime', width: '' }
+          { name: '转账截止时间', code: 'endtime', width: '' }
         ]
       },
+      tableSelectData: [],
       bankList: null,
       user: null,
       branchBank: '',
@@ -312,6 +305,10 @@ export default {
     this.getchargeList()
   },
   methods: {
+    handleSelectionChange (val) {
+      console.log(val)
+      this.tableSelectData = val
+    },
     changeCard (type) {
       this.dialogFormVisible = true
     },
@@ -360,8 +357,61 @@ export default {
         }
       })
     },
-    getchargeList () {
-      this.$ajax.get('shopmember/accountsList').then(res => {
+    changeAccount (param) {
+      let id = ''
+      if (param === 'all') {
+        param = '1'
+        this.allTransferSuccessShow = false
+        for (let i in this.tableData.data) {
+          if (!id) {
+            id = this.tableData.data[i]['id'] + ','
+          } else {
+            id = id + this.tableData.data[i]['id'] + ','
+          }
+        }
+      } else {
+        for (let i in this.tableSelectData) {
+          if (!id) {
+            id = this.tableSelectData[i]['id'] + ','
+          } else {
+            id = id + this.tableSelectData[i]['id'] + ','
+          }
+        }
+      }
+
+      this.$ajax.get('shopmember/changeAccount', {
+        params: {
+          type: param,
+          id: id
+        }
+      }).then(res => {
+        if (res && res.data && res.data.code === 1) {
+          this.$notify({
+            title: res.data.msg,
+            type: 'success'
+          })
+        }
+      })
+    },
+    getchargeList (param) {
+      let queryParams = {
+        params: {
+          token: this.$getToken()
+        }
+      }
+      if (param) {
+        queryParams = {
+          params: {
+            token: this.$getToken(),
+            type: this.formData.type.value,
+            orderid: this.formData.orderid,
+            start: this.formData.date[0],
+            end: this.formData.date[1]
+
+          }
+        }
+      }
+      this.$ajax.get('shopmember/accountsList', queryParams).then(res => {
         console.log('转账列表', res)
         if (res && res.data && res.data.code === 1) {
           this.tableData.data = res.data.data

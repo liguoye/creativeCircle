@@ -18,13 +18,39 @@
             </el-date-picker>
           </el-col>
           <el-col :span="6" style="line-height:40px;width:195px;">
-            <el-button class="tablebtnActive" style="margin-left:0px;">查询</el-button>
-            <el-button class="tablebtnFFF" style="margin-left:0px;">刷新</el-button>
+            <el-button class="tablebtnActive" style="margin-left:0px;" @click="getchargeList('param')">查询</el-button>
+            <el-button class=" tablebtnFFF " style="margin-left:0px; " @click="getchargeList()">刷新</el-button>
           </el-col>
         </el-row>
       </div>
-      <div class="table">
-        <table-com :columns="tableData.columns"></table-com>
+      <div class="tableCom">
+        <el-table :data="tableData.data" border style="width: 100%">
+
+          <template v-for="(item,index) in tableData.columns">
+            <!-- <template v-if="item.com=='input'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <el-input v-model="tableData.data[scope.$index][item.code]"></el-input>
+                </template>
+              </el-table-column>
+            </template> -->
+            <template v-if="item.com=='status'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <span v-if=" tableData.data[scope.$index]['status'] == 1 ">等待转账</span>
+                  <span v-else-if=" tableData.data[scope.$index]['status'] == 2 ">已转账</span>
+                  <span v-else-if=" tableData.data[scope.$index]['status'] == 3 ">转账失败</span>
+                  <span v-else-if=" tableData.data[scope.$index]['status'] == 4 ">未转账</span>
+                  <span v-else-if=" tableData.data[scope.$index]['status'] == 5 ">已退款</span>
+                </template>
+              </el-table-column>
+            </template>
+            <template v-else>
+              <el-table-column :key="index " :width="item.width " :prop="item.code " :label="item.name " align="center ">
+              </el-table-column>
+            </template>
+          </template>
+        </el-table>
       </div>
     </div>
   </div>
@@ -35,43 +61,55 @@ export default {
   components: {
     tableCom
   },
+  created () {
+    this.getchargeList()
+  },
   data () {
     return {
       msg: 'flowTaskManagement',
       formData: {
-        taskClass: {
-          value: '',
-          options: [
-            { label: '未到账', value: '未到账' },
-            { label: '转账失败', value: '转账失败' }
-          ]
-        },
-        taskNum: {
-          value: '任务编号',
-          options: [
-            { label: '任务编号', value: '任务编号' },
-            { label: '订单编号', value: '订单编号' },
-            { label: '运单号', value: '运单号' },
-            { label: '店铺名称', value: '店铺名称' },
-            { label: '买号名称', value: '买号名称' },
-            { label: '商品编号', value: '商品编号' }
-          ]
-        },
-        keyWord: '',
+        orderid: '',
         date: ''
       },
       tableData: {
         data: [],
         columns: [
-          { name: '订单编号', code: 'task1', width: '' },
-          { name: '转账金额', code: 'task2', width: '' },
-          { name: '转账人银行卡', code: 'task3', width: '' },
-          { name: '提现人银行卡', code: 'task4', width: '' },
-          { name: '提现人姓名', code: 'task5', width: '' },
-          { name: '转账状态', code: 'task6', width: '' },
-          { name: '转账截止时间', code: 'task7', width: '' }
+          { name: '订单编号', code: 'orderid', width: '180' },
+          { name: '转账金额', code: 'price', width: '' },
+          { name: '转账人银行卡', code: 'bank_account.bank_number', width: '' },
+          { name: '提现人银行卡', code: 'bank_account.joint_line_number', width: '' },
+          { name: '提现人姓名', code: 'bank_account.branch', width: '' },
+          { name: '转账状态', code: 'status', width: '', com: 'status' },
+          { name: '转账截止时间', code: 'endtime', width: '' }
         ]
       }
+    }
+  },
+  methods: {
+    getchargeList (param) {
+      let queryParams = {
+        params: {
+          token: this.$getToken(),
+          type: '已退款'
+        }
+      }
+      if (param) {
+        queryParams = {
+          params: {
+            token: this.$getToken(),
+            type: '已退款',
+            orderid: this.formData.orderid,
+            start: this.formData.date[0],
+            end: this.formData.date[1]
+          }
+        }
+      }
+      this.$ajax.get('shopmember/accountsList', queryParams).then(res => {
+        console.log('转账列表', res)
+        if (res && res.data && res.data.code === 1) {
+          this.tableData.data = res.data.data
+        }
+      })
     }
   }
 }
