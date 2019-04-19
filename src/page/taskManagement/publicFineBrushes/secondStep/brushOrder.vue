@@ -324,6 +324,7 @@ export default {
             { label: "APP直通车", value: 6 }
           ]
         },
+        flowid: "",
         keyword: "",
         keyword1: "",
         taskNum: "",
@@ -348,7 +349,8 @@ export default {
       if (val === "back") {
         this.$emit("changeState", { state: "firstStep" });
       } else {
-        let isval = this.getdata.code;
+        let isval = this.getdate.code;
+        console.log(isval)
         if (isval == "1") {
           if (this.showGoBtn === "2") {
             this.$store.commit("settask", this.totle);

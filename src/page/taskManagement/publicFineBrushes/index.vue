@@ -31,7 +31,13 @@
         <four-step v-if="orderProgressState=='fourStep'" @changeState="changeState"></four-step>
       </div>
 
-      <div>所有数据{{getall}}</div>
+      <!-- <div>所有数据{{getall}}</div> -->
+      <div>
+          <div class="item" v-for="(item,index) in getall" :key="index">
+              <div>{{index}}:</div>
+              <div>{{item}}</div>
+          </div>
+      </div>
     </div>
   </div>
 </template>
@@ -57,7 +63,7 @@ export default {
   data() {
     return {
       currentTab: "publicFineBrushes",
-      orderProgressState: "firstStep",
+      orderProgressState: "thirdStep",
       radio: "1"
     };
   },
