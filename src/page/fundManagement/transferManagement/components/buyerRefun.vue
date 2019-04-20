@@ -76,11 +76,11 @@ export default {
         columns: [
           { name: '订单编号', code: 'orderid', width: '180' },
           { name: '转账金额', code: 'price', width: '' },
-          { name: '转账人银行卡', code: 'bank_account.bank_number', width: '' },
-          { name: '提现人银行卡', code: 'bank_account.joint_line_number', width: '' },
+          { name: '转账人银行卡', code: 'bank_account.bank_number', width: '130' },
+          { name: '提现人银行卡', code: 'bank_account.joint_line_number', width: '130' },
           { name: '提现人姓名', code: 'bank_account.branch', width: '' },
           { name: '转账状态', code: 'status', width: '', com: 'status' },
-          { name: '转账截止时间', code: 'endtime', width: '' }
+          { name: '转账截止时间', code: 'ut', width: '150' }
         ]
       }
     }
@@ -90,14 +90,14 @@ export default {
       let queryParams = {
         params: {
           token: this.$getToken(),
-          type: '已退款'
+          type: '5'
         }
       }
       if (param) {
         queryParams = {
           params: {
             token: this.$getToken(),
-            type: '已退款',
+            type: '5',
             orderid: this.formData.orderid,
             start: this.formData.date[0],
             end: this.formData.date[1]

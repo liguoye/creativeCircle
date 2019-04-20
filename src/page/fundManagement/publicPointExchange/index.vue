@@ -14,14 +14,14 @@
           <p>
             <span class="left W210px">资金余额：</span>
             <span class="right">
-              0 元
+              {{user.Money}} 元
               <em class="red">（存款用于支付贷款）</em>
             </span>
           </p>
           <p>
             <span class="left W210px">可用发布点：</span>
             <span class="right">
-              0 点
+              {{user.MinLi}} 点
               <em class="red">（发布点用于支付佣金）</em>
             </span>
           </p>
@@ -35,7 +35,7 @@
           <div class="H10"></div>
           <p style="margin-top:10px;margin-bottom:30px;">
             <span class="left W210px">&nbsp;</span>
-            <el-button type="primary" class="tablebtnActive">提交申请</el-button>
+            <el-button type="primary" class="tablebtnActive" @click="exchange('1')">提交申请</el-button>
           </p>
         </div>
         <div class="taskManagementNavList topList">
@@ -46,11 +46,11 @@
         <div class="tabContent">
           <p>
             <span class="left W210px">可用发布点:</span>
-            <span class="right">0 点</span>
+            <span class="right">{{user.MinLi}} 点</span>
           </p>
           <p>
             <span class="left W210px">资金余额：</span>
-            <span class="right">0 元</span>
+            <span class="right"> {{user.Money}} 元</span>
           </p>
           <p>
             <span class="left W210px">&nbsp;</span>
@@ -62,7 +62,7 @@
           <div class="H10"></div>
           <p style="margin-top:10px;">
             <span class="left W210px">&nbsp;</span>
-            <el-button type="primary" class="tablebtnActive">提交申请</el-button>
+            <el-button type="primary" class="tablebtnActive" @click="exchange('2')">提交申请</el-button>
           </p>
         </div>
       </el-col>
@@ -70,42 +70,60 @@
   </div>
 </template>
 <script>
-import navList from "../components/treeNavList.vue";
+import navList from '../components/treeNavList.vue'
 export default {
   components: {
     navList
   },
   props: {},
-  data() {
+  data () {
     return {
-      currentTab: "publicPointExchange",
-      topTabCurrent: "1",
+      currentTab: 'publicPointExchange',
+      topTabCurrent: '1',
       pubPoint: 0,
       pubMoney: 0,
       user: {}
-    };
+    }
   },
-  created() {
-    this.getUserInfo();
+  created () {
+    this.getUserInfo()
   },
   methods: {
-    navListClick(val) {
-      this.$router.push({ name: val, param: { tab: val } });
+    navListClick (val) {
+      this.$router.push({ name: val, param: { tab: val } })
     },
-    toPNavChangeTab(val) {
-      console.log(val);
-      this.topTabCurrent = val;
+    toPNavChangeTab (val) {
+      console.log(val)
+      this.topTabCurrent = val
     },
-    getUserInfo() {
-      this.$ajax.get("shopmember/index").then(res => {
-        console.log("余额", res);
-        if (res && res.data && res.data.code == 1) {
-          this.user = res.data.data;
+    exchange (val) {
+      this.$ajax.get('shopmember/exchange', {
+        params: {
+          token: this.$getToken(),
+          type: val,
+          price: val === '1' ? this.pubMoney : this.pubPoint
         }
-      });
+      }).then(res => {
+        console.log('兑换点', res)
+        if (res && res.data && res.data.code === 1) {
+          this.$notify({
+            title: res.data.msg,
+            type: 'success'
+          })
+          this.getUserInfo()
+        }
+      })
+    },
+    getUserInfo () {
+      this.$ajax.get('shopmember/memberInfo').then(res => {
+        console.log('余额', res)
+        if (res && res.data && res.data.code === 1) {
+          this.user = res.data.data
+        }
+      })
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .publicPointExchange {

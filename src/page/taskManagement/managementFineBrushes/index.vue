@@ -4,38 +4,124 @@
     <div class="publicFineBrushes">
       <div class="formGroup">
         <el-row>
-          <el-col :span="12">
-            <el-select v-model="formData.taskClass.value" placeholder="请选择">
-              <el-option v-for="item in formData.taskClass.options" :key="item.value" :label="item.label" :value="item.value">
+          <el-col :span="12" style="text-align:left">
+            <el-select v-model="formData.type.value" placeholder="任务类型">
+              <el-option v-for="item in formData.type.options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
-            <el-select v-model="formData.allTask.value" placeholder="请选择">
-              <el-option v-for="item in formData.allTask.options" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="formData.status.value" placeholder="任务状态">
+              <el-option v-for="item in formData.status.options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
-            <el-select v-model="formData.taskNum.value" placeholder="请选择">
-              <el-option v-for="item in formData.taskNum.options" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="formData.type_find.value" placeholder="搜索类型">
+              <el-option v-for="item in formData.type_find.options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
-            <el-input v-model="formData.orderKeyword" placeholder="请输入内容"></el-input>
+            <el-input v-model="formData.name" placeholder="请输入内容"></el-input>
           </el-col>
           <el-col :span="12">
-            <el-select v-model="formData.payTime.value" placeholder="请选择">
+            <!-- <el-select v-model="formData.payTime.value" placeholder="请选择">
               <el-option v-for="item in formData.payTime.options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
-            </el-select>
+            </el-select> -->
             <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
           </el-col>
         </el-row>
       </div>
       <div class="btnGroup">
-        <el-button class="tablebtnActive">查询</el-button>
-        <el-button class="tablebtnFFF">刷新</el-button>
+        <el-button class="tablebtnActive" @click="queryData('param')">查询</el-button>
+        <el-button class="tablebtnFFF" @click="queryData()">刷新</el-button>
         <el-button class="tablebtnFFF">一键取消</el-button>
       </div>
-      <div class="table">
-        <table-com :columns="tableData.columns"></table-com>
+      <div class="tableCom">
+        <el-table :data="tableData.data" border style="width: 100%" height="400">
+          <!-- <el-table-column type="selection" width="55">
+          </el-table-column> -->
+          <template v-for="(item,index) in tableData.columns">
+            <template v-if="item.code=='type'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <div class="tableCellMsg">
+                    <p v-if="tableData.data[scope.$index]['type']==1">精刷单任务</p>
+                    <p v-if="tableData.data[scope.$index]['type']==2">指定推送</p>
+                    <p v-if="tableData.data[scope.$index]['type']==3">复购任务</p>
+                  </div>
+                </template>
+              </el-table-column>
+            </template>
+            <template v-else-if="item.code=='ordersn'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <div class="tableCellMsg">
+                    <p>任务编号: {{tableData.data[scope.$index]['id']}}</p>
+                    <p class="red">(淘宝APP自然搜索)</p>
+                    <p v-if="tableData.data[scope.$index]['ordersn']">订单编号：{{tableData.data[scope.$index]['ordersn']}}</p>
+                    <p v-if="tableData.data[scope.$index]['express_sn']">圆通快递：{{tableData.data[scope.$index]['express_sn']}}</p>
+                  </div>
+                </template>
+              </el-table-column>
+            </template>
+            <template v-else-if="item.code=='ordersn'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <div class="tableCellMsg">
+                    <p>买号: {{tableData.data[scope.$index]['id']}}</p>
+                    <span style="color:#4292b9">查看买号信息</span>
+                    <p>店铺名称：{{tableData.data[scope.$index]['visitWay']}}</p>
+                    <span style="color:#4292b9">查看任务详情</span>
+                    <span style="color:#4292b9">修改备注</span>
+                  </div>
+                </template>
+              </el-table-column>
+            </template>
+            <template v-else-if="item.code=='price'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <div class="tableCellMsg">
+                    <p>商品单价: {{tableData.data[scope.$index]['id']}}元</p>
+                    <p>任务总价：{{tableData.data[scope.$index]['visitWay']}}元</p>
+                    <p>发布地啊你：{{tableData.data[scope.$index]['type']}}个</p>
+                    <p>置顶费用：{{tableData.data[scope.$index]['type']}}元</p>
+                  </div>
+                </template>
+              </el-table-column>
+            </template>
+            <template v-else-if="item.code=='status'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <div class="tableCellMsg">
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='0'">待接手</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='1'">进行中</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='2'">商家待审核</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='3'">管理员待审核</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='4'">审核不通过</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='5'">已完成</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='6'">已取消</p>
+                    <p>发布时间：{{tableData.data[scope.$index]['ct']}}</p>
+                  </div>
+                </template>
+              </el-table-column>
+            </template>
+            <template v-else-if="item.code=='btn'">
+              <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                <template slot-scope="scope">
+                  <el-button type="primary" size="mini" style="border-radius:25px;">客服介入</el-button>
+                  <el-button type="warning" size="mini" style="border-radius:25px;margin-left:0;margin-top:5px;">已查看截图</el-button>
+                </template>
+              </el-table-column>
+            </template>
+            <template v-else>
+              <el-table-column :key="index " :width="item.width " :prop="item.code " :label="item.name " align="center ">
+              </el-table-column>
+            </template>
+          </template>
+        </el-table>
+        <div class="pagination ">
+          <el-pagination @current-change="handleCurrentChange " :current-page="page" :page-sizes="[20]" layout="total, sizes, prev, pager, next, jumper "
+            :total="total ">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -51,37 +137,38 @@ export default {
   data () {
     return {
       currentTab: 'managementFineBrushes',
+      page: 1,
+      total: 0,
       formData: {
-        taskClass: {
-          value: '任务分类',
+        type: {
+          value: '',
           options: [
-            { label: '任务分类', value: '任务分类' },
-            { label: '精刷单任务', value: '精刷单任务' },
-            { label: '预约推送任务', value: '预约推送任务' },
-            { label: '复购任务', value: '复购任务' }
+            { label: '精刷单任务', value: 1 },
+            { label: '指定推送', value: 2 },
+            { label: '复购任务', value: 3 }
           ]
         },
-        allTask: {
-          value: '全部任务',
+        status: {
+          value: '',
           options: [
-            { label: '全部任务', value: '全部任务' },
-            { label: '待接手', value: '待接手' },
-            { label: '进行中', value: '进行中' },
-            { label: '待发货', value: '待发货' },
-            { label: '待完成', value: '待完成' },
-            { label: '已完成', value: '已完成' },
-            { label: '隐藏中', value: '隐藏中' }
+            { label: '待接手', value: 0 },
+            { label: '进行中', value: 1 },
+            { label: '待发货', value: 2 },
+            { label: '待完成', value: 3 },
+            { label: '已完成', value: 4 },
+            { label: '隐藏中', value: 5 },
+            { label: '已取消', value: 6 }
           ]
         },
-        taskNum: {
-          value: '任务编号',
+        type_find: {
+          value: '',
           options: [
-            { label: '任务编号', value: '任务编号' },
-            { label: '订单编号', value: '订单编号' },
-            { label: '运单号', value: '运单号' },
-            { label: '店铺名称', value: '店铺名称' },
-            { label: '买号名称', value: '买号名称' },
-            { label: '商品编号', value: '商品编号' }
+            { label: '任务编号', value: 1 },
+            { label: '运单号', value: 2 },
+            { label: '店铺名称', value: 3 },
+            { label: '买号名称', value: 4 },
+            { label: '商品编号', value: 5 },
+            { label: '商品简称', value: 6 }
           ]
         },
         payTime: {
@@ -93,22 +180,57 @@ export default {
             { label: '完成时间', value: '完成时间' }
           ]
         },
-        browseKeyword: '',
-        orderKeyword: '',
-        account: '',
+        name: '',
         date: ''
       },
       tableData: {
-        data: [],
+        data: [{}],
         columns: [
-          { name: '任务分类', code: 'task1', width: '' },
-          { name: '任务/订单编号', code: 'task2', width: '' },
-          { name: '买号/商品信息', code: 'task3', width: '' },
-          { name: '商品价格/发布点', code: 'task4', width: '' },
-          { name: '操作', code: 'task5', width: '' },
-          { name: '操作按钮', code: 'task6', width: '' }
+          { name: '任务分类', code: 'type', width: '' },
+          { name: '任务/订单编号', code: 'ordersn', width: '' },
+          { name: '买号/商品信息', code: 'goodMsg', width: '' },
+          { name: '商品价格/发布点', code: 'price', width: '' },
+          { name: '任务状态', code: 'status', width: '' },
+          { name: '操作按钮', code: 'btn', width: '100' }
         ]
       }
+    }
+  },
+  methods: {
+    handleCurrentChange (val) {
+      this.page = val
+      this.queryData('param')
+    },
+    queryData (param) {
+      let queryParams = {
+        params: {
+          token: this.$getToken()
+        }
+      }
+      if (param) {
+        queryParams = {
+          params: {
+            token: this.$getToken(),
+            page: this.page,
+            type: this.formData.type.value,
+            status: this.formData.status.value,
+            type_find: this.formData.type_find.value,
+            start: this.formData.date[0],
+            end: this.formData.date[1]
+          }
+        }
+      }
+      this.$ajax.get('shopmember/releaseList', queryParams).then(res => {
+        if (res && res.data && res.data.code === 1) {
+          this.$notify({
+            title: res.data.msg,
+            type: 'success'
+          })
+          this.tableData.data = res.data.data.data
+          this.total = res.data.data.total
+          this.page = 1
+        }
+      })
     }
   }
 }

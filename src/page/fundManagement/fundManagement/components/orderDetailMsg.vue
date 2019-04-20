@@ -8,21 +8,22 @@
             <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
             <span>类型</span>
-            <el-select v-model="formData.taskClass.value" placeholder="请选择">
-              <el-option v-for="item in formData.taskClass.options" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="formData.type.value" placeholder="请选择">
+              <el-option v-for="item in formData.type.options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
             <span>任务编号</span>
-            <el-input v-model="formData.keyWord" placeholder="请输入内容"></el-input>
+            <el-input v-model="formData.orderid" placeholder="请输入内容"></el-input>
           </el-col>
           <el-col :span="4" style="line-height:40px;">
-            <el-button class="tablebtnActive" style="margin-left:0px;">查询</el-button>
+            <el-button class="tablebtnActive" style="margin-left:0px;" @click="queryData('param')">查询</el-button>
             <el-button class="tablebtnFFF" style="margin-left:0px;">导出</el-button>
           </el-col>
         </el-row>
       </div>
       <div class="table">
-        <table-com :columns="tableData.columns"></table-com>
+        <table-com :columns="tableData.columns" :data="tableData.data" @handleCurrentChange="handleCurrentChange" :total="total"
+          :table-height="400"></table-com>
       </div>
     </div>
   </div>
@@ -33,40 +34,96 @@ export default {
   components: {
     tableCom
   },
+  created () {
+    this.queryData()
+  },
   data () {
     return {
       msg: 'orderMessage',
+      page: 1,
+      total: 0,
       formData: {
-        taskClass: {
+        type: {
           value: '',
           options: [
-            { label: '发布任务', value: '发布任务' },
-            { label: '取消任务', value: '取消任务' },
-            { label: '充值', value: '充值' },
-            { label: '购买流量', value: '购买流量' },
-            { label: '多退少补', value: '多退少补' },
-            { label: '任务处罚', value: '任务处罚' },
-            { label: '财务增', value: '财务增' }
+            { value: '1', label: '发布任务' },
+            { value: '2', label: '取消任务' },
+            { value: '3', label: '充值' },
+            { value: '4', label: '购买流量' },
+            { value: '5', label: '多退少补' },
+            { value: '6', label: '任务处罚' },
+            { value: '7', label: '财务增' },
+            { value: '8', label: '财务扣' },
+            { value: '9', label: '购买发布点' },
+            { value: '10', label: '兑换资金' },
+            { value: '11', label: '返回待支付退差价' },
+            { value: '12', label: '返回待支付退担保金' },
+            { value: '13', label: '取消流量' },
+            { value: '14', label: '返回待支付退处罚' },
+            { value: '15', label: '工单处罚' },
+            { value: '16', label: '退出任务退处罚' },
+            { value: '17', label: '退出任务退多退少补' },
+            { value: '18', label: '购买智能助手基础版' },
+            { value: '19', label: '购买评价' },
+            { value: '20', label: '取消评价' },
+            { value: '21', label: '返还购买评价' }
           ]
         },
-        keyWord: '',
+        orderid: '',
         date: ''
       },
       tableData: {
         data: [],
         columns: [
-          { name: '消费ID', code: 'task1', width: '' },
-          { name: '类型', code: 'task2', width: '' },
-          { name: '消费存款', code: 'task3', width: '' },
-          { name: '消费发布点', code: 'task4', width: '' },
-          { name: '原存款', code: 'task5', width: '' },
-          { name: '原发布点', code: 'task6', width: '' },
-          { name: '剩余存款', code: 'task7', width: '' },
-          { name: '剩余发布点', code: 'task8', width: '' },
-          { name: '备注', code: 'task9', width: '' },
-          { name: '消费时间', code: 'task10', width: '' }
+          { name: '消费ID', code: 'orderid', width: '150' },
+          { name: '类型', code: 'type', width: '' },
+          { name: '消费存款', code: 'b_price', width: '' },
+          { name: '消费发布点', code: 'b_publishing', width: '100' },
+          { name: '原存款', code: 'before_price', width: '' },
+          { name: '原发布点', code: 'before_publishing', width: '' },
+          { name: '剩余存款', code: 'price', width: '' },
+          { name: '剩余发布点', code: 'publishing', width: '100' },
+          { name: '备注', code: 'remark', width: '200' },
+          { name: '消费时间', code: 'ct', width: '160' }
         ]
       }
+    }
+  },
+  methods: {
+    handleCurrentChange (val) {
+      this.page = val
+      this.queryData('param')
+    },
+    queryData (param) {
+      let queryParams = {
+        params: {
+          token: this.$getToken()
+        }
+      }
+      if (param) {
+        queryParams = {
+          params: {
+            token: this.$getToken(),
+            type: this.formData.type.value,
+            orderid: this.formData.orderid,
+            page: this.page,
+            start: this.formData.date[0],
+            end: this.formData.date[1]
+
+          }
+        }
+      }
+      this.$ajax.get('shopmember/detailed', queryParams).then(res => {
+        if (res && res.data && res.data.code === 1) {
+          this.$notify({
+            title: res.data.msg,
+            type: 'success'
+          })
+          this.tableData.data = res.data.data.data
+          this.total = res.data.data.total
+          this.page = 1
+        }
+      })
     }
   }
 }

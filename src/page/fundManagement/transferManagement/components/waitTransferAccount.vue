@@ -282,11 +282,11 @@ export default {
           { name: '订单编号', code: 'orderid', width: '180' },
           { name: '转账金额', code: 'price', width: '' },
           { name: '提现人', code: 'bank_account.card_name', width: '' },
-          { name: '银行卡号', code: 'bank_account.bank_number', width: '' },
+          { name: '银行卡号', code: 'bank_account.bank_number', width: '130' },
           { name: '开户行', code: 'bank_account.bank_name', width: '' },
           { name: '支行名称', code: 'bank_account.branch', width: '' },
           { name: '转账状态', code: 'status', width: '', com: 'status' },
-          { name: '转账截止时间', code: 'endtime', width: '' }
+          { name: '转账截止时间', code: 'ut', width: '150' }
         ]
       },
       tableSelectData: [],

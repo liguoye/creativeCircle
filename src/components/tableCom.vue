@@ -27,8 +27,8 @@
       </template>
     </el-table>
     <div class="pagination ">
-      <el-pagination @current-change="handleCurrentChange " :current-page="currentPage" :page-sizes="[20]" :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper " :total="total ">
+      <el-pagination @current-change="handleCurrentChange " :current-page="currentPage" :page-sizes="[20]" layout="total, sizes, prev, pager, next, jumper "
+        :total="total ">
       </el-pagination>
     </div>
 

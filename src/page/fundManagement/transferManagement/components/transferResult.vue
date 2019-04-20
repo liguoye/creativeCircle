@@ -85,11 +85,11 @@ export default {
         columns: [
           { name: '订单编号', code: 'orderid', width: '180' },
           { name: '转账金额', code: 'price', width: '' },
-          { name: '转账人银行卡', code: 'bank_account.bank_number', width: '' },
-          { name: '提现人银行卡', code: 'bank_account.bank_name', width: '' },
+          { name: '转账人银行卡', code: 'bank_account.bank', width: '130' },
+          { name: '提现人银行卡', code: 'bank_account.bank_name', width: '130' },
           { name: '提现人姓名', code: 'bank_account.card_name', width: '' },
           { name: '转账状态', code: 'status', width: '', com: 'status' },
-          { name: '转账时间', code: 'endtime', width: '' }
+          { name: '转账时间', code: 'ct', width: '150' }
         ]
       }
     }
@@ -103,7 +103,7 @@ export default {
       let queryParams = {
         params: {
           token: this.$getToken(),
-          type: '已转账'
+          type: '2'
         }
       }
       if (param) {
