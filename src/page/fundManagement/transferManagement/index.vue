@@ -45,11 +45,11 @@ export default {
       topTabCurrent: '1',
       name: '',
       money: '',
-      bankList:[],
-      user:{}
+      bankList: [],
+      user: {}
     }
   },
-  created(){
+  created () {
     //   this.getUserInfo()
   },
   methods: {
@@ -59,8 +59,8 @@ export default {
     toPNavChangeTab (val) {
       console.log(val)
       this.topTabCurrent = val
-    },
-    
+    }
+
   }
 }
 </script>

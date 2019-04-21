@@ -67,7 +67,7 @@
                 <template slot-scope="scope">
                   <div class="tableCellMsg">
                     <p>买号: {{tableData.data[scope.$index]['taobao']}}</p>
-                    <span style="color:#4292b9;cursor:pointer" @click="checkBuyerMsg(scope.$index)">查看买号信息</span>
+                    <!-- <span style="color:#4292b9;cursor:pointer" @click="checkBuyerMsg(scope.$index)">查看买号信息</span> -->
                     <p>店铺名称：{{tableData.data[scope.$index]['shop_name']}}</p>
                     <span style="color:#4292b9;cursor:pointer" @click="checkTaskDetail(scope.$index)">查看任务详情</span>
                     <span style="color:#4292b9;cursor:pointer" @click="editNote(scope.$index)">修改备注</span>

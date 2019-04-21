@@ -18,7 +18,7 @@
           <el-col :span="6" style="line-height:40px;width:195px;">
             <el-button class="tablebtnActive" style="margin-left:0px;" @click="getchargeList('param')">查询</el-button>
             <el-button class="tablebtnFFF" style="margin-left:0px;" @click="getchargeList()">刷新</el-button>
-            <el-button class="tablebtnFFF" style="margin-left:0px;">导出</el-button>
+            <el-button class="tablebtnFFF" style="margin-left:0px;" @click="handleDownload()">导出</el-button>
           </el-col>
         </el-row>
       </div>
@@ -98,6 +98,27 @@ export default {
     handleSelectionChange (val) {
       console.log(val)
       this.tableSelectData = val
+    },
+    // 导出功能
+    handleDownload () {
+      this.downloadLoading = true
+      let tHeader = []
+      let filterVal = ['orderid', 'price', 'bank', 'bank_name', 'card_name', 'status', 'ct'] // 字段如果有前缀要去除(bank_account.bank_name)
+      for (let i = 0; i < this.tableData.columns.length; i++) {
+        tHeader.push(this.tableData.columns[i]['name'])
+        // filterVal.push(this.tableData.columns[i]['code'])
+      }
+      require.ensure([], () => {
+        const { exportJsonToExcel } = require('@/vendor/Export2Excel.js')
+        const list = this.tableData.data
+        const data = this.formatJson(filterVal, list)
+        exportJsonToExcel(tHeader, data, '列表excel')
+        this.downloadLoading = false
+      })
+    },
+    // 格式化数据
+    formatJson (filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
     },
     getchargeList (param) {
       let queryParams = {
