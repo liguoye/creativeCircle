@@ -17,7 +17,7 @@
           </el-col>
           <el-col :span="4" style="line-height:40px;">
             <el-button class="tablebtnActive" style="margin-left:0px;" @click="queryData('param')">查询</el-button>
-            <el-button class="tablebtnFFF" style="margin-left:0px;">导出</el-button>
+            <el-button class="tablebtnFFF" style="margin-left:0px;" @click="handleDownload()">导出</el-button>
           </el-col>
         </el-row>
       </div>
@@ -124,6 +124,34 @@ export default {
           this.page = 1
         }
       })
+    },
+    // 导出功能
+    handleDownload () {
+      if (this.tableData.data.length <= 0) {
+        this.$notify({
+          title: '没有数据可导出',
+          type: 'warning'
+        })
+        return false
+      }
+      this.downloadLoading = true
+      let tHeader = []
+      let filterVal = [] // 字段如果有前缀要去除(bank_account.bank_name)
+      for (let i = 0; i < this.tableData.columns.length; i++) {
+        tHeader.push(this.tableData.columns[i]['name'])
+        filterVal.push(this.tableData.columns[i]['code'])
+      }
+      require.ensure([], () => {
+        const { exportJsonToExcel } = require('@/vendor/Export2Excel.js')
+        const list = this.tableData.data
+        const data = this.formatJson(filterVal, list)
+        exportJsonToExcel(tHeader, data, '列表excel')
+        this.downloadLoading = false
+      })
+    },
+    // 导出格式化数据
+    formatJson (filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
     }
   }
 }

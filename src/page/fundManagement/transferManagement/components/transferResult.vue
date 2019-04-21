@@ -101,6 +101,13 @@ export default {
     },
     // 导出功能
     handleDownload () {
+      if (this.tableData.data.length <= 0) {
+        this.$notify({
+          title: '没有数据可导出',
+          type: 'warning'
+        })
+        return false
+      }
       this.downloadLoading = true
       let tHeader = []
       let filterVal = ['orderid', 'price', 'bank', 'bank_name', 'card_name', 'status', 'ct'] // 字段如果有前缀要去除(bank_account.bank_name)
@@ -116,7 +123,7 @@ export default {
         this.downloadLoading = false
       })
     },
-    // 格式化数据
+    // 导出格式化数据
     formatJson (filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => v[j]))
     },

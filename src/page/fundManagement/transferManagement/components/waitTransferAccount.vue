@@ -100,8 +100,8 @@
             <el-button class="tablebtnActive" @click="changeAccount( '1')">转账成功</el-button>
             <el-button class="tablebtnActive" @click="allTransferSuccessShow=true">全部转账成功</el-button>
             <el-button class="tablebtnActive" @click="changeAccount( '2')">转账失败</el-button>
-            <el-button class="tablebtnActive">招商批量导出</el-button>
-            <el-button class="tablebtnActive">浦发批量导出</el-button>
+            <el-button class="tablebtnActive" @click="handleDownload(1)">招商批量导出</el-button>
+            <el-button class="tablebtnActive" @click="handleDownload(2)">浦发批量导出</el-button>
           </el-col>
         </el-row>
       </div>
@@ -417,6 +417,34 @@ export default {
           this.tableData.data = res.data.data
         }
       })
+    },
+    // 导出功能
+    handleDownload () {
+      if (this.tableData.data.length <= 0) {
+        this.$notify({
+          title: '没有数据可导出',
+          type: 'warning'
+        })
+        return false
+      }
+      this.downloadLoading = true
+      let tHeader = []
+      let filterVal = [] // 字段如果有前缀要去除(bank_account.bank_name)
+      for (let i = 0; i < this.tableData.columns.length; i++) {
+        tHeader.push(this.tableData.columns[i]['name'])
+        filterVal.push(this.tableData.columns[i]['code'])
+      }
+      require.ensure([], () => {
+        const { exportJsonToExcel } = require('@/vendor/Export2Excel.js')
+        const list = this.tableData.data
+        const data = this.formatJson(filterVal, list)
+        exportJsonToExcel(tHeader, data, '列表excel')
+        this.downloadLoading = false
+      })
+    },
+    // 导出格式化数据
+    formatJson (filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
     }
   }
 }

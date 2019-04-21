@@ -58,8 +58,8 @@ export default {
   props: {
     dialogTableVisible: {
       type: Boolean,
-      default() {
-        return false;
+      default () {
+        return false
       }
     },
     shopid: {
@@ -68,39 +68,39 @@ export default {
     }
   },
   watch: {
-    dialogTableVisible(val) {
-      this.dialogShow = val;
+    dialogTableVisible (val) {
+      this.dialogShow = val
     }
   },
-  data() {
+  data () {
     return {
       renewDuration: 1,
       dialogShow: false,
-      password: ""
-    };
+      password: ''
+    }
   },
   methods: {
-    dialogClose() {
-      this.$emit("dialogClose", false);
+    dialogClose () {
+      this.$emit('dialogClose', false)
     },
-    submit() {
-      this.$ajax.post("shopmember/buyVip",{
-          shopid:this.shopid,
-          type:this.renewDuration,
-          paypwd:this.password
+    submit () {
+      this.$ajax.post('shopmember/buyVip', {
+        shopid: this.shopid,
+        type: this.renewDuration,
+        paypwd: this.password
       }).then(res => {
-        console.log(res);
-        if (res && res.data && res.data.code == 1) {
-            this.$notify({
-                  title: "订购成功",
-                  type: "success"
-                });
-                this.dialogShow=false
+        console.log(res)
+        if (res && res.data && res.data.code === 1) {
+          this.$notify({
+            title: '订购成功',
+            type: 'success'
+          })
+          this.dialogShow = false
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .el-dialog {
