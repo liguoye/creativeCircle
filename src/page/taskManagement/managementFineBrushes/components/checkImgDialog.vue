@@ -1,27 +1,14 @@
 <template>
   <div class="settingDialogCom">
-    <el-dialog title="修改任务备注" :visible.sync="dialogShow" @close="dialogClose">
+    <el-dialog title="已查看截图" :visible.sync="dialogShow" @close="dialogClose">
       <div class="content">
-        <el-row>
-          <el-col :span="6">
-            <p>任务编号：</p>
-          </el-col>
-          <el-col :span="18">
-            <p>{{rowData.id}}</p>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="6">
-            <p>任务备注：</p>
-          </el-col>
-          <el-col :span="18">
-            <el-input placeholder="请输入任务,不超过80字" type="textarea" v-model="rowData.sellerRemark"></el-input>
-          </el-col>
-        </el-row>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogClose">取 消</el-button>
-        <el-button type="primary" @click="dialogConfirm">确 定</el-button>
+        <img :src="rowData.divKeyImg" />
+        <img :src="rowData.evaluateImg" />
+        <img :src="rowData.footImg" />
+        <img :src="rowData.goodscollerImg" />
+        <img :src="rowData.shopImg" />
+        <img :src="rowData.cartImg" />
+        <img :src="rowData.askImg" />
       </div>
     </el-dialog>
   </div>

@@ -1,9 +1,9 @@
 <template>
   <div class="settingDialogCom">
     <el-dialog title="修改任务备注" :visible.sync="dialogShow" @close="dialogClose">
-      <div class="content">
+      <div class="content" style="height:100%;overflow:inherit">
         <el-row>
-          <el-col :span="6">
+          <el-col :span="5" style="text-align:right">
             <p>任务编号：</p>
           </el-col>
           <el-col :span="18">
@@ -11,7 +11,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
+          <el-col :span="5" style="text-align:right">
             <p>任务备注：</p>
           </el-col>
           <el-col :span="18">
@@ -64,6 +64,19 @@ export default {
       }
     },
     dialogConfirm () {
+      this.$ajax.get('ShopMember/sellerRemark', {
+        params: {
+          id: this.data['id'],
+          sellerRemark: this.data['sellerRemark']
+        }
+      }).then(res => {
+        if (res && res.data && res.data.code === 1) {
+          this.$notify({
+            title: res.data.msg,
+            type: 'success'
+          })
+        }
+      })
       this.$emit('dialogConfirm', {
         id: this.rowData.id,
         sellerRemark: this.rowData.sellerRemark
@@ -81,7 +94,7 @@ export default {
         height: 40px;
         line-height: 40px;
         &:first-child {
-          text-align: right;
+          text-align: left;
         }
       }
     }

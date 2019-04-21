@@ -1,27 +1,63 @@
 <template>
   <div class="settingDialogCom">
-    <el-dialog title="修改任务备注" :visible.sync="dialogShow" @close="dialogClose">
+    <el-dialog title="查看买号信息" :visible.sync="dialogShow" @close="dialogClose">
       <div class="content">
         <el-row>
-          <el-col :span="6">
-            <p>任务编号：</p>
+          <el-col :span="5">
+            <p>淘宝会员名：</p>
           </el-col>
           <el-col :span="18">
             <p>{{rowData.id}}</p>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
-            <p>任务备注：</p>
+          <el-col :span="5">
+            <p>性别：</p>
           </el-col>
           <el-col :span="18">
-            <el-input placeholder="请输入任务,不超过80字" type="textarea" v-model="rowData.sellerRemark"></el-input>
+            <p>{{rowData.id}}</p>
           </el-col>
         </el-row>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogClose">取 消</el-button>
-        <el-button type="primary" @click="dialogConfirm">确 定</el-button>
+        <el-row>
+          <el-col :span="5">
+            <p>平台注册时间：</p>
+          </el-col>
+          <el-col :span="18">
+            <p>{{rowData.id}}</p>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">
+            <p>淘宝等级：</p>
+          </el-col>
+          <el-col :span="18">
+            <p>{{rowData.id}}</p>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">
+            <p>天猫等级：</p>
+          </el-col>
+          <el-col :span="18">
+            <p>{{rowData.id}}</p>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">
+            <p>购物评级：</p>
+          </el-col>
+          <el-col :span="18">
+            <p>{{rowData.id}}</p>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">
+            <p>淘宝成长值：</p>
+          </el-col>
+          <el-col :span="18">
+            <p>{{rowData.id}}</p>
+          </el-col>
+        </el-row>
       </div>
     </el-dialog>
   </div>

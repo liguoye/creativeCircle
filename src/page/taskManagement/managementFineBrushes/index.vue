@@ -62,15 +62,15 @@
                 </template>
               </el-table-column>
             </template>
-            <template v-else-if="item.code=='ordersn'">
+            <template v-else-if="item.code=='goodMsg'">
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
                   <div class="tableCellMsg">
-                    <p>买号: {{tableData.data[scope.$index]['id']}}</p>
-                    <span style="color:#4292b9">查看买号信息</span>
-                    <p>店铺名称：{{tableData.data[scope.$index]['visitWay']}}</p>
-                    <span style="color:#4292b9">查看任务详情</span>
-                    <span style="color:#4292b9">修改备注</span>
+                    <p>买号: {{tableData.data[scope.$index]['taobao']}}</p>
+                    <span style="color:#4292b9;cursor:pointer" @click="checkBuyerMsg(scope.$index)">查看买号信息</span>
+                    <p>店铺名称：{{tableData.data[scope.$index]['shop_name']}}</p>
+                    <span style="color:#4292b9;cursor:pointer" @click="checkTaskDetail(scope.$index)">查看任务详情</span>
+                    <span style="color:#4292b9;cursor:pointer" @click="editNote(scope.$index)">修改备注</span>
                   </div>
                 </template>
               </el-table-column>
@@ -79,10 +79,10 @@
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
                   <div class="tableCellMsg">
-                    <p>商品单价: {{tableData.data[scope.$index]['id']}}元</p>
-                    <p>任务总价：{{tableData.data[scope.$index]['visitWay']}}元</p>
-                    <p>发布地啊你：{{tableData.data[scope.$index]['type']}}个</p>
-                    <p>置顶费用：{{tableData.data[scope.$index]['type']}}元</p>
+                    <p>商品单价: {{tableData.data[scope.$index]['goodsprie']}}元</p>
+                    <p>任务总价：{{tableData.data[scope.$index]['prices']}}元</p>
+                    <p>发布点：{{tableData.data[scope.$index]['MinLi']}}个</p>
+                    <p>置顶费用：{{tableData.data[scope.$index]['zdfee']}}元</p>
                   </div>
                 </template>
               </el-table-column>
@@ -93,12 +93,13 @@
                   <div class="tableCellMsg">
                     <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='0'">待接手</p>
                     <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='1'">进行中</p>
-                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='2'">商家待审核</p>
-                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='3'">管理员待审核</p>
-                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='4'">审核不通过</p>
-                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='5'">已完成</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='2'">待发货</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='3'">待完成</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='4'">已完成</p>
+                    <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='5'">隐藏中</p>
                     <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='6'">已取消</p>
                     <p>发布时间：{{tableData.data[scope.$index]['ct']}}</p>
+                    <p>接手时间：{{tableData.data[scope.$index]['taskfristTime']}}</p>
                   </div>
                 </template>
               </el-table-column>
@@ -106,8 +107,8 @@
             <template v-else-if="item.code=='btn'">
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
-                  <el-button type="primary" size="mini" style="border-radius:25px;">客服介入</el-button>
-                  <el-button type="warning" size="mini" style="border-radius:25px;margin-left:0;margin-top:5px;">已查看截图</el-button>
+                  <el-button type="primary" size="mini" style="border-radius:25px;;cursor:pointer" @click="customerIn(scope.$index)">客服介入</el-button>
+                  <el-button type="warning" size="mini" style="border-radius:25px;margin-left:0;margin-top:5px;;cursor:pointer" @click="checkImg(scope.$index)">已查看截图</el-button>
                 </template>
               </el-table-column>
             </template>
@@ -123,22 +124,46 @@
           </el-pagination>
         </div>
       </div>
+      <edit-note-dialog @dialogClose="editDialogClose" @dialogConfirm="editDialogConfirm" :data="choiceRowData" :visible="editDialogShow"></edit-note-dialog>
+      <customer-dialog @dialogClose="customerDialogClose" @dialogConfirm="customerDialogConfirm" :data="choiceRowData" :visible="customerDialogShow"></customer-dialog>
+      <check-buyer-msg-dialog @dialogClose="checkBuyerDialogClose" @dialogConfirm="checkBuyerDialogConfirm" :data="choiceRowData"
+        :visible="checkBuyerDialogShow"></check-buyer-msg-dialog>
+      <check-img-dialog @dialogClose="checkImgDialogClose" @dialogConfirm="checkImgDialogConfirm" :data="choiceRowData" :visible="checkImgDialogShow"></check-img-dialog>
+      <check-task-detail-dialog @dialogClose="checkTaskDialogClose" @dialogConfirm="checkTaskDialogConfirm" :data="choiceRowData"
+        :visible="checkTaskDialogShow"></check-task-detail-dialog>
     </div>
   </div>
 </template>
 <script>
 import navList from '@/components/taskManagementNavList.vue'
 import tableCom from '@/components/tableCom.vue'
+import editNoteDialog from './components/editNoteDialog.vue'
+import customerDialog from './components/customerDialog.vue'
+import checkTaskDetailDialog from './components/checkTaskDetailDialog.vue'
+import checkImgDialog from './components/checkImgDialog.vue'
+import checkBuyerMsgDialog from './components/checkBuyerMsgDialog.vue'
 export default {
   components: {
     navList,
-    tableCom
+    tableCom,
+    editNoteDialog,
+    customerDialog,
+    checkTaskDetailDialog,
+    checkImgDialog,
+    checkBuyerMsgDialog
   },
   data () {
     return {
       currentTab: 'managementFineBrushes',
       page: 1,
       total: 0,
+      rowIndex: 0,
+      choiceRowData: {},
+      editDialogShow: false,
+      customerDialogShow: false,
+      checkBuyerDialogShow: false,
+      checkImgDialogShow: false,
+      checkTaskDialogShow: false,
       formData: {
         type: {
           value: '',
@@ -184,19 +209,81 @@ export default {
         date: ''
       },
       tableData: {
-        data: [{}],
+        data: [],
         columns: [
-          { name: '任务分类', code: 'type', width: '' },
-          { name: '任务/订单编号', code: 'ordersn', width: '' },
+          { name: '任务分类', code: 'type', width: '150' },
+          { name: '任务/订单编号', code: 'ordersn', width: '220' },
           { name: '买号/商品信息', code: 'goodMsg', width: '' },
           { name: '商品价格/发布点', code: 'price', width: '' },
-          { name: '任务状态', code: 'status', width: '' },
+          { name: '任务状态', code: 'status', width: '220' },
           { name: '操作按钮', code: 'btn', width: '100' }
         ]
       }
     }
   },
   methods: {
+    // 修改备注
+    editNote (index) {
+      this.rowIndex = index
+      this.choiceRowData = this.tableData.data[index]
+      this.editDialogShow = true
+    },
+    editDialogClose () {
+      this.editDialogShow = false
+    },
+    editDialogConfirm (val) {
+      this.editDialogShow = false
+      this.choiceRowData['sellerRemark'] = val['sellerRemark']
+    },
+    // 客服介入
+    customerIn (index) {
+      this.rowIndex = index
+      this.choiceRowData = this.tableData.data[index]
+      this.customerDialogShow = true
+    },
+    customerDialogClose () {
+      this.customerDialogShow = false
+    },
+    customerDialogConfirm (val) {
+      this.customerDialogShow = false
+    },
+    // 查看买号信息
+    checkBuyerMsg (index) {
+      this.rowIndex = index
+      this.choiceRowData = this.tableData.data[index]
+      this.checkBuyerDialogShow = true
+    },
+    checkBuyerDialogClose () {
+      this.checkBuyerDialogShow = false
+    },
+    checkBuyerDialogConfirm (val) {
+      this.checkBuyerDialogShow = false
+    },
+    // 已查看截图
+    checkImg (index) {
+      this.rowIndex = index
+      this.choiceRowData = this.tableData.data[index]
+      this.checkImgDialogShow = true
+    },
+    checkImgDialogClose () {
+      this.checkImgDialogShow = false
+    },
+    checkImgDialogConfirm (val) {
+      this.checkImgDialogShow = false
+    },
+    // 查看任务详情
+    checkTaskDetail (index) {
+      this.rowIndex = index
+      this.choiceRowData = this.tableData.data[index]
+      this.checkTaskDialogShow = true
+    },
+    checkTaskDialogClose () {
+      this.checkTaskDialogShow = false
+    },
+    checkTaskDialogConfirm (val) {
+      this.checkTaskDialogShow = false
+    },
+
     handleCurrentChange (val) {
       this.page = val
       this.queryData('param')
@@ -241,6 +328,9 @@ export default {
   margin: 0 auto;
   .formGroup {
     margin-top: 20px;
+  }
+  .tableCellMsg {
+    text-align: left;
   }
 }
 </style>

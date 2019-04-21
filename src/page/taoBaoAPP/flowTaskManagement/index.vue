@@ -124,7 +124,7 @@
                 <p>任务备注：</p>
               </el-col>
               <el-col :span="18">
-                <el-input placeholder="请输入" type="textarea" v-model="choiceRowData.sellerRemark"></el-input>
+                <el-input placeholder="请输入任务,不超过80字" type="textarea" v-model="choiceRowData.sellerRemark"></el-input>
               </el-col>
             </el-row>
           </div>
