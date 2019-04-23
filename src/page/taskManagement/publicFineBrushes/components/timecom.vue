@@ -46,39 +46,39 @@
       </el-row>
       <template v-for="(item,index) in releasePriceList">
         <el-row class="tableContent" :key="index">
-          <el-col :span="3">{{}}</el-col>
+          <el-col :span="3" class="first-col">
+            <i v-if="item.isadd" class="el-icon-circle-plus-outline"></i>
+            <i v-else class="el-icon-remove-outline"></i>
+            {{}}
+          </el-col>
           <el-col :span="3">
             <el-input-number :min="1" size="mini" v-model="releasePriceList[index].goodNumber"></el-input-number>
           </el-col>
           <el-col :span="6">
             <el-time-picker
-              is-range
-              v-model="value4"
-              range-separator="至"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              placeholder="选择时间范围"
-              size="40"
+              v-model="value2"
+              :picker-options="{
+      selectableRange: '18:30:00 - 20:30:00'
+    }"
+              placeholder="任意时间点"
             ></el-time-picker>
           </el-col>
           <el-col :span="6">
             <el-time-picker
-              is-range
-              v-model="value4"
-              range-separator="至"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              placeholder="选择时间范围"
+              v-model="value2"
+              :picker-options="{
+      selectableRange: '18:30:00 - 20:30:00'
+    }"
+              placeholder="任意时间点"
             ></el-time-picker>
           </el-col>
           <el-col :span="6">
             <el-time-picker
-              is-range
-              v-model="value4"
-              range-separator="至"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              placeholder="选择时间范围"
+              v-model="value2"
+              :picker-options="{
+      selectableRange: '18:30:00 - 20:30:00'
+    }"
+              placeholder="任意时间点"
             ></el-time-picker>
           </el-col>
         </el-row>
@@ -99,24 +99,16 @@ export default {
       priceType: 1,
       releasePriceList: [
         {
-          goodPrice: "0", //商品价格
-          courierFee: "0", //快递费
-          goodSize: "", // 商品规格
-          goodNumber: "1", // 拍下数量
-          taskNum: "1", //任务数量
-          turnover: "0", //单任务成交金额
-          commission: "0", //单任务佣金
-          fee: "0", //单任务快递费
-          totlePrice: "0" //合计,
+          isadd: true,
+          taskNum: 1, //任务数量
+          beginTime: "19:53", //开始时间
+          endTime: "23:59", //结束时间
+          tiemout: "23:59", //超时取消
+          releaseDay: "2019-04-04" //发布日期
         }
       ],
-      alltotle: {
-        totalAmount: 0,
-        commissionAmount: 0,
-        feeAmount: 0,
-        all: 0
-      },
-      value4: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
+
+      value4: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)]
     };
   },
   computed: {
@@ -151,7 +143,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.funTable .el-input__inner{
-    height: 40px;
+.funTable .el-input__inner {
+  height: 40px;
+}
+.el-date-editor--daterange.el-input,
+.el-date-editor--daterange.el-input__inner,
+.el-date-editor--timerange.el-input,
+.el-date-editor--timerange.el-input__inner {
+  width: 285px;
+}
+.el-icon-circle-plus-outline,
+.el-icon-remove-outline {
+  font-size: 30px;
+  font-weight: 600;
+  color: #67c23a;
+  position: relative;
+  top: 4px;
+  left: 4px;
+  cursor: pointer;
+}
+.el-icon-remove-outline {
+  color: #f00;
+}
+.first-col {
+  line-height: 40px !important;
+  text-align: left !important;
 }
 </style>
