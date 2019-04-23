@@ -54,6 +54,21 @@ export default {
       default () {
         return false
       }
+    },
+    data: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
+  watch: {
+    data (val) {
+      this.sortOrder.value = val['sortOrder']
+      this.priceRange.beginPrice = val['beginPrice']
+      this.priceRange.endPrice = val['endPrice']
+      this.sendGoods.value = val['shipment']
+      this.others.value = val['otherCondition']
     }
   },
   data () {
@@ -92,8 +107,11 @@ export default {
     },
     dialogConfirm () {
       this.$emit('dialogConfirm', {
-        id: this.rowData.id,
-        sellerRemark: this.rowData.sellerRemark
+        sortOrder: this.sortOrder.value,
+        beginPrice: this.priceRange.beginPrice,
+        endPrice: this.priceRange.endPrice,
+        shipment: this.sendGoods.value,
+        otherCondition: this.others.value
       })
       this.$emit('dialogClose', false)
     }
