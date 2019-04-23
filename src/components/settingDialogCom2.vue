@@ -1,6 +1,6 @@
 <template>
   <div class="settingDialogCom">
-    <el-dialog title="其他筛选条件" :visible.sync="dialogTableVisible">
+    <el-dialog title="其他筛选条件" :visible.sync="dialogTableVisible" @close="dialogClose">
       <div class="content">
         <el-row>
           <el-col :span="6">
@@ -18,8 +18,8 @@
             <el-checkbox v-model="priceRange.check">价格区间</el-checkbox>
           </el-col>
           <el-col :span="18" class="rangeInput">
-            <el-input v-model="priceRange.bottom" placeholder="最低价"></el-input>～
-            <el-input v-model="priceRange.top" placeholder="最高价"></el-input>
+            <el-input v-model="priceRange.beginPrice" placeholder="最低价"></el-input>～
+            <el-input v-model="priceRange.endPrice" placeholder="最高价"></el-input>
           </el-col>
         </el-row>
         <el-row>
@@ -40,8 +40,8 @@
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="dialogClose()">取 消</el-button>
+        <el-button type="primary" @click="dialogConfirm()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -59,7 +59,6 @@ export default {
   data () {
     return {
       sortOrder: {
-
         check: false,
         value: '',
         options: [
@@ -71,8 +70,8 @@ export default {
       },
       priceRange: {
         check: false,
-        bottom: '',
-        top: ''
+        beginPrice: '',
+        endPrice: ''
       },
       sendGoods: {
         check: false,
@@ -82,6 +81,21 @@ export default {
         check: false,
         value: ''
       }
+    }
+  },
+  methods: {
+    dialogClose () {
+      this.$emit('dialogClose', false)
+      for (let item in this.formData) {
+        this.formData[item].check = false
+      }
+    },
+    dialogConfirm () {
+      this.$emit('dialogConfirm', {
+        id: this.rowData.id,
+        sellerRemark: this.rowData.sellerRemark
+      })
+      this.$emit('dialogClose', false)
     }
   }
 }
