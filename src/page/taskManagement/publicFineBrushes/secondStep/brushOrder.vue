@@ -158,7 +158,7 @@
                 <el-input v-model="pathSettingData[index].endPrice" placeholder="最高价"></el-input>
               </el-col>
               <el-col :span="3">
-                <el-input-number size="mini" v-model="pathSettingData[index].taskNum"></el-input-number>
+                <el-input-number size="mini" :min='0' v-model="pathSettingData[index].taskNum"></el-input-number>
               </el-col>
               <el-col :span="4">
                 <el-button class="tableBtn" type="primary" @click="settingClick(index)">设置</el-button>
@@ -192,7 +192,7 @@
 </template>
 <script>
 import btnGroup from "../components/btnGroup.vue";
-import settingDialogCom from "@/components/settingDialogCom.vue";
+import settingDialogCom from "@/components/settingDialogCom2.vue";
 import choiceProductDialog from "@/components/choiceProductDialog.vue";
 
 import { mapGetters, mapMutations } from "vuex";
@@ -229,7 +229,7 @@ export default {
           flowid: "",
           keyword1: "",
           keyword: "",
-          taskNum: "",
+          taskNum: "1",
           sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
           beginPrice: "", // 价格区间起始
           endPrice: "", // 价格区间最大值
@@ -239,7 +239,8 @@ export default {
       ],
       itemindex: "",
       showBackBtn: "2",
-      showGoBtn: "1"
+      showGoBtn: "1",
+      goodsInfo:{}
     };
   },
   watch: {
@@ -270,9 +271,13 @@ export default {
         this.totle = totle;
         this.pctotle = pctotle;
         this.apptotle = apptotle;
+        if(this.totle<1){
+            this.showGoBtn = "1";
+        }
       },
       deep: true
-    }
+    },
+   
   },
   computed: {
     ...mapGetters(["getgoods"]),
@@ -281,6 +286,7 @@ export default {
   },
   created() {
     this.pathSettingData = this.getdata.releaseFlowList;
+    this.goodsInfo=this.getgoods
   },
   methods: {
     choiceDialogConfirm(row) {
@@ -327,7 +333,7 @@ export default {
         flowid: "",
         keyword: "",
         keyword1: "",
-        taskNum: "",
+        taskNum: "1",
         sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
         beginPrice: "", // 价格区间起始
         endPrice: "", // 价格区间最大值
@@ -353,7 +359,12 @@ export default {
         console.log(isval)
         if (isval == "1") {
           if (this.showGoBtn === "2") {
-            this.$store.commit("settask", this.totle);
+              let task={}
+              task.totle=this.totle
+              task.pctotle=this.pctotle
+              task.apptotle=this.apptotle
+
+            this.$store.commit("settask", task);
             this.$emit("changeState", { state: "thirdStep" });
             this.$store.commit("update", {
               name: "releaseFlowList",

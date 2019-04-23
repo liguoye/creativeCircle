@@ -10,7 +10,7 @@
     state.goodsInfo=payload
   }
   const settask=(state, payload)=>{
-    state.goodsInfo=payload
+    state.taskTotle=payload
   }
   const setdate=(state, payload)=>{
     state.date=payload

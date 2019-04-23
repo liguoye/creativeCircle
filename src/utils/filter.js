@@ -1,7 +1,6 @@
 import Vue from 'vue'
 let percent = value => {
-    let a = value / 100
-    return a.toFixed(2)
+    return value.toFixed(2)
     // return (Math.floor(value * 1000) / 1000 )*100
 }
 let qishu = num => {
