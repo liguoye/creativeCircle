@@ -88,7 +88,7 @@
             <template v-else-if="item.code=='btn'">
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
-                  <el-button type="primary" size="mini" style="border-radius:25px;;cursor:pointer" @click="pingjiaPub(scope.$index)">设置评价内容</el-button>
+                  <!-- <el-button type="primary" size="mini" style="border-radius:25px;;cursor:pointer" @click="pingjiaPub(scope.$index)">设置评价内容</el-button> -->
                 </template>
               </el-table-column>
             </template>
@@ -196,6 +196,7 @@ export default {
         }
       })
     }
+
   }
 }
 </script>
