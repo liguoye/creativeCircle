@@ -158,7 +158,7 @@ export default {
         newValue.forEach(item => {
           let num = item.goodPrice;
           if (num <= 200) {
-            item.commission = 14;
+            item.commission = 18;
           } else if (num > 200 && num <= 400) {
             item.commission = 20;
           } else if (num > 400 && num <= 600) {
@@ -193,6 +193,7 @@ export default {
         this.alltotle.commissionAmount = commissionAmount;
         this.alltotle.feeAmount = feeAmount;
         this.alltotle.all = all.toFixed(2);
+        this.$store.commit("update", { name: "releasePriceList", value: newValue });
       },
       deep: true
     }

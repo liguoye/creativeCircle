@@ -7,7 +7,7 @@
           <el-radio-group v-model="priceType">
             <el-radio :label="1">立刻发布</el-radio>
             <el-radio :label="2">今日平均发布</el-radio>
-            <el-radio :label="2">多天平均发布</el-radio>
+            <el-radio :label="3">多天平均发布</el-radio>
           </el-radio-group>
         </el-col>
         <el-col :span="12" class="right">
@@ -29,9 +29,6 @@
                 <!-- <a class="btn btn-small">新增</a> -->
               </div>
             </el-col>
-            <el-col :span="4">
-              <el-button class="tableBtn" type="primary" @click="addPathData">新增</el-button>
-            </el-col>
           </el-row>
         </el-col>
       </el-row>
@@ -44,42 +41,58 @@
         <el-col :span="6">结束时间</el-col>
         <el-col :span="6">超时取消</el-col>
       </el-row>
-      <template v-for="(item,index) in releasePriceList">
+      <template v-for="(item,index) in releaseDateList">
         <el-row class="tableContent" :key="index">
           <el-col :span="3" class="first-col">
-            <i v-if="item.isadd" class="el-icon-circle-plus-outline"></i>
-            <i v-else class="el-icon-remove-outline"></i>
-            {{}}
+            <span v-if="priceType!=1">
+              <i
+                v-if="releaseDateList[index].isadd"
+                class="el-icon-circle-plus-outline"
+                @click="addPathData(index)"
+              ></i>
+              <i v-else class="el-icon-remove-outline" @click="reduceData(index)"></i>
+            </span>
+            <span style="color:#333">
+              <span>{{releaseDateList[index].releaseDay}}</span>
+            </span>
           </el-col>
           <el-col :span="3">
-            <el-input-number :min="1" size="mini" v-model="releasePriceList[index].goodNumber"></el-input-number>
+            <el-input-number :min="0" size="mini" v-model="releaseDateList[index].taskNum"></el-input-number>
           </el-col>
           <el-col :span="6">
-            <el-time-picker
-              v-model="value2"
+            <el-time-select
+              placeholder="起始时间"
+              :disabled="priceType==1"
+              v-model="releaseDateList[index].beginTime"
               :picker-options="{
-      selectableRange: '18:30:00 - 20:30:00'
+      start: nowtime,
+      step: '00:05',
+      end: '23:59'
     }"
-              placeholder="任意时间点"
-            ></el-time-picker>
+            ></el-time-select>
           </el-col>
           <el-col :span="6">
-            <el-time-picker
-              v-model="value2"
+            <el-time-select
+              :disabled="priceType==1"
+              placeholder="结束时间"
+              v-model="releaseDateList[index].endTime"
               :picker-options="{
-      selectableRange: '18:30:00 - 20:30:00'
+      start: nowtime,
+      step: '00:05',
+      end: '23:59'
     }"
-              placeholder="任意时间点"
-            ></el-time-picker>
+            ></el-time-select>
           </el-col>
           <el-col :span="6">
-            <el-time-picker
-              v-model="value2"
+            <el-time-select
+              placeholder="超时时间"
+              v-model="releaseDateList[index].tiemout"
               :picker-options="{
-      selectableRange: '18:30:00 - 20:30:00'
+      start: nowtime,
+      step: '00:05',
+      end: '23:59'
     }"
-              placeholder="任意时间点"
-            ></el-time-picker>
+            ></el-time-select>
           </el-col>
         </el-row>
       </template>
@@ -97,24 +110,106 @@ export default {
       apptotle: "0",
       btnActive: 0,
       priceType: 1,
-      releasePriceList: [
+      releaseDateList: [
         {
           isadd: true,
-          taskNum: 1, //任务数量
-          beginTime: "19:53", //开始时间
-          endTime: "23:59", //结束时间
-          tiemout: "23:59", //超时取消
-          releaseDay: "2019-04-04" //发布日期
+          taskNum: 0, //任务数量
+          beginTime: "", //开始时间
+          endTime: "", //结束时间
+          tiemout: "", //超时取消
+          releaseDay: "" //发布日期
         }
       ],
-
-      value4: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)]
+      dateList: []
     };
   },
   computed: {
-    ...mapGetters(["gettask"])
+    ...mapGetters(["getdate"]),
+    ...mapGetters(["gettask"]),
+    nowtime() {
+      var myDate = new Date(); //实例一个时间对象；
+      let min = myDate.getHours(); //获取系统时，
+      let sec = myDate.getMinutes(); //分
+      console.log(min + "" + sec);
+      return (
+        (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec)
+      );
+    }
+  },
+  watch: {
+    priceType(newValue, oldValue) {
+      let list = this.releaseDateList;
+      let arr = [];
+      arr.push(list[0]);
+      console.log(arr);
+      switch (newValue) {
+        case 1:
+          this.releaseDateList = arr;
+          this.releaseDateList[0].releaseDay = this.dateList[0];
+          this.releaseDateList[0].taskNum = this.gettask.totle;
+          break;
+        case 2:
+          this.releaseDateList = arr;
+          this.releaseDateList[0].isadd = true;
+          this.releaseDateList[0].releaseDay = this.dateList[0];
+          this.releaseDateList[0].taskNum = 1;
+          break;
+        case 3:
+          let dlist = this.dateList;
+          let lpList = [];
+          for (let i in dlist) {
+            lpList.push({
+              isadd: true,
+              taskNum: 0, //任务数量
+              beginTime: "", //开始时间
+              endTime: "", //结束时间
+              tiemout: "", //超时取消
+              releaseDay: dlist[i] //发布日期
+            });
+          }
+          this.releaseDateList = lpList;
+          break;
+
+        default:
+          break;
+      }
+    },
+     releaseDateList: {
+      handler(val, oldVal) {
+       let num=0
+       val.forEach((item)=>{
+           num+=item.taskNum
+       })
+       if(num>this.gettask.totle){
+           this.$notify.error({
+          title: '超过上一步任务数',
+        });
+       }
+       this.$store.commit("update", { name: "releaseDateList", value: val });
+      },
+      deep: true
+    },
+  },
+  created() {
+    this.formatTime();
+    
   },
   methods: {
+    formatTime() {
+      let time = this.getdate.data;
+      let list = [];
+      console.log(time);
+      if (time) {
+        Object.keys(time).forEach(function(key) {
+          console.log(key, time[key]);
+          list.push(key);
+        });
+        this.dateList = list;
+        console.log(list);
+        this.releaseDateList[0].taskNum = this.gettask.totle;
+        this.releaseDateList[0].releaseDay = this.dateList[0];
+      }
+    },
     btnClick(val) {
       if (val === "back") {
         this.$emit("changeState", { state: "secondStep" });
@@ -123,20 +218,18 @@ export default {
       }
     },
     deletePathData(index) {
-      this.releasePriceList.splice(index, 1);
+      this.releaseDateList.splice(index, 1);
     },
-    addPathData() {
-      this.releasePriceList.push({
-        goodPrice: "0", //商品价格
-        courierFee: "0", //快递费
-        goodSize: "", // 商品规格
-        goodNumber: "1", // 拍下数量
-        taskNum: "1", //任务数量
-        turnover: "0", //单任务成交金额
-        commission: "0", //单任务佣金
-        fee: "0", //单任务快递费
-        totlePrice: "0" //合计,
-      });
+    addPathData(index) {
+      let jon = this.releaseDateList[index];
+      let njson = Object.assign({}, jon);
+      njson.isadd = false;
+      this.releaseDateList.splice(index + 1, 0, njson);
+    },
+    reduceData(index) {
+      let len = this.releaseDateList.length;
+      console.log(index, len);
+      this.releaseDateList.splice(index, 1);
     }
   }
 };
@@ -169,4 +262,12 @@ export default {
   line-height: 40px !important;
   text-align: left !important;
 }
+.totle {
+  background: #ccebfa;
+  padding: 0 20px;
+  .el-row {
+    padding: 10px 0;
+  }
+}
+
 </style>

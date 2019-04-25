@@ -18,8 +18,8 @@
             <el-checkbox v-model="priceRange.check">价格区间</el-checkbox>
           </el-col>
           <el-col :span="18" class="rangeInput">
-            <el-input v-model="priceRange.beginPrice" placeholder="最低价"></el-input>～
-            <el-input v-model="priceRange.endPrice" placeholder="最高价"></el-input>
+            <el-input style="width:150px" v-model="priceRange.beginPrice" placeholder="最低价"></el-input>～
+            <el-input  style="width:150px" v-model="priceRange.endPrice" placeholder="最高价"></el-input>
           </el-col>
         </el-row>
         <el-row>
@@ -27,7 +27,7 @@
             <el-checkbox v-model="sendGoods.check">发货地</el-checkbox>
           </el-col>
           <el-col :span="18">
-            <el-input v-model="sendGoods.val" placeholder=""></el-input>
+            <el-input v-model="sendGoods.value" placeholder=""></el-input>
           </el-col>
         </el-row>
         <el-row>
@@ -104,6 +104,12 @@ export default {
       for (let item in this.formData) {
         this.formData[item].check = false
       }
+      this.sortOrder.value=''
+      this.priceRange.beginPrice=''
+      this.sortOrder.endPrice=''
+      this.sendGoods.value=''
+      this.others.value=''
+
     },
     dialogConfirm () {
       this.$emit('dialogConfirm', {

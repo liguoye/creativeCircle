@@ -2,7 +2,10 @@
   <div class="pubilcFlowTask">
     <div class="taskManagementNavList">
       <ul>
-        <li @click="navListClick('pubilcFlowTask')" class="current">发布流量任务</li>
+        <li
+          @click="navListClick('pubilcFlowTask')"
+          class="current"
+        >发布流量任务</li>
         <li @click="navListClick('flowTaskManagement')">流量任务管理</li>
       </ul>
     </div>
@@ -10,9 +13,19 @@
     <div class="colTable">
       <div class="title">
         <el-row>
-          <el-col :span="12" class="left">选定商品</el-col>
-          <el-col :span="12" class="right">
-            <el-button class="tablebtnActive" type="primary" @click="choiceProductDialogShow=true">选择商品</el-button>
+          <el-col
+            :span="12"
+            class="left"
+          >选定商品</el-col>
+          <el-col
+            :span="12"
+            class="right"
+          >
+            <el-button
+              class="tablebtnActive"
+              type="primary"
+              @click="choiceProductDialogShow=true"
+            >选择商品</el-button>
           </el-col>
         </el-row>
       </div>
@@ -47,8 +60,14 @@
     <div class="colTable">
       <div class="title">
         <el-row>
-          <el-col :span="12" class="left">来路设置</el-col>
-          <el-col :span="12" class="right">
+          <el-col
+            :span="12"
+            class="left"
+          >来路设置</el-col>
+          <el-col
+            :span="12"
+            class="right"
+          >
             <el-row>
               <el-col :span="20">
                 <div class="right-container">
@@ -68,7 +87,11 @@
                 </div>
               </el-col>
               <el-col :span="4">
-                <el-button class="tablebtnActive" type="primary" @click="addPathData">新增</el-button>
+                <el-button
+                  class="tablebtnActive"
+                  type="primary"
+                  @click="addPathData"
+                >新增</el-button>
               </el-col>
             </el-row>
           </el-col>
@@ -86,102 +109,85 @@
           <el-col :span="2">操作</el-col>
         </el-row>
         <template v-for="(item,index) in pathSettingData">
-          <el-row class="tableContent" :key="index">
-            <el-col :span="4" class="flowEnterSelect">
-              <el-select v-model="pathSettingData[index].flowid.value" placeholder="请选择">
-                <el-option v-for="list in pathSettingData[index].flowid.options" :key="list.value" :label="list.label" :value="list.value">
+          <el-row
+            class="tableContent"
+            :key="index"
+          >
+            <el-col
+              :span="4"
+              class="flowEnterSelect"
+            >
+              <el-select
+                v-model="pathSettingData[index].flowid.value"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="list in pathSettingData[index].flowid.options"
+                  :key="list.value"
+                  :label="list.label"
+                  :value="list.value"
+                >
                 </el-option>
               </el-select>
             </el-col>
-            <el-col :span="10" class="textInput">
-              <el-input v-model="pathSettingData[index].keyword" placeholder="请设置关键字"></el-input>
+            <el-col
+              :span="10"
+              class="textInput"
+            >
+              <el-input
+                v-model="pathSettingData[index].keyword"
+                placeholder="请设置关键字"
+              ></el-input>
             </el-col>
             <el-col :span="4">
-              <el-input-number size="mini" v-model="pathSettingData[index].taskNum"></el-input-number>
+              <el-input-number
+                size="mini"
+                v-model="pathSettingData[index].taskNum"
+              ></el-input-number>
             </el-col>
             <el-col :span="4">
-              <el-button class="tablebtnActive" type="primary" @click="settingClick(index)">设置</el-button>
+              <el-button
+                class="tablebtnActive"
+                type="primary"
+                @click="settingClick(index)"
+              >设置</el-button>
             </el-col>
             <el-col :span="2">
-              <el-button type="danger" size='mini' @click="deletePathData(index)" style="border-radius:25px">删除</el-button>
+              <el-button
+                type="danger"
+                size='mini'
+                @click="deletePathData(index)"
+                style="border-radius:25px"
+              >删除</el-button>
             </el-col>
           </el-row>
         </template>
       </div>
     </div>
-    <el-form ref="form" :model="form" label-width="150px" style="margin-top:20px;">
+    <el-form
+      ref="form"
+      :model="form"
+      label-width="150px"
+      style="margin-top:20px;"
+    >
       <el-form-item label="备注信息（选填）：">
-        <el-input type="textarea" v-model="form.sellerRemark"></el-input>
+        <el-input
+          type="textarea"
+          v-model="form.sellerRemark"
+        ></el-input>
       </el-form-item>
     </el-form>
-    <div class="colTable">
-      <div class="title">
-        <el-row>
-          <el-col :span="12" class="left">
-            <span style="margin-right:10px;">发布时间</span>
-            <el-radio v-model="publicTiem" label="1">立即发布</el-radio>
-            <el-radio v-model="publicTiem" label="2">今天平均发布</el-radio>
-            <el-radio v-model="publicTiem" label="3">多天平均发布</el-radio>
-          </el-col>
-          <el-col :span="12" class="right">
-            <el-row>
-              <el-col :span="20">
-                <div class="right-container">
-                  <span style="margin-right: 10px;">总数:
-                    <em class="red">0</em>
-                  </span>
-                  <span style="margin-right: 10px;">PC:
-                    <em class="red">0</em>
-                  </span>
-                  <span style="margin-right: 10px;">无线端:
-                    <em class="red">0</em>
-                  </span>
-                </div>
-              </el-col>
-              <el-col :span="4">
-                <el-button class="tablebtnActive" type="primary" @click="addTimeData">新增</el-button>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-      </div>
-      <div class="funTable">
-        <el-row class="tableTitle">
-          <el-col :span="6">日期（剩余可发布数)</el-col>
-          <el-col :span="6">任务数（0）</el-col>
-          <el-col :span="4">开始时间</el-col>
-          <el-col :span="4">结束时间</el-col>
-          <el-col :span="4">超时取消</el-col>
-        </el-row>
-        <template v-for="(item,index) in timeData">
-          <el-row class="tableContent" :key="index">
-            <el-col :span="6">
-              <el-date-picker v-model="timeData[index].releaseDay" type="date" placeholder="选择日期">
-              </el-date-picker>
-            </el-col>
-            <el-col :span="6">
-              <el-input v-model="timeData[index].taskNum" style="width:90%"></el-input>
-            </el-col>
-            <el-col :span="4">
-              <el-input v-model="timeData[index].beginTime" style="width:90%"></el-input>
-            </el-col>
-            <el-col :span="4">
-              <el-input v-model="timeData[index].endTime" style="width:90%"></el-input>
-            </el-col>
-            <el-col :span="4">
-              <el-input v-model="timeData[index].tiemout" style="width:90%"></el-input>
-            </el-col>
-          </el-row>
-        </template>
-        <el-row>
-          <el-col style="text-align:right">基础费用合计：0元</el-col>
-        </el-row>
-      </div>
+    <div class="funTable">
+        <time-com></time-com>
     </div>
+    
     <div class="colTable">
       <div class="title">
         <el-row>
-          <el-col :span="24" class="left">
+          <el-col
+            :span="24"
+            class="left"
+          >
             <span style="margin-right:10px;">增值服务</span>
             <span style="color:red">（即日起，增值服务需要收取附加费，同时要求买手上传相应截图证明）</span>
           </el-col>
@@ -219,30 +225,47 @@
           </span>
         </span>
       </div>
-      <div class="goet" style="text-align: right;">
+      <div
+        class="goet"
+        style="text-align: right;"
+      >
         <span>支付密码：</span>
-        <el-input v-model="password" size="mini" style="width:160px;"></el-input>
+        <el-input
+          v-model="password"
+          size="mini"
+          style="width:160px;"
+        ></el-input>
       </div>
       <div>
         <el-button type="primary">确认发布</el-button>
       </div>
     </div>
-    <setting-dialog-com :dialog-table-visible="dialogTableVisible" @dialogClose="settingDialogClose" @dialogConfirm="settingDialogConfirm"
-      :setting-data="pathSettingIndexData"></setting-dialog-com>
-    <choice-product-dialog @dialogClose="choiceDialogClose" @dialogConfirm="choiceDialogConfirm" :dialog-table-visible="choiceProductDialogShow"></choice-product-dialog>
+    <setting-dialog-com
+      :dialog-table-visible="dialogTableVisible"
+      @dialogClose="settingDialogClose"
+      @dialogConfirm="settingDialogConfirm"
+      :setting-data="pathSettingIndexData"
+    ></setting-dialog-com>
+    <choice-product-dialog
+      @dialogClose="choiceDialogClose"
+      @dialogConfirm="choiceDialogConfirm"
+      :dialog-table-visible="choiceProductDialogShow"
+    ></choice-product-dialog>
   </div>
 </template>
 <script>
-import settingDialogCom from '@/components/settingDialogCom.vue'
-import choiceProductDialog from '@/components/choiceProductDialog.vue'
+import settingDialogCom from "@/components/settingDialogCom.vue";
+import choiceProductDialog from "@/components/choiceProductDialog.vue";
+import timeCom from "../../taskManagement/publicFineBrushes/components/timecom";
 export default {
   components: {
     settingDialogCom,
-    choiceProductDialog
+    choiceProductDialog,
+    timeCom
   },
-  data () {
+  data() {
     return {
-      msg: 'pubilcFlowTask',
+      msg: "pubilcFlowTask",
       btnActive: 1,
       dialogTableVisible: false,
       dialogVisible: false,
@@ -250,96 +273,100 @@ export default {
       pathSettingIndexData: {},
       goodsData: {},
       pathSettingIndex: 0,
-      pathSettingData: [{
-        flowid: {
-          value: '',
-          options: [
-            { label: 'APP自然搜索', value: 1 },
-            { label: '淘口令', value: 2 },
-            { label: '直通车', value: 3 },
-            { label: '二维码', value: 4 }
-          ]
-        },
-        keyword: '',
-        taskNum: '',
-        sortOrder: '', // 排序方式(综合，销量，价格高到低，价格低到高)
-        beginPrice: 0, // 价格区间起始
-        endPrice: 0, // 价格区间最大值
-        shipment: '', // 发货地
-        otherCondition: '' // 其他
-      }],
-      timeData: [{
-        'taskNum': 0,
-        'beginTime': '',
-        'endTime': '',
-        'tiemout': '',
-        'releaseDay': ''
-      }],
+      pathSettingData: [
+        {
+          flowid: {
+            value: "",
+            options: [
+              { label: "APP自然搜索", value: 1 },
+              { label: "淘口令", value: 2 },
+              { label: "直通车", value: 3 },
+              { label: "二维码", value: 4 }
+            ]
+          },
+          keyword: "",
+          taskNum: "",
+          sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
+          beginPrice: 0, // 价格区间起始
+          endPrice: 0, // 价格区间最大值
+          shipment: "", // 发货地
+          otherCondition: "" // 其他
+        }
+      ],
+      timeData: [
+        {
+          taskNum: 0,
+          beginTime: "",
+          endTime: "",
+          tiemout: "",
+          releaseDay: ""
+        }
+      ],
       form: {
-        sellerRemark: ''
+        sellerRemark: ""
       },
-      publicTiem: '',
-      password: ''
-    }
+      publicTiem: "",
+      password: ""
+    };
   },
   methods: {
-    choiceDialogConfirm (row) {
-      this.goodsData = row
+    choiceDialogConfirm(row) {
+      this.goodsData = row;
     },
-    choiceDialogClose () {
-      this.choiceProductDialogShow = false
+    choiceDialogClose() {
+      this.choiceProductDialogShow = false;
     },
-    settingDialogClose () {
-      this.dialogTableVisible = false
+    settingDialogClose() {
+      this.dialogTableVisible = false;
     },
-    settingDialogConfirm (param) {
-      console.log(param)
+    settingDialogConfirm(param) {
+      console.log(param);
       for (let item in param) {
-        this.pathSettingData[this.pathSettingIndex][item] = param[item]
+        this.pathSettingData[this.pathSettingIndex][item] = param[item];
       }
     },
-    addPathData () {
+    addPathData() {
       this.pathSettingData.push({
         flowid: {
-          value: '',
+          value: "",
           options: [
-            { label: 'APP自然搜索', value: 1 },
-            { label: '淘口令', value: 2 },
-            { label: '直通车', value: 3 },
-            { label: '二维码', value: 4 }
+            { label: "APP自然搜索", value: 1 },
+            { label: "淘口令", value: 2 },
+            { label: "直通车", value: 3 },
+            { label: "二维码", value: 4 }
           ]
         },
-        keyword: '',
-        taskNum: '',
-        sortOrder: '', // 排序方式(综合，销量，价格高到低，价格低到高)
+        keyword: "",
+        taskNum: "",
+        sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
         beginPrice: 0, // 价格区间起始
         endPrice: 0, // 价格区间最大值
-        shipment: '', // 发货地
-        otherCondition: '' // 其他
-      })
+        shipment: "", // 发货地
+        otherCondition: "" // 其他
+      });
     },
-    addTimeData () {
+    addTimeData() {
       this.timeData.push({
-        'taskNum': 0,
-        'beginTime': '',
-        'endTime': '',
-        'tiemout': '',
-        'releaseDay': ''
-      })
+        taskNum: 0,
+        beginTime: "",
+        endTime: "",
+        tiemout: "",
+        releaseDay: ""
+      });
     },
-    deletePathData (index) {
-      this.pathSettingData.splice(index, 1)
+    deletePathData(index) {
+      this.pathSettingData.splice(index, 1);
     },
-    settingClick (index) {
-      this.pathSettingIndex = index
-      this.pathSettingIndexData = this.pathSettingData[index]
-      this.dialogTableVisible = true
+    settingClick(index) {
+      this.pathSettingIndex = index;
+      this.pathSettingIndexData = this.pathSettingData[index];
+      this.dialogTableVisible = true;
     },
-    navListClick (val) {
-      this.$router.push({ name: val, param: { tab: val } })
+    navListClick(val) {
+      this.$router.push({ name: val, param: { tab: val } });
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .pubilcFlowTask {
@@ -354,4 +381,5 @@ export default {
     }
   }
 }
+
 </style>
