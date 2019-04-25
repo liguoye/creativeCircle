@@ -254,7 +254,7 @@ export default {
         columns: [
           { name: '任务编号', code: 'ordersn', width: '130' },
           { name: '店铺名称', code: 'shop_name', width: '' },
-          { name: '买号名称', code: 'task3', width: '' },
+          { name: '买号名称', code: 'taobao', width: '' },
           { name: '订单编号', code: 'id', width: '180' },
           { name: '标记反馈状态', code: 'status', width: '' },
           { name: '下单支付时间', code: 'ct', width: '220' },

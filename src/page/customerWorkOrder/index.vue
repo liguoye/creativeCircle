@@ -54,7 +54,7 @@
         <div class="tableCom">
           <el-table :data="tableData.data" border style="width: 100%" height="400">
             <template v-for="(item,index) in tableData.columns">
-              <template v-if="item.code=='ordersn'">
+              <template v-if="item.code=='id'">
                 <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                   <template slot-scope="scope">
                     <div class="tableCellMsg">
@@ -63,35 +63,14 @@
                   </template>
                 </el-table-column>
               </template>
-              <template v-else-if="item.code=='goodMsg'">
+              <template v-else-if="item.code=='status1'">
                 <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                   <template slot-scope="scope">
                     <div class="tableCellMsg">
-                      <p>买号: {{tableData.data[scope.$index]['taobao']}}</p>
-                      <!-- <span style="color:#4292b9;cursor:pointer" @click="checkBuyerMsg(scope.$index)">查看买号信息</span> -->
-                      <p>买号等级：{{tableData.data[scope.$index]['shop_name']}}</p>
-                      <p>店铺名称：{{tableData.data[scope.$index]['shop_name']}}</p>
-                      <p>商品简称：{{tableData.data[scope.$index]['shop_name']}}</p>
-                    </div>
-                  </template>
-                </el-table-column>
-              </template>
-              <template v-else-if="item.code=='haoping'">
-                <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
-                  <template slot-scope="scope">
-                    <div class="tableCellMsg">
-                      <p v-if="tableData.data[scope.$index]['haoping']">{{tableData.data[scope.$index]['haoping']}}</p>
-                      <p v-else>暂未设置好评内容</p>
-                    </div>
-                  </template>
-                </el-table-column>
-              </template>
-              <template v-else-if="item.code=='zhuiping'">
-                <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
-                  <template slot-scope="scope">
-                    <div class="tableCellMsg">
-                      <p v-if="tableData.data[scope.$index]['zhuiping']">{{tableData.data[scope.$index]['zhuiping']}}</p>
-                      <p v-else>暂未设置追评内容</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='1'">其他导致卖家损失行为</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='2'">退款</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='3'">好评问题</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='4'">任务过程出错</p>
                     </div>
                   </template>
                 </el-table-column>
@@ -100,15 +79,26 @@
                 <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                   <template slot-scope="scope">
                     <div class="tableCellMsg">
-                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='0'">待接手</p>
-                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='1'">进行中</p>
-                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='2'">待发货</p>
-                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='3'">待完成</p>
-                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='4'">已完成</p>
-                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='5'">隐藏中</p>
-                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='6'">已取消</p>
-                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else>未设置评价</p>
-                      <p>支付时间：{{tableData.data[scope.$index]['ct']}}</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='1'">待处理</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='1'">跟进中</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='2'">待执行</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='3'">处理完成</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='4'">已撤销</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='5'">拒接处理</p>
+                    </div>
+                  </template>
+                </el-table-column>
+              </template>
+              <template v-else-if="item.code=='work_type'">
+                <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                  <template slot-scope="scope">
+                    <div class="tableCellMsg">
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-if="tableData.data[scope.$index]['status']=='1'">待处理</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='2'">跟进中</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='3'">待执行</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='4'">处理完成</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='5'">已撤销</p>
+                      <p style="text-align:center;color: rgb(12, 185, 229);cursor: pointer;" v-else-if="tableData.data[scope.$index]['status']=='6'">拒绝处理</p>
                     </div>
                   </template>
                 </el-table-column>
@@ -116,7 +106,7 @@
               <template v-else-if="item.code=='btn'">
                 <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                   <template slot-scope="scope">
-                    <el-button type="primary" size="mini" style="border-radius:25px;;cursor:pointer">设置评价内容</el-button>
+                    <!-- <el-button type="primary" size="mini" style="border-radius:25px;;cursor:pointer">设置评价内容</el-button> -->
                   </template>
                 </el-table-column>
               </template>
@@ -141,6 +131,9 @@ import tableCom from '@/components/tableCom.vue'
 export default {
   components: {
     tableCom
+  },
+  created () {
+    this.queryData()
   },
   data () {
     return {
@@ -181,12 +174,12 @@ export default {
       tableData: {
         data: [],
         columns: [
-          { name: '任务编号', code: 'ordersn', width: '' },
+          { name: '任务编号', code: 'id', width: '' },
           { name: '订单编号', code: 'orderid', width: '' },
           { name: '工单类型', code: 'work_type', width: '' },
           { name: '任务状态', code: 'status', width: '' },
           { name: '处罚金额', code: 'price', width: '' },
-          { name: '工单状态', code: 'task6', width: '' },
+          { name: '工单状态', code: 'status1', width: '' },
           { name: '创建时间', code: 'ct', width: '200' },
           { name: '操作', code: 'btn', width: '' }
         ]

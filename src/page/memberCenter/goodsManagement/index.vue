@@ -40,8 +40,8 @@
               <el-button class="tablebtnActive" @click="addGoods">添加</el-button>
               <el-button class="tablebtnActive" @click="editClick">编辑</el-button>
               <el-button class="tablebtnActive" @click="deleteGoods">删除</el-button>
-              <el-button class="tablebtnActive">目标客户</el-button>
-              <el-button class="tablebtnActive">购买行为</el-button>
+              <!-- <el-button class="tablebtnActive">目标客户</el-button>
+              <el-button class="tablebtnActive">购买行为</el-button> -->
               <el-button class="tablebtnActive" @click="editClick('check')">查看详情</el-button>
             </el-col>
             <el-col :span="4" style="line-height:40px">

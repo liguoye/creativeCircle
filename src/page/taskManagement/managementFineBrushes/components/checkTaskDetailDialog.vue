@@ -49,11 +49,11 @@
         <el-row>
           <el-col :span="12">
             <p>关键字（下单）:</p>
-            <p>{{rowData.id}}</p>
+            <p>{{rowData.keyword}}</p>
           </el-col>
           <el-col :span="12">
             <p>关键字（浏览）:</p>
-            <p>{{rowData.id}}</p>
+            <p>{{rowData.keyword1}}</p>
           </el-col>
         </el-row>
         <el-row>
@@ -63,7 +63,7 @@
           </el-col>
           <el-col :span="12">
             <p>搜索来路:</p>
-            <p>{{rowData.id}}</p>
+            <p>{{rowData.visitWay}}</p>
           </el-col>
         </el-row>
         <el-row>
@@ -97,36 +97,30 @@
         <el-row>
           <el-col :span="12">
             <p>运单编号:</p>
-            <p>{{rowData.id}}</p>
+            <p>{{rowData.express_sn}}</p>
           </el-col>
           <el-col :span="12">
             <p>物流公司:</p>
-            <p>{{rowData.id}}</p>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <p>收货地址:</p>
-            <p>{{rowData.id}}</p>
+            <p>圆通</p>
           </el-col>
         </el-row>
         <h5>商品信息</h5>
         <el-row>
           <el-col :span="24">
             <p>商品全称</p>
-            <p>{{rowData.id}}</p>
+            <p>{{rowData.title}}</p>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <p>商品链接:</p>
-            <p>{{rowData.id}}</p>
+            <p>{{rowData.url}}</p>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <p>商品展现图:</p>
-            <p>{{rowData.id}}</p>
+            <p><img :src="rowData.img" /></p>
           </el-col>
         </el-row>
       </div>

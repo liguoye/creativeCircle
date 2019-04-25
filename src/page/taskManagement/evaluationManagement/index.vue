@@ -6,21 +6,21 @@
       <div class="btnGroup">
         <el-row>
           <el-col :span="18" class="formGroup" style="text-align:left !important">
-            <el-select v-model="formData.taskClass.value" placeholder="请选择">
-              <el-option v-for="item in formData.taskClass.options" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="formData.status.value" placeholder="请选择">
+              <el-option v-for="item in formData.status.options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
-            <el-select v-model="formData.taskNum.value" placeholder="请选择">
-              <el-option v-for="item in formData.taskNum.options" :key="item.value" :label="item.label" :value="item.value">
+            <el-select v-model="formData.type_find.value" placeholder="请选择">
+              <el-option v-for="item in formData.type_find.options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
-            <el-input v-model="formData.keyWord" placeholder="请输入内容"></el-input>
+            <el-input v-model="formData.name" placeholder="请输入内容"></el-input>
             <span>支付时间</span>
             <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
           </el-col>
           <el-col :span="6" style="line-height:40px">
-            <el-button class="tablebtnActive" @click="queryData(param)">查询</el-button>
+            <el-button class="tablebtnActive" @click="queryData('param')">查询</el-button>
             <el-button class="tablebtnFFF" @click="queryData()">刷新</el-button>
           </el-col>
         </el-row>
@@ -43,9 +43,9 @@
                   <div class="tableCellMsg">
                     <p>买号: {{tableData.data[scope.$index]['taobao']}}</p>
                     <!-- <span style="color:#4292b9;cursor:pointer" @click="checkBuyerMsg(scope.$index)">查看买号信息</span> -->
-                    <p>买号等级：{{tableData.data[scope.$index]['shop_name']}}</p>
+                    <!-- <p>买号等级：{{tableData.data[scope.$index]['shop_name']}}</p> -->
                     <p>店铺名称：{{tableData.data[scope.$index]['shop_name']}}</p>
-                    <p>商品简称：{{tableData.data[scope.$index]['shop_name']}}</p>
+                    <p>商品简称：{{tableData.data[scope.$index]['abbreviation']}}</p>
                   </div>
                 </template>
               </el-table-column>
@@ -107,8 +107,60 @@
         </div>
       </div>
     </div>
-  </div>
 
+    <div class="settingDialogCom">
+      <el-dialog title="添加商品" :visible.sync="dialogShow" width="60%" style="margin-top:20px;">
+        <div>选择评价类型:
+          <el-radio v-model="radio" label="1">文字好评
+            <span class='red'>1.5</span>个发布点</el-radio>
+          <el-radio v-model="radio" label="2">晒图好评
+            <span class='red'>2.5</span>个发布点</el-radio>
+        </div>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="140px" class="demo-ruleForm">
+          <el-form-item label="设置评价内容" prop="sellerRemark">
+            <el-input v-model="ruleForm.sellerRemark" type="textarea"></el-input>
+          </el-form-item>
+          <el-form-item label="上传图片1" v-if="radio=='2'" prop="img1">
+            <el-upload class="avatar-uploader" action="http://h5om.knowsea.cn/shop/Upload/uploadFile" :show-file-list="false" :on-success="img1">
+              <img v-if="ruleForm.img1" :src="ruleForm.img1" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="上传图片2" v-if="radio=='2'" prop="img2">
+            <el-upload class="avatar-uploader" action="http://h5om.knowsea.cn/shop/Upload/uploadFile" :show-file-list="false" :on-success="img2">
+              <img v-if="ruleForm.img2" :src="ruleForm.img2" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="上传图片3" v-if="radio=='2'" prop="img3">
+            <el-upload class="avatar-uploader" action="http://h5om.knowsea.cn/shop/Upload/uploadFile" :show-file-list="false" :on-success="img3">
+              <img v-if="ruleForm.img3" :src="ruleForm.img3" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="上传图片4" v-if="radio=='2'" prop="img4">
+            <el-upload class="avatar-uploader" action="http://h5om.knowsea.cn/shop/Upload/uploadFile" :show-file-list="false" :on-success="img4">
+              <img v-if="ruleForm.img4" :src="ruleForm.img4" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="上传图片5" v-if="radio=='2'" prop="img5">
+            <el-upload class="avatar-uploader" action="http://h5om.knowsea.cn/shop/Upload/uploadFile" :show-file-list="false" :on-success="img5">
+              <img v-if="ruleForm.img5" :src="ruleForm.img5" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="身份验证" prop="paypwd">
+            <el-input v-model="ruleForm.paypwd"></el-input>
+          </el-form-item>
+          <div style="text-align:center;margin-bottom:50px;">
+            <el-button type="primary" @click="dialogShow=false">取消</el-button>
+            <el-button @click="submit()">确定</el-button>
+          </div>
+        </el-form>
+      </el-dialog>
+    </div>
+  </div>
 </template>
 <script>
 import navList from '@/components/taskManagementNavList.vue'
@@ -123,31 +175,44 @@ export default {
       currentTab: 'evaluationManagement',
       page: 1,
       total: 0,
+      radio: '1',
+      dialogShow: false,
+      rules: {
+        sellerRemark: [{ required: true, message: '请选择店铺类型', trigger: 'blur' }],
+        paypwd: [{ required: true, message: '请选择掌柜号', trigger: 'blur' }]
+      },
+      ruleForm: {
+        sellerRemark: '',
+        paypwd: '',
+        img1: '',
+        img2: '',
+        img3: '',
+        img4: '',
+        img5: ''
+      },
       formData: {
-        taskClass: {
-          value: '所有任务',
+        status: {
+          value: '',
           options: [
-            { label: '所有任务', value: '所有任务' },
-            { label: '未设置评价', value: '未设置评价' },
-            { label: '完成评价', value: '完成评价' },
-            { label: '等待评价', value: '等待评价' },
-            { label: '等待追评', value: '等待追评' },
-            { label: '完成追评', value: '完成追评' },
-            { label: '已取消评价', value: '已取消评价' }
+            { label: '待评价', value: 1 },
+            { label: '待审核', value: 2 },
+            { label: '审核不通过', value: 3 },
+            { label: '已完成', value: 4 },
+            { label: '已取消', value: 6 }
           ]
         },
-        taskNum: {
-          value: '任务编号',
+        type_find: {
+          value: '',
           options: [
-            { label: '任务编号', value: '任务编号' },
-            { label: '订单编号', value: '订单编号' },
-            { label: '运单号', value: '运单号' },
-            { label: '店铺名称', value: '店铺名称' },
-            { label: '买号名称', value: '买号名称' },
-            { label: '商品编号', value: '商品编号' }
+            { label: '任务编号', value: 1 },
+            { label: '运单号', value: 2 },
+            { label: '店铺名称', value: 3 },
+            { label: '买号名称', value: 4 },
+            { label: '商品编号', value: 5 },
+            { label: '商品简称', value: 6 }
           ]
         },
-        keyWord: '',
+        name: '',
         date: ''
       },
       choiceRowData: {},
@@ -164,9 +229,13 @@ export default {
       }
     }
   },
+  created () {
+    this.queryData()
+  },
   methods: {
     pingjiaPub (index) {
       this.choiceRowData = this.tableData.data[index]
+      this.dialogShow = true
     },
     handleCurrentChange (val) {
       this.page = val
@@ -183,8 +252,8 @@ export default {
           params: {
             token: this.$getToken(),
             page: this.page,
-            type: this.formData.type.value,
             status: this.formData.status.value,
+            name: this.formData.name,
             type_find: this.formData.type_find.value,
             start: this.formData.date[0],
             end: this.formData.date[1]
@@ -202,6 +271,92 @@ export default {
           this.page = 1
         }
       })
+    },
+
+    submit () {
+      let params = {
+        token: this.$getToken(),
+        orderid: this.choiceRowData['id'],
+        type: this.choiceRowData['type'],
+        sellerRemark: this.ruleForm.sellerRemark,
+        paypwd: this.ruleForm.paypwd
+      }
+      if (this.radio === '2') {
+        params.img = this.ruleForm.img1 + ',' + this.ruleForm.img2 + ',' + this.ruleForm.img3 + ',' + this.ruleForm.img4 + ',' + this.ruleForm.img5
+      }
+      this.$ajax
+        .get('shopmember/releaseEvaluate', {
+          params: params
+        })
+        .then(res => {
+          if (res && res.data && res.data.code === 1) {
+            this.$emit('submitSuccess')
+            this.$notify({
+              title: '提交成功',
+              type: 'success'
+            })
+            this.resetForm()
+            this.dialogShow = false
+          }
+        })
+    },
+    resetForm () {
+      this.$refs['ruleForm'].resetFields()
+    },
+    img1 (data) {
+      console.log(data)
+      if (data.code === 1) {
+        this.ruleForm.img1 = 'http://h5om.knowsea.cn' + data.data
+      } else {
+        this.$notify.error({
+          title: '上传图片失败'
+        })
+        this.goodsImgList = []
+      }
+    },
+    img2 (data) {
+      console.log(data)
+      if (data.code === 1) {
+        this.ruleForm.img2 = 'http://h5om.knowsea.cn' + data.data
+      } else {
+        this.$notify.error({
+          title: '上传图片失败'
+        })
+        this.goodsImgList = []
+      }
+    },
+    img3 (data) {
+      console.log(data)
+      if (data.code === 1) {
+        this.ruleForm.img3 = 'http://h5om.knowsea.cn' + data.data
+      } else {
+        this.$notify.error({
+          title: '上传图片失败'
+        })
+        this.goodsImgList = []
+      }
+    },
+    img4 (data) {
+      console.log(data)
+      if (data.code === 1) {
+        this.ruleForm.img4 = 'http://h5om.knowsea.cn' + data.data
+      } else {
+        this.$notify.error({
+          title: '上传图片失败'
+        })
+        this.goodsImgList = []
+      }
+    },
+    img5 (data) {
+      console.log(data)
+      if (data.code === 1) {
+        this.ruleForm.img5 = 'http://h5om.knowsea.cn' + data.data
+      } else {
+        this.$notify.error({
+          title: '上传图片失败'
+        })
+        this.goodsImgList = []
+      }
     }
   }
 }

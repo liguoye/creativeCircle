@@ -32,7 +32,7 @@
       <div class="btnGroup">
         <el-button class="tablebtnActive" @click="queryData('param')">查询</el-button>
         <el-button class="tablebtnFFF" @click="queryData()">刷新</el-button>
-        <el-button class="tablebtnFFF">一键取消</el-button>
+        <!-- <el-button class="tablebtnFFF">一键取消</el-button> -->
       </div>
       <div class="tableCom">
         <el-table :data="tableData.data" border style="width: 100%" height="400">
