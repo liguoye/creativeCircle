@@ -152,6 +152,9 @@ export default {
     checkImgDialog,
     checkBuyerMsgDialog
   },
+  created () {
+    this.queryData()
+  },
   data () {
     return {
       currentTab: 'managementFineBrushes',
