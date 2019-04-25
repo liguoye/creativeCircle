@@ -67,8 +67,8 @@ export default {
   data() {
     return {
       currentTab: "publicFineBrushes",
-      orderProgressState: "secondStep",
-      radio: "2"
+      orderProgressState: "firstStep",
+      radio: "1"
     };
   },
   computed: { ...mapGetters(["getdata"]), ...mapGetters(["getall"]) },

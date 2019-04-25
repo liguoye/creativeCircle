@@ -32,31 +32,39 @@
       <div class="table">
         <el-row>
           <el-col :span="5">商品简称</el-col>
-          <el-col :span="14">{{goodsData.abbreviation}}</el-col>
-          <el-col :span="5"></el-col>
+          <el-col :span="14">{{getgoods.abbreviation}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="5">商品ID</el-col>
-          <el-col :span="14">{{goodsData.goodsid}}</el-col>
-          <el-col :span="5"></el-col>
+          <el-col :span="14">{{getgoods.goodsid}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="5">店铺名</el-col>
-          <el-col :span="14">{{goodsData.shop_name}}</el-col>
-          <el-col :span="5"></el-col>
+          <el-col :span="14">{{getgoods.shop_name}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="5">商品标题</el-col>
-          <el-col :span="14">{{goodsData.title}}</el-col>
-          <el-col :span="5"></el-col>
+          <el-col :span="14">{{getgoods.title}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="5">商品链接</el-col>
-          <el-col :span="14">{{goodsData.url}}</el-col>
-          <el-col :span="5"></el-col>
+          <el-col
+            :span="14"
+            style="text-align:center;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
+          >
+            <span>{{getgoods.url}}</span>
+          </el-col>
         </el-row>
+        <img
+          class="goods-img"
+          :src="getgoods.img"
+          alt
+          srcset
+        >
       </div>
     </div>
+
+
     <div class="colTable">
       <div class="title">
         <el-row>
@@ -72,16 +80,16 @@
               <el-col :span="20">
                 <div class="right-container">
                   <span style="margin-right: 10px;">当前总数:
-                    <em class="red">0</em>
+                    <em class="red">{{count.current}}</em>
                   </span>
                   <span style="margin-right: 10px;">未来0天可发布总数:
-                    <em class="red">0</em>
+                    <em class="red">{{count.value}}</em>
                   </span>
                   <span style="margin-right: 10px;">PC:
-                    <em class="red">0</em>
+                    <em class="red">{{count.pc}}</em>
                   </span>
                   <span style="margin-right: 10px;">无线端:
-                    <em class="red">0</em>
+                    <em class="red">{{count.app}}</em>
                   </span>
                   <a class="btn btn-small">新增</a>
                 </div>
@@ -118,6 +126,7 @@
               class="flowEnterSelect"
             >
               <el-select
+                
                 v-model="pathSettingData[index].flowid.value"
                 placeholder="请选择"
               >
@@ -135,12 +144,14 @@
               class="textInput"
             >
               <el-input
+              :disabled="pathSettingData[index].flowid.value==4"
                 v-model="pathSettingData[index].keyword"
                 placeholder="请设置关键字"
               ></el-input>
             </el-col>
             <el-col :span="4">
               <el-input-number
+                :min='1'
                 size="mini"
                 v-model="pathSettingData[index].taskNum"
               ></el-input-number>
@@ -177,10 +188,10 @@
         ></el-input>
       </el-form-item>
     </el-form>
-    <div class="funTable">
-        <time-com></time-com>
+    <div class="colTable">
+      <timeCom></timeCom>
+
     </div>
-    
     <div class="colTable">
       <div class="title">
         <el-row>
@@ -201,6 +212,39 @@
           <el-col :span="4">单价</el-col>
           <el-col :span="4">费用</el-col>
         </el-row>
+        <el-row
+          class="tableContent"
+          v-for="(item,index) in releaseValueAddList"
+          :key="index"
+        >
+          <el-col :span="6">
+            {{item.title}}
+          </el-col>
+          <el-col :span="6">
+            <el-select
+            style="width:100px"
+              v-model="item.percent"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in options"
+                :key="item"
+                :label="item"
+                :value="item"
+              >
+              </el-option>
+            </el-select>%
+          </el-col>
+          <el-col :span="4">
+              {{item.taskNum}}
+          </el-col>
+          <el-col :span="4">
+              {{item.fee}}
+          </el-col>
+          <el-col :span="4">
+              {{item.taskNum*item.fee}}
+          </el-col>
+        </el-row>
         <el-row class="tableContent">
           <el-col :span="6">
           </el-col>
@@ -210,7 +254,7 @@
           </el-col>
           <el-col :span="4">
           </el-col>
-          <el-col :span="4">增值总费用：0.0元</el-col>
+          <el-col :span="4">增值总费用：{{totle}}元</el-col>
         </el-row>
       </div>
     </div>
@@ -221,7 +265,7 @@
           <span style="margin-top: 8px;">
             总费用
             <span style="color: rgb(136, 136, 136);">(基础总费用+增值总费用)</span>：
-            <span style="font-size: 17px; color: rgb(250, 0, 0);">0.0元</span>
+            <span style="font-size: 17px; color: rgb(250, 0, 0);">{{totle}}元</span>
           </span>
         </span>
       </div>
@@ -237,7 +281,24 @@
         ></el-input>
       </div>
       <div>
-        <el-button type="primary">确认发布</el-button>
+        <el-button type="primary" @click="submit">确认发布</el-button>
+      </div>
+    </div>
+    <div>
+      <div
+        class="item"
+        v-for="(item,index) in getall"
+        :key="index"
+      >
+        <div
+          v-for="(item2,index2) in item.goods"
+          :key="index2"
+        >
+          <div>{{index2}}:</div>
+          <div>{{item2}}:</div>
+        </div>
+        <div>{{index}}:</div>
+        <div>{{item}}</div>
       </div>
     </div>
     <setting-dialog-com
@@ -256,7 +317,8 @@
 <script>
 import settingDialogCom from "@/components/settingDialogCom.vue";
 import choiceProductDialog from "@/components/choiceProductDialog.vue";
-import timeCom from "../../taskManagement/publicFineBrushes/components/timecom";
+import timeCom from "./timecom";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
     settingDialogCom,
@@ -265,6 +327,12 @@ export default {
   },
   data() {
     return {
+        count:{
+            current:0,
+            value:0,
+            pc:0,
+            app:0
+        },
       msg: "pubilcFlowTask",
       btnActive: 1,
       dialogTableVisible: false,
@@ -278,10 +346,22 @@ export default {
           flowid: {
             value: "",
             options: [
-              { label: "APP自然搜索", value: 1 },
-              { label: "淘口令", value: 2 },
-              { label: "直通车", value: 3 },
-              { label: "二维码", value: 4 }
+              {
+                label: "APP自然搜索",
+                value: 1
+              },
+              {
+                label: "淘口令",
+                value: 2
+              },
+              {
+                label: "直通车",
+                value: 3
+              },
+              {
+                label: "二维码",
+                value: 4
+              }
             ]
           },
           keyword: "",
@@ -293,22 +373,109 @@ export default {
           otherCondition: "" // 其他
         }
       ],
-      timeData: [
-        {
-          taskNum: 0,
-          beginTime: "",
-          endTime: "",
-          tiemout: "",
-          releaseDay: ""
-        }
-      ],
       form: {
         sellerRemark: ""
       },
       publicTiem: "",
-      password: ""
+      password: "",
+      releaseValueAddList: [
+        {
+          title: "收藏商品",
+          ba01Id: 3,
+          taskNum: 1,
+          price: 0.1,
+          percent:0,
+          fee:0.1
+        },
+        {
+          title: "收藏店铺",
+          ba01Id: 4,
+          taskNum: 0,
+          price: "0",
+          fee: 0.1,
+          percent:0
+        },
+        {
+          title: "加入购物车",
+          ba01Id: 5,
+          taskNum: 1,
+          price: "0",
+          fee: 0.1,
+          percent:0
+        },
+        {
+          title: "问大家提问",
+          ba01Id: 6,
+          taskNum: 0,
+          price: "0",
+          fee: 0.3,
+          percent:0
+        },
+        {
+          title: "旺旺咨询",
+          ba01Id: 7,
+          taskNum: 0,
+          price: "0",
+          fee: 0.3,
+          percent:0
+        },
+        {
+          title: "领优惠券",
+          ba01Id: 8,
+          taskNum: 0,
+          price: "0",
+          fee: 0.1,
+          percent:0
+        }
+      ],
+      totle: "",
+      options:[0,10,20,30,40,50,60,70,80,90,100]
     };
   },
+  watch:{
+      'pathSettingData':{
+          handler(n,o){
+              let totle=0 
+              let pc=0 
+              let app=0;
+              n.forEach((item)=>{
+                  totle+=item.taskNum
+                  if(item.flowid.value==1){
+                      app+=item.taskNum
+                  }else{
+                      pc+=item.taskNum
+                  }
+              })
+              this.count.current=totle
+              this.count.pc=pc
+              this.count.app=app
+          },
+            deep:true
+      },
+      'releaseValueAddList':{
+          handler(n,o){
+              let pricetotle=0
+              n.forEach((item)=>{
+                pricetotle+=item.taskNum*item.fee
+               
+               if(item.percet==0){
+                   item.taskNum=0
+               }else{
+                   item.taskNum=this.count.current*item.percent
+               }
+              })
+                this.totle=pricetotle
+          },
+            deep:true
+      }
+  },
+  computed: {
+    ...mapGetters(["getall"]),
+    ...mapGetters(["getgoods"]),
+    ...mapGetters(["getdata"]),
+    ...mapGetters(["getdate"])
+  },
+  
   methods: {
     choiceDialogConfirm(row) {
       this.goodsData = row;
@@ -330,10 +497,22 @@ export default {
         flowid: {
           value: "",
           options: [
-            { label: "APP自然搜索", value: 1 },
-            { label: "淘口令", value: 2 },
-            { label: "直通车", value: 3 },
-            { label: "二维码", value: 4 }
+            {
+              label: "APP自然搜索",
+              value: 1
+            },
+            {
+              label: "淘口令",
+              value: 2
+            },
+            {
+              label: "直通车",
+              value: 3
+            },
+            {
+              label: "二维码",
+              value: 4
+            }
           ]
         },
         keyword: "",
@@ -345,15 +524,6 @@ export default {
         otherCondition: "" // 其他
       });
     },
-    addTimeData() {
-      this.timeData.push({
-        taskNum: 0,
-        beginTime: "",
-        endTime: "",
-        tiemout: "",
-        releaseDay: ""
-      });
-    },
     deletePathData(index) {
       this.pathSettingData.splice(index, 1);
     },
@@ -363,7 +533,24 @@ export default {
       this.dialogTableVisible = true;
     },
     navListClick(val) {
-      this.$router.push({ name: val, param: { tab: val } });
+      this.$router.push({
+        name: val,
+        param: {
+          tab: val
+        }
+      });
+    },
+    submit(){
+
+        this.$ajax
+        .post("", {
+          type: "2",
+        })
+        .then(res => {
+          if (res.data.errcode == "0000") {
+          }
+        })
+
     }
   }
 };
@@ -373,13 +560,72 @@ export default {
   width: 1150px;
   margin: 0 auto;
   padding-bottom: 50px;
+
   .bottom {
     text-align: right;
     margin-top: 20px;
+
     > div {
       margin-bottom: 10px;
     }
   }
 }
 
+.colTable .funTable > .el-row > .el-col {
+  height: 40px;
+  line-height: 40px;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  display: block;
+}
+
+.table {
+  position: relative;
+}
+
+.goods-img {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 240px;
+  height: 206px;
+}
+
+.tableBtn {
+  background: #0099e5;
+  color: #fff;
+  text-align: center;
+  border-radius: 25px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+// .secondStep {
+//   .content {
+//   }
+// }
 </style>
