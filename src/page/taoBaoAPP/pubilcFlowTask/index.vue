@@ -129,7 +129,7 @@
                 placeholder="请选择"
               >
                 <el-option
-                  v-for="list in pathSettingData[index].options"
+                  v-for="list in pathSettingData[index].flowList"
                   :key="list.value"
                   :label="list.label"
                   :value="list.value"
@@ -328,7 +328,6 @@ export default {
   },
   data() {
     return {
-        
       count: {
         current: 0,
         value: 0,
@@ -476,14 +475,23 @@ export default {
     ...mapGetters(["getall"]),
     ...mapGetters(["getgoods"]),
     ...mapGetters(["getdata"]),
-    ...mapGetters(["getdate"])
+    ...mapGetters(["getdate"]),
+    totleTask() {
+      let list = this.getdate.data;
+      console.log(list)
+      let totle = 0;
+      if (list) {
+        Object.keys(list).forEach(function(key) {
+          if (list[key].constructor === Array) {
+            totle += list[item];
+          }
+        });
+      }
+      return totle;
+    }
   },
 
   methods: {
-    taskTotle() {
-      let date = this.getdate;
-      console.log(date);
-    },
     choiceDialogConfirm(row) {
       this.goodsData = row;
     },
@@ -501,25 +509,18 @@ export default {
     },
     addPathData() {
       this.pathSettingData.push({
+        flowList: {
+          value: "",
+          options: [
+            { label: "APP自然搜索", value: 1 },
+            { label: "APP淘口令", value: 2 },
+            { label: "PC直通车", value: 3 },
+            { label: "APP二维码", value: 4 },
+            { label: "PC自然搜索", value: 5 },
+            { label: "APP直通车", value: 6 }
+          ]
+        },
         flowid: "",
-        options: [
-          {
-            label: "APP自然搜索",
-            value: 1
-          },
-          {
-            label: "淘口令",
-            value: 2
-          },
-          {
-            label: "直通车",
-            value: 3
-          },
-          {
-            label: "二维码",
-            value: 4
-          }
-        ],
         keyword: "",
         taskNum: "",
         sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
@@ -565,12 +566,12 @@ export default {
         .then(res => {
           console.log(res);
           if (res.data.code == "1") {
-              this.$alert('发布成功', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$router.push('/flowTaskManagement')
-          }
-        });
+            this.$alert("发布成功！", {
+              confirmButtonText: "确定",
+              callback: action => {
+                this.$router.push("/flowTaskManagement");
+              }
+            });
           }
         })
         .catch(err => {});
