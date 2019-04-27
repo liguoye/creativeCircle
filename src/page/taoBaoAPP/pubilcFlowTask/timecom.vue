@@ -2,7 +2,10 @@
   <div class="time-box">
     <div class="title">
       <el-row>
-        <el-col :span="12" class="left">
+        <el-col
+          :span="12"
+          class="left"
+        >
           <span>发布时间:</span>
           <el-radio-group v-model="priceType">
             <el-radio :label="1">立刻发布</el-radio>
@@ -10,7 +13,10 @@
             <el-radio :label="3">多天平均发布</el-radio>
           </el-radio-group>
         </el-col>
-        <el-col :span="12" class="right">
+        <el-col
+          :span="12"
+          class="right"
+        >
           <el-row>
             <el-col :span="20">
               <div class="right-container">
@@ -42,22 +48,36 @@
         <el-col :span="6">超时取消</el-col>
       </el-row>
       <template v-for="(item,index) in releaseDateList">
-        <el-row class="tableContent" :key="index">
-          <el-col :span="3" class="first-col">
+        <el-row
+          class="tableContent"
+          :key="index"
+        >
+          <el-col
+            :span="3"
+            class="first-col"
+          >
             <span v-if="priceType!=1">
               <i
                 v-if="releaseDateList[index].isadd"
                 class="el-icon-circle-plus-outline"
                 @click="addPathData(index)"
               ></i>
-              <i v-else class="el-icon-remove-outline" @click="reduceData(index)"></i>
+              <i
+                v-else
+                class="el-icon-remove-outline"
+                @click="reduceData(index)"
+              ></i>
             </span>
             <span style="color:#333">
               <span>{{releaseDateList[index].releaseDay}}</span>
             </span>
           </el-col>
           <el-col :span="3">
-            <el-input-number :min="0" size="mini" v-model="releaseDateList[index].taskNum"></el-input-number>
+            <el-input-number
+              :min="0"
+              size="mini"
+              v-model="releaseDateList[index].taskNum"
+            ></el-input-number>
           </el-col>
           <el-col :span="6">
             <el-time-select
@@ -131,9 +151,7 @@ export default {
       let min = myDate.getHours(); //获取系统时，
       let sec = myDate.getMinutes(); //分
       console.log(min + "" + sec);
-      return (
-        (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec)
-      );
+      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
     }
   },
   watch: {
@@ -149,6 +167,10 @@ export default {
           this.releaseDateList[0].taskNum = this.gettask.totle;
           break;
         case 2:
+          let blist = this.dateList;
+          if (blist.length == 0) {
+            return;
+          }
           this.releaseDateList = arr;
           this.releaseDateList[0].isadd = true;
           this.releaseDateList[0].releaseDay = this.dateList[0];
@@ -156,6 +178,9 @@ export default {
           break;
         case 3:
           let dlist = this.dateList;
+          if (dlist.length == 0) {
+            return;
+          }
           let lpList = [];
           for (let i in dlist) {
             lpList.push({
@@ -168,29 +193,30 @@ export default {
             });
           }
           this.releaseDateList = lpList;
+
           break;
 
         default:
           break;
       }
     },
-     releaseDateList: {
+    releaseDateList: {
       handler(val, oldVal) {
-       let num=0
-       val.forEach((item)=>{
-           num+=item.taskNum
-       })
-       if(num>this.gettask.totle){
-           this.$notify.error({
-          title: '超过上一步任务数',
+        let num = 0;
+        val.forEach(item => {
+          num += item.taskNum;
         });
-       }
-       this.$store.commit("update", { name: "releaseDateList", value: val });
+        if (num > this.gettask.totle) {
+          this.$notify.error({
+            title: "超过上一步任务数"
+          });
+        }
+        this.$store.commit("update", { name: "releaseDateList", value: val });
       },
       deep: true
     },
-    getdate(n,o){
-        this.formatTime();
+    getdate(n, o) {
+      this.formatTime();
     }
   },
   created() {
@@ -271,5 +297,4 @@ export default {
     padding: 10px 0;
   }
 }
-
 </style>

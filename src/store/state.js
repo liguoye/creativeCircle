@@ -43,7 +43,8 @@ var state = {
     }], //商品价格、数量、规格、快递费等
     type: '', //任务类型，1精刷，2推送，3复购,
     expressType: '', //是否平台代发，1要，0不要
-    zdfee: '' //置顶费，单位分
+    zdfee: '',
+    releaseValueAddList:[]
   },
   goodsInfo:{},
   taskTotle:'',

@@ -64,7 +64,6 @@
       </div>
     </div>
 
-
     <div class="colTable">
       <div class="title">
         <el-row>
@@ -83,7 +82,7 @@
                     <em class="red">{{count.current}}</em>
                   </span>
                   <span style="margin-right: 10px;">未来0天可发布总数:
-                    <em class="red">{{count.value}}</em>
+                    <em class="red">{{totleTask}}</em>
                   </span>
                   <span style="margin-right: 10px;">PC:
                     <em class="red">{{count.pc}}</em>
@@ -126,12 +125,11 @@
               class="flowEnterSelect"
             >
               <el-select
-                
-                v-model="pathSettingData[index].flowid.value"
+                v-model="pathSettingData[index].flowid"
                 placeholder="请选择"
               >
                 <el-option
-                  v-for="list in pathSettingData[index].flowid.options"
+                  v-for="list in pathSettingData[index].options"
                   :key="list.value"
                   :label="list.label"
                   :value="list.value"
@@ -144,7 +142,7 @@
               class="textInput"
             >
               <el-input
-              :disabled="pathSettingData[index].flowid.value==4"
+                :disabled="pathSettingData[index].flowid==4"
                 v-model="pathSettingData[index].keyword"
                 placeholder="请设置关键字"
               ></el-input>
@@ -222,7 +220,7 @@
           </el-col>
           <el-col :span="6">
             <el-select
-            style="width:100px"
+              style="width:100px"
               v-model="item.percent"
               placeholder="请选择"
             >
@@ -236,13 +234,13 @@
             </el-select>%
           </el-col>
           <el-col :span="4">
-              {{item.taskNum}}
+            {{item.taskNum}}
           </el-col>
           <el-col :span="4">
-              {{item.fee}}
+            {{item.fee}}
           </el-col>
           <el-col :span="4">
-              {{item.taskNum*item.fee}}
+            {{item.price}}
           </el-col>
         </el-row>
         <el-row class="tableContent">
@@ -261,7 +259,7 @@
     <div class="bottom">
       <div>
         <span style="margin-top: 28px;">
-          <span>任务总数：0&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span>任务总数：{{count.current}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <span style="margin-top: 8px;">
             总费用
             <span style="color: rgb(136, 136, 136);">(基础总费用+增值总费用)</span>：
@@ -281,7 +279,10 @@
         ></el-input>
       </div>
       <div>
-        <el-button type="primary" @click="submit">确认发布</el-button>
+        <el-button
+          type="primary"
+          @click="submit"
+        >确认发布</el-button>
       </div>
     </div>
     <div>
@@ -327,12 +328,13 @@ export default {
   },
   data() {
     return {
-        count:{
-            current:0,
-            value:0,
-            pc:0,
-            app:0
-        },
+        
+      count: {
+        current: 0,
+        value: 0,
+        pc: 0,
+        app: 0
+      },
       msg: "pubilcFlowTask",
       btnActive: 1,
       dialogTableVisible: false,
@@ -343,27 +345,25 @@ export default {
       pathSettingIndex: 0,
       pathSettingData: [
         {
-          flowid: {
-            value: "",
-            options: [
-              {
-                label: "APP自然搜索",
-                value: 1
-              },
-              {
-                label: "淘口令",
-                value: 2
-              },
-              {
-                label: "直通车",
-                value: 3
-              },
-              {
-                label: "二维码",
-                value: 4
-              }
-            ]
-          },
+          flowid: "",
+          options: [
+            {
+              label: "APP自然搜索",
+              value: 1
+            },
+            {
+              label: "淘口令",
+              value: 2
+            },
+            {
+              label: "直通车",
+              value: 3
+            },
+            {
+              label: "二维码",
+              value: 4
+            }
+          ],
           keyword: "",
           taskNum: "",
           sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
@@ -383,91 +383,94 @@ export default {
           title: "收藏商品",
           ba01Id: 3,
           taskNum: 1,
-          price: 0.1,
-          percent:0,
-          fee:0.1
+          price: 0,
+          percent: 0,
+          fee: 0.2
         },
         {
           title: "收藏店铺",
           ba01Id: 4,
           taskNum: 0,
-          price: "0",
-          fee: 0.1,
-          percent:0
+          price: 0,
+          fee: 0.2,
+          percent: 0
         },
         {
           title: "加入购物车",
           ba01Id: 5,
           taskNum: 1,
-          price: "0",
-          fee: 0.1,
-          percent:0
+          price: 0,
+          fee: 0.2,
+          percent: 0
         },
         {
           title: "问大家提问",
           ba01Id: 6,
           taskNum: 0,
-          price: "0",
-          fee: 0.3,
-          percent:0
+          price: 0,
+          fee: 0.5,
+          percent: 0
         },
         {
           title: "旺旺咨询",
           ba01Id: 7,
           taskNum: 0,
-          price: "0",
-          fee: 0.3,
-          percent:0
+          price: 0,
+          fee: 0.5,
+          percent: 0
         },
         {
           title: "领优惠券",
           ba01Id: 8,
           taskNum: 0,
-          price: "0",
-          fee: 0.1,
-          percent:0
+          price: 0,
+          fee: 0.2,
+          percent: 0
         }
       ],
       totle: "",
-      options:[0,10,20,30,40,50,60,70,80,90,100]
+      options: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     };
   },
-  watch:{
-      'pathSettingData':{
-          handler(n,o){
-              let totle=0 
-              let pc=0 
-              let app=0;
-              n.forEach((item)=>{
-                  totle+=item.taskNum
-                  if(item.flowid.value==1){
-                      app+=item.taskNum
-                  }else{
-                      pc+=item.taskNum
-                  }
-              })
-              this.count.current=totle
-              this.count.pc=pc
-              this.count.app=app
-          },
-            deep:true
+  watch: {
+    pathSettingData: {
+      handler(n, o) {
+        let totle = 0;
+        let pc = 0;
+        let app = 0;
+        n.forEach(item => {
+          totle += item.taskNum;
+          if (item.flowid.value == 1) {
+            app += item.taskNum;
+          } else {
+            pc += item.taskNum;
+          }
+        });
+        this.count.current = totle;
+        this.count.pc = pc;
+        this.count.app = app;
       },
-      'releaseValueAddList':{
-          handler(n,o){
-              let pricetotle=0
-              n.forEach((item)=>{
-                pricetotle+=item.taskNum*item.fee
-               
-               if(item.percet==0){
-                   item.taskNum=0
-               }else{
-                   item.taskNum=this.count.current*item.percent
-               }
-              })
-                this.totle=pricetotle
-          },
-            deep:true
-      }
+      deep: true
+    },
+    releaseValueAddList: {
+      handler(n, o) {
+        let pricetotle = 0;
+        n.forEach(item => {
+          if (item.percet == 0) {
+            item.taskNum = 0;
+          } else {
+            item.taskNum = Math.round(
+              (this.count.current * item.percent) / 100
+            );
+          }
+          pricetotle += item.price;
+          item.price = item.taskNum * item.fee;
+        });
+
+        this.totle = pricetotle;
+      },
+      deep: true
+    }
   },
   computed: {
     ...mapGetters(["getall"]),
@@ -475,8 +478,12 @@ export default {
     ...mapGetters(["getdata"]),
     ...mapGetters(["getdate"])
   },
-  
+
   methods: {
+    taskTotle() {
+      let date = this.getdate;
+      console.log(date);
+    },
     choiceDialogConfirm(row) {
       this.goodsData = row;
     },
@@ -494,27 +501,25 @@ export default {
     },
     addPathData() {
       this.pathSettingData.push({
-        flowid: {
-          value: "",
-          options: [
-            {
-              label: "APP自然搜索",
-              value: 1
-            },
-            {
-              label: "淘口令",
-              value: 2
-            },
-            {
-              label: "直通车",
-              value: 3
-            },
-            {
-              label: "二维码",
-              value: 4
-            }
-          ]
-        },
+        flowid: "",
+        options: [
+          {
+            label: "APP自然搜索",
+            value: 1
+          },
+          {
+            label: "淘口令",
+            value: 2
+          },
+          {
+            label: "直通车",
+            value: 3
+          },
+          {
+            label: "二维码",
+            value: 4
+          }
+        ],
         keyword: "",
         taskNum: "",
         sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
@@ -540,17 +545,35 @@ export default {
         }
       });
     },
-    submit(){
-
-        this.$ajax
-        .post("", {
-          type: "2",
-        })
+    submit() {
+      this.$store.commit("update", {
+        name: "releaseFlowList",
+        value: this.pathSettingData
+      });
+      this.$store.commit("update", { name: "paypwd", value: this.password });
+      let newData = Object.assign({}, this.getdata);
+      newData["sellerRemark"] = this.form.sellerRemark;
+      newData["releaseValueAddList"] = this.releaseValueAddList;
+      Object.keys(newData).forEach(function(key) {
+        if (newData[key].constructor === Array) {
+          newData[key] = JSON.stringify(newData[key]);
+        }
+      });
+      //   return;
+      this.$ajax
+        .post("/ShopMember/sendFlow", newData)
         .then(res => {
-          if (res.data.errcode == "0000") {
+          console.log(res);
+          if (res.data.code == "1") {
+              this.$alert('发布成功', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$router.push('/flowTaskManagement')
+          }
+        });
           }
         })
-
+        .catch(err => {});
     }
   }
 };

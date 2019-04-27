@@ -151,7 +151,7 @@
                     >
                       <img src="../../assets/picture/iconett_4.png">
                     </div>
-                    <div class="qoanet" style="margin-top: 5px;">新手教程<span>{{getdata}}</span></div>
+                    <div class="qoanet" style="margin-top: 5px;">新手教程</div>
                     
                   </a>
                 </el-col>
