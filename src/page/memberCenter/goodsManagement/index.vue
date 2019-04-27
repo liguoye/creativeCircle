@@ -85,7 +85,7 @@ export default {
       },
       formData: {
         manager: {
-          value: '全部',
+          value: '',
           options: []
         },
         name: '',
