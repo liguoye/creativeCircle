@@ -27,32 +27,17 @@
             <p>
               <span class="left">支付密码：</span>
               <span class="right">已设置</span>
-              <el-button
-                class="btn"
-                type="primary"
-                size="mini"
-                @click="btnClick('safepass')"
-              >{{userInfo.SafePwd==''?'设置':'修改'}}</el-button>
+              <el-button class="btn" type="primary" size="mini" @click="btnClick('safepass')">{{userInfo.SafePwd==''?'设置':'修改'}}</el-button>
             </p>
             <p>
               <span class="left">QQ：</span>
               <span class="right">{{userInfo.QQToken}}</span>
-              <el-button
-                class="btn"
-                type="primary"
-                size="mini"
-                @click="btnClick('qq')"
-              >{{userInfo.QQToken==''?'设置':'修改'}}</el-button>
+              <el-button class="btn" type="primary" size="mini" @click="btnClick('qq')">{{userInfo.QQToken==''?'设置':'修改'}}</el-button>
             </p>
             <p>
               <span class="left">微信：</span>
               <span class="right">{{userInfo.wx}}</span>
-              <el-button
-                class="btn"
-                type="primary"
-                size="mini"
-                @click="btnClick('wx')"
-              >{{userInfo.wx==''?'设置':'修改'}}</el-button>
+              <el-button class="btn" type="primary" size="mini" @click="btnClick('wx')">{{userInfo.wx==''?'设置':'修改'}}</el-button>
             </p>
           </el-col>
           <el-col :span="10" class="accountManageRight">
@@ -92,7 +77,7 @@
             <el-col :span="6">
               <p>电话号码：</p>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="18" class="code-img">
               <el-input placeholder="请输入电话号码" v-model="formData.phone"></el-input>
             </el-col>
           </el-row>
@@ -100,7 +85,7 @@
             <el-col :span="6">
               <p>验证码</p>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="18" class="code-img">
               <el-input placeholder="请输入图片验证码" :maxlength="4" v-model="formData.imgCode">
                 <template slot="append">
                   <img class="code-img" :src="src" @click="getImg">
@@ -112,7 +97,7 @@
             <el-col :span="6">
               <p>手机验证码</p>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="18" class="code-img">
               <el-input placeholder="请输入手机验证码" :maxlength="4" v-model="formData.code">
                 <span slot="append" class="count" style="color:red" v-if="showCode">{{codeCount}}S</span>
                 <span slot="append" class="send" v-else @click="sendMsg">获取验证码</span>
@@ -123,26 +108,16 @@
             <el-col :span="6">
               <p>设置密码：</p>
             </el-col>
-            <el-col :span="18">
-              <el-input
-                type="password"
-                v-model="formData.setPass"
-                maxlength="11"
-                placeholder="请输入密码，6~11位"
-              ></el-input>
+            <el-col :span="18" class="code-img">
+              <el-input type="password" v-model="formData.setPass" maxlength="11" placeholder="请输入密码，6~11位"></el-input>
             </el-col>
           </el-row>
           <el-row v-if="setType=='pass'||setType=='safepass'">
             <el-col :span="6">
               <p>确认密码：</p>
             </el-col>
-            <el-col :span="18">
-              <el-input
-                type="password"
-                v-model="formData.confirmPass"
-                maxlength="11"
-                placeholder="请再次输入密码"
-              ></el-input>
+            <el-col :span="18" class="code-img">
+              <el-input type="password" v-model="formData.confirmPass" maxlength="11" placeholder="请再次输入密码"></el-input>
             </el-col>
           </el-row>
 
@@ -150,7 +125,7 @@
             <el-col :span="6">
               <p>新QQ：</p>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="18" class="code-img">
               <el-input v-model="formData.qq" placeholder></el-input>
             </el-col>
           </el-row>
@@ -159,7 +134,7 @@
             <el-col :span="6">
               <p>新微信号：</p>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="18" class="code-img">
               <el-input v-model="formData.wx" placeholder></el-input>
             </el-col>
           </el-row>
@@ -173,181 +148,181 @@
   </div>
 </template>
 <script>
-import navList from "../components/treeNavList.vue";
-let phoneReg = /^1[345678]\d{9}$/;
+import navList from '../components/treeNavList.vue'
+let phoneReg = /^1[345678]\d{9}$/
 export default {
   components: {
     navList
   },
   props: {},
-  data() {
+  data () {
     return {
-      title: "",
-      currentTab: "basicData",
-      setType: "pass",
+      title: '',
+      currentTab: 'basicData',
+      setType: 'pass',
       formData: {
-        phone: "",
-        imgCode: "",
-        code: "",
-        setPass: "",
-        confirmPass: "",
-        qq: "",
-        wx: ""
+        phone: '',
+        imgCode: '',
+        code: '',
+        setPass: '',
+        confirmPass: '',
+        qq: '',
+        wx: ''
       },
       dialogShow: false,
       userInfo: {},
       userInfo2: {},
-      src: "",
+      src: '',
       codeCount: 60,
       tt: null,
       showCode: false,
-      modalType: "",
-      sign: ""
-    };
+      modalType: '',
+      sign: ''
+    }
   },
-  created() {
-    this.getImg();
-    this.getUserInfo();
-    this.getHome();
+  created () {
+    this.getImg()
+    this.getUserInfo()
+    this.getHome()
   },
   methods: {
-    submit() {
-      let val = this.modalType;
+    submit () {
+      let val = this.modalType
       switch (val) {
-        case "pass":
-          this.changePassword();
-          break;
-        case "safepass":
-          this.setSafePassword();
-          break;
-        case "qq":
-          this.setqq();
-          break;
-        case "wx":
-          this.setqq();
-          break;
+        case 'pass':
+          this.changePassword()
+          break
+        case 'safepass':
+          this.setSafePassword()
+          break
+        case 'qq':
+          this.setqq()
+          break
+        case 'wx':
+          this.setqq()
+          break
         default:
-          break;
+          break
       }
     },
 
     // 修改登陆密码
-    changePassword() {
+    changePassword () {
       if (this.formData.setPass !== this.formData.confirmPass) {
         this.$notify.error({
-          title: "两次密码不一致"
-        });
-        return;
+          title: '两次密码不一致'
+        })
+        return
       }
       this.$ajax
-        .post("/login/forget", {
+        .post('/login/forget', {
           phone: this.formData.phone,
           code: this.formData.code,
           pwd: this.formData.setPass,
           Username: this.userInfo.Username
         })
         .then(res => {
-          if (res && res.data && res.data.code == 1) {
-            console.log(res);
+          if (res && res.data && res.data.code === 1) {
+            console.log(res)
             this.formData = {
-              phone: "",
-              imgCode: "",
-              code: "",
-              setPass: "",
-              confirmPass: "",
-              qq: "",
-              wx: ""
-            };
+              phone: '',
+              imgCode: '',
+              code: '',
+              setPass: '',
+              confirmPass: '',
+              qq: '',
+              wx: ''
+            }
             this.$notify.success({
-              title: "修改成功"
-            });
-            this.dialogShow = false;
+              title: '修改成功'
+            })
+            this.dialogShow = false
           }
-        });
+        })
     },
     // 设置交易密码
-    setSafePassword() {
+    setSafePassword () {
       if (this.formData.setPass !== this.formData.confirmPass) {
         this.$notify.error({
-          title: "两次密码不一致"
-        });
-        return;
+          title: '两次密码不一致'
+        })
+        return
       }
       this.$ajax
-        .post("/shopmember/safePwd", {
+        .post('/shopmember/safePwd', {
           code: this.formData.code,
           pwd: this.formData.setPass,
           phone: this.userInfo.phone,
           sign: this.sign
         })
         .then(res => {
-          if (res && res.data && res.data.code == 1) {
-            console.log(res);
+          if (res && res.data && res.data.code === 1) {
+            console.log(res)
             this.formData = {
-              phone: "",
-              imgCode: "",
-              code: "",
-              setPass: "",
-              confirmPass: "",
-              qq: "",
-              wx: ""
-            };
+              phone: '',
+              imgCode: '',
+              code: '',
+              setPass: '',
+              confirmPass: '',
+              qq: '',
+              wx: ''
+            }
             this.$notify.success({
-              title: "修改成功"
-            });
-            this.dialogShow = false;
+              title: '修改成功'
+            })
+            this.dialogShow = false
           }
-        });
+        })
     },
     // 修改微信qq
-    setqq() {
+    setqq () {
       this.$ajax
-        .post("/ShopMember/upd", {
+        .post('/ShopMember/upd', {
           qq: this.formData.qq,
           weixin: this.formData.wx
         })
         .then(res => {
-          if (res && res.data && res.data.code == 1) {
-            console.log(res);
+          if (res && res.data && res.data.code === 1) {
+            console.log(res)
             this.formData = {
-              phone: "",
-              imgCode: "",
-              code: "",
-              setPass: "",
-              confirmPass: "",
-              qq: "",
-              wx: ""
-            };
+              phone: '',
+              imgCode: '',
+              code: '',
+              setPass: '',
+              confirmPass: '',
+              qq: '',
+              wx: ''
+            }
             this.$notify.success({
-              title: "设置成功"
-            });
-            this.dialogShow = false;
-            this.getUserInfo();
+              title: '设置成功'
+            })
+            this.dialogShow = false
+            this.getUserInfo()
           }
-        });
+        })
     },
 
     // 发送短信
-    sendMsg() {
+    sendMsg () {
       if (!this.formData.phone || !phoneReg.test(this.formData.phone)) {
-        this.$message.error("请输入正确的手机号码");
-        return;
+        this.$message.error('请输入正确的手机号码')
+        return
       }
       if (!this.formData.imgCode) {
-        this.$message.error("请输入图片验证码");
-        return;
+        this.$message.error('请输入图片验证码')
+        return
       }
-      this.showCode = true;
-      this.codeCount = 60;
+      this.showCode = true
+      this.codeCount = 60
       this.tt = setInterval(() => {
-        this.codeCount = this.codeCount - 1;
+        this.codeCount = this.codeCount - 1
         if (this.codeCount <= 0) {
-          this.showCode = false;
-          clearInterval(this.tt);
+          this.showCode = false
+          clearInterval(this.tt)
         }
-      }, 1000);
+      }, 1000)
       this.$ajax
-        .post("login/sendSms", {
+        .post('login/sendSms', {
           phone: this.formData.phone,
           code: this.formData.imgCode,
           sign: this.sign
@@ -355,75 +330,86 @@ export default {
         .then(res => {
           //     if(res){
           //     }
-          if (rrs.data.code == 1) {
+          if (res.data.code === 1) {
             this.$notify({
-              title: "发送成功",
-              type: "success"
-            });
+              title: '发送成功',
+              type: 'success'
+            })
           }
-        });
+        })
     },
-    getImg() {
-      let data = Date.now();
-      var charactors = "1234567890";
-      var value = "",
-        i;
+    getImg () {
+      let data = Date.now()
+      var charactors = '1234567890'
+      var value = ''
+      var i
       for (let j = 1; j <= 4; j++) {
-        i = parseInt(10 * Math.random());
-        value = value + charactors.charAt(i);
+        i = parseInt(10 * Math.random())
+        value = value + charactors.charAt(i)
       }
-      let sign = data + value;
-      this.sign = sign;
-      this.src = "http://h5om.knowsea.cn/shop/login/Verify?sign=" + sign;
+      let sign = data + value
+      this.sign = sign
+      this.src = 'http://h5om.knowsea.cn/shop/login/Verify?sign=' + sign
     },
-    getUserInfo() {
-      this.$ajax.get("/shopmember/memberInfo").then(res => {
-        if (res && res.data && res.data.code == 1) {
-          console.log(res);
-          this.userInfo = res.data.data;
-          this.formData.qq = res.data.data.QQToken;
-          this.formData.wx = res.data.data.wx;
+    getUserInfo () {
+      this.$ajax.get('/shopmember/memberInfo').then(res => {
+        if (res && res.data && res.data.code === 1) {
+          console.log(res)
+          this.userInfo = res.data.data
+          this.formData.qq = res.data.data.QQToken
+          this.formData.wx = res.data.data.wx
         }
-      });
+      })
     },
-    getHome() {
-      this.$ajax.get("/shopmember/index").then(res => {
-        if (res && res.data && res.data.code == 1) {
-          this.userInfo2 = res.data.data;
+    getHome () {
+      this.$ajax.get('/shopmember/index').then(res => {
+        if (res && res.data && res.data.code === 1) {
+          this.userInfo2 = res.data.data
         }
-      });
+      })
     },
-    navListClick(val) {
-      this.$router.push({ name: val, param: { tab: val } });
+    navListClick (val) {
+      this.$router.push({ name: val, param: { tab: val } })
     },
-    btnClick(val) {
-      this.dialogShow = true;
-      this.setType = val;
-      this.modalType = val;
+    btnClick (val) {
+      this.dialogShow = true
+      this.setType = val
+      this.modalType = val
       switch (val) {
-        case "pass":
-          this.title = "修改登陆密码";
-          break;
-        case "safepass":
-          this.title = "设置交易密码";
-          break;
-        case "qq":
-          this.title = "设置qq";
-          break;
-        case "pass":
-          this.title = "设置微信";
-          break;
+        case 'pass':
+          this.title = '修改登陆密码'
+          break
+        case 'safepass':
+          this.title = '设置交易密码'
+          break
+        case 'qq':
+          this.title = '设置qq'
+          break
+        case 'wx':
+          this.title = '设置微信'
+          break
         default:
-          break;
+          break
       }
     },
-    dialogClose() {
-      this.$emit("dialogClose", false);
+    dialogClose () {
+      this.$emit('dialogClose', false)
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
+.settingDialogCom {
+  .content {
+    .el-row {
+      .el-col {
+        > p:first-child {
+          line-height: 38px;
+        }
+      }
+    }
+  }
+}
 .basicData {
   .code-img {
     display: inline-block;

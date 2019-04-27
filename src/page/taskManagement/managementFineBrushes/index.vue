@@ -312,10 +312,6 @@ export default {
       }
       this.$ajax.get('shopmember/releaseList', queryParams).then(res => {
         if (res && res.data && res.data.code === 1) {
-          this.$notify({
-            title: res.data.msg,
-            type: 'success'
-          })
           this.tableData.data = res.data.data.data
           this.total = res.data.data.total
           this.page = 1

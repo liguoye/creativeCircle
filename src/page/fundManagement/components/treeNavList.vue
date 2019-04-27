@@ -45,6 +45,7 @@ export default {
       &:not(:first-child):hover {
         color: #fff;
         background: #0099e5;
+        cursor: pointer;
       }
     }
     .current {
