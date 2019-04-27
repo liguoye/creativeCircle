@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     handleCurrentChange (val) {
+      this.currentPage = val
       this.$emit('handleCurrentChange', val)
     },
     tableRowClassName ({ row, rowIndex }) {
