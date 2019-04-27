@@ -25,7 +25,8 @@
             </el-select>
             <el-input v-model="formData.name" placeholder="请输入内容"></el-input>
             <span>支付时间</span>
-            <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+            <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期"
+              end-placeholder="结束日期">
             </el-date-picker>
           </el-col>
           <el-col :span="6" style="line-height:40px">
@@ -186,10 +187,6 @@ export default {
       }
       this.$ajax.get('shopmember/EvaluateList', queryParams).then(res => {
         if (res && res.data && res.data.code === 1) {
-          this.$notify({
-            title: res.data.msg,
-            type: 'success'
-          })
           this.tableData.data = res.data.data.data
           this.total = res.data.data.total
           this.page = 1
