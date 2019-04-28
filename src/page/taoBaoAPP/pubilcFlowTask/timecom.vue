@@ -202,10 +202,12 @@ export default {
     },
     releaseDateList: {
       handler(val, oldVal) {
+          
         let num = 0;
         val.forEach(item => {
           num += item.taskNum;
         });
+        // alert(num)
         if (num > this.gettask.totle) {
           this.$notify.error({
             title: "超过上一步任务数"
@@ -237,6 +239,7 @@ export default {
         this.releaseDateList[0].taskNum = this.gettask.totle;
         this.releaseDateList[0].releaseDay = this.dateList[0];
       }
+      
     },
     btnClick(val) {
       if (val === "back") {

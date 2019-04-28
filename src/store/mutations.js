@@ -5,6 +5,11 @@
      goods[name]=value
   }
   
+ const init = (state, payload) => {
+     let goods=state.goods
+     goods=value
+  }
+  
 
   const setgoods=(state, payload)=>{
     state.goodsInfo=payload
@@ -20,5 +25,6 @@
     update,
     setgoods,
     settask,
-    setdate
+    setdate,
+    init
   }

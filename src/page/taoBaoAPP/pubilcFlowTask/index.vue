@@ -286,7 +286,7 @@
       </div>
     </div>
     <div>
-      <div
+      <!-- <div
         class="item"
         v-for="(item,index) in getall"
         :key="index"
@@ -300,7 +300,7 @@
         </div>
         <div>{{index}}:</div>
         <div>{{item}}</div>
-      </div>
+      </div> -->
     </div>
     <setting-dialog-com
       :dialog-table-visible="dialogTableVisible"
@@ -381,7 +381,7 @@ export default {
         {
           title: "收藏商品",
           ba01Id: 3,
-          taskNum: 1,
+          taskNum: 0,
           price: 0,
           percent: 0,
           fee: 0.2
@@ -397,7 +397,7 @@ export default {
         {
           title: "加入购物车",
           ba01Id: 5,
-          taskNum: 1,
+          taskNum: 0,
           price: 0,
           fee: 0.2,
           percent: 0
@@ -448,6 +448,12 @@ export default {
         this.count.current = totle;
         this.count.pc = pc;
         this.count.app = app;
+        let task = {};
+        task.totle = totle;
+        task.pctotle = pc;
+        task.apptotle = app;
+
+        this.$store.commit("settask", task);
       },
       deep: true
     },
@@ -478,7 +484,7 @@ export default {
     ...mapGetters(["getdate"]),
     totleTask() {
       let list = this.getdate.data;
-      console.log(list)
+      console.log(list);
       let totle = 0;
       if (list) {
         Object.keys(list).forEach(function(key) {
@@ -547,6 +553,21 @@ export default {
       });
     },
     submit() {
+      // if(this.count.current!=){
+
+      // },
+      if (this.getdata.goodsid == "") {
+        this.$notify.error({
+          title: "请先选择商品"
+        });
+        return;
+      }
+      if (this.password == "") {
+        this.$notify.error({
+          title: "请输入交易密码"
+        });
+        return;
+      }
       this.$store.commit("update", {
         name: "releaseFlowList",
         value: this.pathSettingData
@@ -569,6 +590,57 @@ export default {
             this.$alert("发布成功！", {
               confirmButtonText: "确定",
               callback: action => {
+                this.$store.commit("init", {
+                  releaseFlowList: [
+                    {
+                      flowList: {
+                        value: "",
+                        options: [
+                          { label: "APP自然搜索", value: 1 },
+                          { label: "APP淘口令", value: 2 },
+                          { label: "PC直通车", value: 3 },
+                          { label: "APP二维码", value: 4 },
+                          { label: "PC自然搜索", value: 5 },
+                          { label: "APP直通车", value: 6 }
+                        ]
+                      },
+                      flowid: "",
+                      keyword1: "",
+                      keyword: "",
+                      taskNum: "",
+                      sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
+                      beginPrice: "", // 价格区间起始
+                      endPrice: "", // 价格区间最大值
+                      shipment: "", // 发货地
+                      otherCondition: "" // 其他
+                    }
+                  ], //来路设置
+                  sellerRemark: "", //备注信息
+                  releaseDateList: [
+                    {
+                      taskNum: "",
+                      beginTime: "",
+                      endTime: "",
+                      tiemout: "",
+                      releaseDay: ""
+                    }
+                  ], //发布时间
+                  paypwd: "", //支付密码
+                  goodsid: "", //商品id
+                  releasePriceList: [
+                    {
+                      goodSize: "",
+                      goodPrice: 0,
+                      goodNumber: 0,
+                      courierFee: 0,
+                      taskNum: 0
+                    }
+                  ], //商品价格、数量、规格、快递费等
+                  type: "", //任务类型，1精刷，2推送，3复购,
+                  expressType: "", //是否平台代发，1要，0不要
+                  zdfee: "",
+                  releaseValueAddList: []
+                });
                 this.$router.push("/flowTaskManagement");
               }
             });

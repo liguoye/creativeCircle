@@ -32,7 +32,7 @@
       </div>
 
       <!-- <div>所有数据{{getall}}</div> -->
-      <div>
+      <!-- <div>
           <div class="item" v-for="(item,index) in getall" :key="index">
               <div v-for="(item2,index2) in item.goods" :key="index2">
                   <div>{{index2}}:</div>
@@ -41,7 +41,7 @@
               <div>{{index}}:</div>
               <div>{{item}}</div>
           </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
