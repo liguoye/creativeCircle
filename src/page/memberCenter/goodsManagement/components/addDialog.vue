@@ -150,7 +150,7 @@ export default {
       this.ruleForm.area = "";
     },
     "ruleForm.shop_id"(newValue, oldValue) {
-      alert(newValue);
+    //   alert(newValue);
     },
     "ruleForm.city"(newValue, oldValue) {
       this.getDis(newValue);
@@ -171,7 +171,8 @@ export default {
         goods_weight: "",
         goods_cate: "",
         tianmao_img: "",
-        zhitongche_img: ""
+        zhitongche_img: "",
+        tb_goodsid:''
       },
       goodsImgList: [],
       unlessList: [],
@@ -210,8 +211,9 @@ export default {
         });
         return;
       }
-      //   console.log(this.ruleForm.goods_url);
+        console.log(this.ruleForm);
       let id = GetUrlParam(this.ruleForm.goods_url, "id");
+      this.ruleForm.tb_goodsid=id
       if (!id) {
         this.$notify.error({
           title: "没有检测到商品id"
@@ -302,7 +304,9 @@ export default {
             kg: this.ruleForm.goods_weight,
             class_name: this.ruleForm.goods_cate,
             tmall_img: this.ruleForm.tianmao_img,
-            through_train_img: this.ruleForm.zhitongche_img
+            through_train_img: this.ruleForm.zhitongche_img,
+            tb_goodsid:this.ruleForm.tb_goodsid,
+            
           }
         })
         .then(res => {
