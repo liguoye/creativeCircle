@@ -36,12 +36,8 @@
           </span>
         </p>
         <p style="text-align:center">
-          <el-button
-            type="primary"
-            size="small"
-            style="width:245px;border-radius:40px;margin:20px 0;height:40px;"
-            @click="next"
-          >下一步</el-button>
+          <el-button type="primary" size="small" style="width:245px;border-radius:40px;margin:20px 0;height:40px;"
+            @click="next">下一步</el-button>
         </p>
       </div>
     </div>
@@ -58,13 +54,13 @@
         <p>
           <span class="left">商家姓名：</span>
           <span class="right">
-            <el-input v-model="form.userName" placeholder="请输入您的姓名"></el-input>
+            <el-input v-model="form.NickName" placeholder="请输入您的姓名"></el-input>
           </span>
         </p>
         <p>
           <span class="left" style="float: left;">商家会员帐号：</span>
           <span class="right">
-            <el-input v-model="form.userNum" placeholder="请输入您希望使用的会员帐号"></el-input>
+            <el-input v-model="form.userName" placeholder="请输入您喜欢使用的会员帐号名"></el-input>
           </span>
         </p>
         <p>
@@ -86,128 +82,121 @@
           </span>
         </p>
         <p style="text-align:center">
-          <el-button
-            type="primary"
-            size="small"
-            @click="register"
-            style="width:245px;border-radius:40px;margin:20px 0;height:40px;"
-          >注册</el-button>
+          <el-button type="primary" size="small" @click="register" style="width:245px;border-radius:40px;margin:20px 0;height:40px;">注册</el-button>
         </p>
       </div>
     </div>
   </div>
 </template>
 <script>
-let phoneReg = /^1[345678]\d{9}$/;
+let phoneReg = /^1[345678]\d{9}$/
 export default {
-  data() {
+  data () {
     return {
-      src: "",
+      src: '',
       form: {
-        phone: "",
-        imgcode: "",
-        code: "",
-        testNum: "",
-        phoneTestNum: "",
-        userName: "",
-        userNum: "",
-        password: "",
-        confirmPass: "",
-        qq: ""
+        phone: '',
+        imgcode: '',
+        code: '',
+        testNum: '',
+        phoneTestNum: '',
+        userName: '',
+        NickName: '',
+        password: '',
+        confirmPass: '',
+        qq: ''
       },
       phoneNumTest: true,
       codeCount: 60,
       tt: null,
       showCode: false,
-      sign: ""
-    };
+      sign: ''
+    }
   },
-  created() {
-    this.getImg();
+  created () {
+    this.getImg()
   },
   methods: {
     //   注册
-    register() {
+    register () {
       if (!this.form.phone || !phoneReg.test(this.form.phone)) {
-        this.$message.error("请输入正确的手机号码");
-        return;
+        this.$message.error('请输入正确的手机号码')
+        return
       }
       if (!this.form.imgcode) {
-        this.$message.error("请输入图片验证码");
-        return;
+        this.$message.error('请输入图片验证码')
+        return
       }
       if (!this.form.code) {
-        this.$message.error("请输入短信验证码");
-        return;
+        this.$message.error('请输入短信验证码')
+        return
       }
       if (!this.form.userName) {
-        this.$message.error("请输入商家姓名");
-        return;
+        this.$message.error('请输入会员账号')
+        return
       }
-      if (!this.form.userNum) {
-        this.$message.error("请输入会员账号");
-        return;
+      if (!this.form.NickName) {
+        this.$message.error('请输入姓名')
+        return
       }
       if (!this.form.password) {
-        this.$message.error("请输入密码");
-        return;
+        this.$message.error('请输入密码')
+        return
       }
       if (!this.form.confirmPass) {
-        this.$message.error("请确认密码");
-        return;
+        this.$message.error('请确认密码')
+        return
       }
       if (!this.form.qq) {
-        this.$message.error("请确认QQ号码");
-        return;
+        this.$message.error('请确认QQ号码')
+        return
       }
-      if (this.form.confirmPass!=this.form.confirmPass) {
-        this.$message.error("两次密码不一致");
-        return;
+      if (this.form.confirmPass != this.form.confirmPass) {
+        this.$message.error('两次密码不一致')
+        return
       }
 
-      
       this.$ajax
-        .post("login/register", {
+        .post('login/register', {
           phone: this.form.phone,
           pwd: this.form.password,
-          Username: this.sign,
-          NickName: this.form.userName,
+          Username: this.form.userName,
+          NickName: this.form.NickName,
           QQToken: this.form.qq,
-          code: this.form.code,
-          
+          code: this.form.code
+
         })
         .then(res => {
-            if(res&&res.code=='1'){
-                this.$notify({
-              title: "注册成功",
-              type: "success"
-            });
+          if (res && res.data && res.data.code == '1') {
+            this.$notify({
+              title: '注册成功',
+              type: 'success'
+            })
             this.$router.push('/login')
-            }
-            
-        });
+          }
+        })
     },
     // 发送短信
-    sendMsg() {
+    sendMsg () {
       if (!this.form.phone || !phoneReg.test(this.form.phone)) {
-        this.$message.error("请输入正确的手机号码");
-        return;
+        this.$message.error('请输入正确的手机号码')
+        return
       }
       if (!this.form.imgcode) {
-        this.$message.error("请输入图片验证码");
-        return;
+        this.$message.error('请输入图片验证码')
+        return
       }
-      this.showCode = true;
-      this.codeCount = 60;
+      this.showCode = true
+      this.codeCount = 60
       this.tt = setInterval(() => {
-        this.codeCount = this.codeCount - 1;
+        this.codeCount = this.codeCount - 1
         if (this.codeCount <= 0) {
-          this.showCode = false;
-          clearInterval(this.tt);
+          this.showCode = false
+          clearInterval(this.tt)
         }
-      }, 1000);
+      }, 1000)
       this.$ajax
-        .post("login/sendSms", {
+        .post('login/sendSms', {
           phone: this.form.phone,
           code: this.form.imgcode,
           sign: this.sign
@@ -219,38 +208,38 @@ export default {
           //     title: "发送成功",
           //     type: "success"
           //   });
-        });
+        })
     },
-    next() {
+    next () {
       if (!this.form.phone || !phoneReg.test(this.form.phone)) {
-        this.$message.error("请输入正确的手机号码");
-        return;
+        this.$message.error('请输入正确的手机号码')
+        return
       }
       if (!this.form.imgcode) {
-        this.$message.error("请输入图片验证码");
-        return;
+        this.$message.error('请输入图片验证码')
+        return
       }
       if (!this.form.code) {
-        this.$message.error("请输入短信验证码");
-        return;
+        this.$message.error('请输入短信验证码')
+        return
       }
-      this.phoneNumTest = false;
+      this.phoneNumTest = false
     },
-    getImg() {
-      let data = Date.now();
-      var charactors = "1234567890";
-      var value = "",
-        i;
+    getImg () {
+      let data = Date.now()
+      var charactors = '1234567890'
+      var value = '',
+        i
       for (let j = 1; j <= 4; j++) {
-        i = parseInt(10 * Math.random());
-        value = value + charactors.charAt(i);
+        i = parseInt(10 * Math.random())
+        value = value + charactors.charAt(i)
       }
-      let sign = data + value;
-      this.sign = sign;
-      this.src = "http://h5om.knowsea.cn/shop/login/Verify?sign=" + sign;
+      let sign = data + value
+      this.sign = sign
+      this.src = 'http://h5om.knowsea.cn/shop/login/Verify?sign=' + sign
     }
   }
-};
+}
 </script>
 <style scoped lang="less">
 .sendSMS {

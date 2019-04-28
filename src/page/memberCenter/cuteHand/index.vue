@@ -157,7 +157,8 @@
                   <el-option v-for="item in formData.notic.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 <span>支付时间</span>
-                <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期"
+                  end-placeholder="结束日期"></el-date-picker>
               </el-col>
               <el-col :span="4" style="line-height:40px;width:130px;">
                 <el-button class="tablebtnActive" @click="getOrderList('param')">查询</el-button>
@@ -298,7 +299,7 @@ export default {
         queryParams = {
           params: {
             token: this.$getToken(),
-            type: this.formData.type.value,
+            type_find: this.formData.type_find.value,
             notic: this.formData.notic.value,
             name: this.name,
             start: this.formData.date[0],
