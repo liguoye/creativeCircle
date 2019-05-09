@@ -21,6 +21,19 @@
             </template>
           </el-table-column>
         </template>
+        <template v-if="item.com=='btn'">
+          <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+            <template slot-scope="scope">
+              <!-- <el-button
+                        class="tableCellBtn"
+                        type="primary"
+                        size="mini"
+                        @click="handleDelete(scope.$index, scope.row)"
+                      >删除</el-button>-->
+              <el-button class="tableCellBtn" type="primary" size="mini" @click="handleEdit(scope.$index, scope.row)">设置标记状态</el-button>
+            </template>
+          </el-table-column>
+        </template>
         <template v-else-if="item.com=='hongqi'">
           <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
             <template slot-scope="scope">
@@ -111,6 +124,9 @@ export default {
     }
   },
   methods: {
+    handleEdit (index, row) {
+      this.$emit('rowClick', index, row)
+    },
     handleCurrentChange (val) {
       this.page = val;
       this.$emit("handleCurrentChange", val);

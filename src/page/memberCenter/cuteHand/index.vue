@@ -127,6 +127,18 @@
                     </template>
                   </el-table-column>
                 </template>
+                <template v-else-if="item.com=='flag'">
+                  <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
+                    <template slot-scope="scope">
+                      <div class="plate">
+                        <p v-if="shopMsgData.data[scope.$index]['status']==0">未审核</p>
+                        <p v-else-if="shopMsgData.data[scope.$index]['status']==1">审核不通过</p>
+                        <p v-else-if="shopMsgData.data[scope.$index]['status']==2">审核通过</p>
+                        <p v-else>其他</p>
+                      </div>
+                    </template>
+                  </el-table-column>
+                </template>
                 <template v-else>
                   <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
                 </template>
@@ -156,7 +168,8 @@
             </el-row>
           </div>
           <div class="table">
-            <table-com :data="tableData.data" :columns="tableData.columns" :total='totle' edit @handleCurrentChange='currentChange'>
+            <table-com :data="tableData.data" :columns="tableData.columns" :total='totle' edit @handleCurrentChange='currentChange'
+              @rowClick="rowClick">
 
             </table-com>
           </div>
@@ -266,6 +279,9 @@ export default {
     this.getOrderList();
   },
   methods: {
+    rowClick (index, rowData) {
+      console.log(index, rowData)
+    },
     currentChange (page) {
       this.currentPage = page;
       this.getOrderList("param");
