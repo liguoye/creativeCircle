@@ -1,16 +1,10 @@
 <template>
   <div class="cuteHand">
     <el-row>
-      <el-col
-        :span="4"
-        class="navList"
-      >
+      <el-col :span="4" class="navList">
         <nav-list :current-tab="currentTab"></nav-list>
       </el-col>
-      <el-col
-        :span="18"
-        class="accountManage"
-      >
+      <el-col :span="18" class="accountManage">
         <div style="overflow: hidden;">
           <p class="title">一、开通智能助手流程:</p>
           <div style="overflow: hidden; padding-left: 34px; margin-bottom: 35px; margin-top: 20px;">
@@ -42,10 +36,7 @@
                 </div>
               </div>
             </div>
-            <div
-              class="float_pent"
-              style="width: 233px;"
-            >
+            <div class="float_pent" style="width: 233px;">
               <div>
                 <div>
                   <img src="../../../assets/picture/xf_icon.png">
@@ -73,10 +64,7 @@
                 </div>
               </div>
             </div>
-            <div
-              class="float_pent"
-              style="width: 70px; text-align: center;"
-            >
+            <div class="float_pent" style="width: 70px; text-align: center;">
               <div>
                 <div>
                   <img src="../../../assets/picture/bz_icon.png">>
@@ -91,21 +79,10 @@
           </p>
 
           <div class="tableCom">
-            <el-table
-              :data="shopMsgData.data"
-              border
-              style="width: 100%"
-              :height="shopMsgData.tableHeight"
-            >
+            <el-table :data="shopMsgData.data" border style="width: 100%" :height="shopMsgData.tableHeight">
               <template v-for="(item,index) in shopMsgData.columns">
                 <template v-if="item.com=='btn'">
-                  <el-table-column
-                    :key="index"
-                    :width="item.width"
-                    :prop="item.code"
-                    :label="item.name"
-                    align="center"
-                  >
+                  <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                     <template slot-scope="scope">
                       <!-- <el-button
                         class="tableCellBtn"
@@ -113,35 +90,21 @@
                         size="mini"
                         @click="handleDelete(scope.$index, scope.row)"
                       >删除</el-button>-->
-                      <el-button
-                        class="tableCellBtn"
-                        type="danger"
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)"
-                      >查看详情</el-button>
+                      <el-button class="tableCellBtn" type="danger" size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
                     </template>
                   </el-table-column>
                 </template>
                 <template v-else-if="item.com=='date'">
-                  <el-table-column
-                    :key="index"
-                    :width="item.width"
-                    :prop="item.code"
-                    :label="item.name"
-                    align="center"
-                  >
+                  <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                     <template slot-scope="scope">
                       <div class="tableCellDate">
                         <p>{{shopMsgData.data[scope.$index][item.code]}}</p>
                         <p v-if="item.code=='interfaceValid'">
-                          <span v-if="shopMsgData.data[scope.$index].taobao_endtime!=null">{{shopMsgData.data[scope.$index].taobao_endtime }}</span>
+                          <span v-if="shopMsgData.data[scope.$index].taobao_endtime!=null">{{shopMsgData.data[scope.$index].taobao_endtime
+                            }}</span>
                           <span @click="openDinggou(shopMsgData.data[scope.$index].id)">订购</span>
                           <span>
-                            <a
-                              style="text-decoration: none;"
-                              target="_blank"
-                              href="http://top.mishion.com/api/top/bind/8022"
-                            >授权</a>
+                            <a style="text-decoration: none;" target="_blank" href="http://top.mishion.com/api/top/bind/8022">授权</a>
                           </span>
                         </p>
                         <p v-if="item.code=='smartValid'">
@@ -153,13 +116,7 @@
                   </el-table-column>
                 </template>
                 <template v-else-if="item.com=='flag'">
-                  <el-table-column
-                    :key="index"
-                    :width="item.width"
-                    :prop="item.code"
-                    :label="item.name"
-                    align="center"
-                  >
+                  <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                     <template slot-scope="scope">
                       <div class="plate">
                         <p v-if="shopMsgData.data[scope.$index]['status']==0">未审核</p>
@@ -171,13 +128,7 @@
                   </el-table-column>
                 </template>
                 <template v-else>
-                  <el-table-column
-                    :key="index"
-                    :width="item.width"
-                    :prop="item.code"
-                    :label="item.name"
-                    align="center"
-                  ></el-table-column>
+                  <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center"></el-table-column>
                 </template>
               </template>
             </el-table>
@@ -185,192 +136,45 @@
           <div class="btnGroup">
             <p class="title">三、订单标记反馈</p>
             <el-row>
-              <el-col
-                :span="20"
-                class="formGroup"
-                style="text-align:left !important;width:calc(100% - 130px)"
-              >
-                <el-select
-                  v-model="formData.type_find.value"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in formData.type_find.options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
+              <el-col :span="20" class="formGroup" style="text-align:left !important;width:calc(100% - 130px)">
+                <el-select v-model="formData.type_find.value" placeholder="请选择">
+                  <el-option v-for="item in formData.type_find.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
-                <el-input
-                  v-model="formData.keyWord"
-                  placeholder="请输入内容"
-                ></el-input>
+                <el-input v-model="formData.keyWord" placeholder="请输入内容"></el-input>
                 <span>标记反馈状态</span>
-                <el-select
-                  v-model="formData.notic.value"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in formData.notic.options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
+                <el-select v-model="formData.notic.value" placeholder="请选择">
+                  <el-option v-for="item in formData.notic.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 <span>支付时间</span>
-                <el-date-picker
-                  v-model="formData.date"
-                  type="daterange"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                ></el-date-picker>
+                <el-date-picker v-model="formData.date" type="daterange" range-separator="至" start-placeholder="开始日期"
+                  end-placeholder="结束日期"></el-date-picker>
               </el-col>
-              <el-col
-                :span="4"
-                style="line-height:40px;width:130px;"
-              >
-                <el-button
-                  class="tablebtnActive"
-                  @click="getOrderList('param')"
-                >查询</el-button>
-                <el-button
-                  class="tablebtnFFF"
-                  @click="getOrderList()"
-                >刷新</el-button>
+              <el-col :span="4" style="line-height:40px;width:130px;">
+                <el-button class="tablebtnActive" @click="getOrderList('param')">查询</el-button>
+                <el-button class="tablebtnFFF" @click="getOrderList()">刷新</el-button>
               </el-col>
             </el-row>
           </div>
           <div class="table">
-            <table-com
-              :data="tableData.data"
-              :columns="tableData.columns"
-              :total='totle'
-              edit
-              @handleCurrentChange='currentChange'
-            >
-              <template v-for="(item,index) in tableData.columns">
-                <template v-if="item.com=='btn'">
-                  <el-table-column
-                    :key="index"
-                    :width="item.width"
-                    :prop="item.code"
-                    :label="item.name"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <!-- <el-button
-                        class="tableCellBtn"
-                        type="primary"
-                        size="mini"
-                        @click="handleDelete(scope.$index, scope.row)"
-                      >删除</el-button>-->
-                      <el-button
-                        class="tableCellBtn"
-                        type="danger"
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)"
-                      >查看详情</el-button>
-                    </template>
-                  </el-table-column>
-                </template>
-                <template v-else-if="item.com=='date'">
-                  <el-table-column
-                    :key="index"
-                    :width="item.width"
-                    :prop="item.code"
-                    :label="item.name"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <div class="tableCellDate">
-                        <p>{{shopMsgData.data[scope.$index][item.code]}}</p>
-                        <p v-if="item.code=='interfaceValid'">
-                          <span v-if="shopMsgData.data[scope.$index].taobao_endtime!=null">{{shopMsgData.data[scope.$index].taobao_endtime }}</span>
-                          <span @click="openDinggou(shopMsgData.data[scope.$index].id)">订购</span>
-                          <span>
-                            <a
-                              style="text-decoration: none;"
-                              target="_blank"
-                              href="http://top.mishion.com/api/top/bind/8022"
-                            >授权</a>
-                          </span>
-                        </p>
-                        <p v-if="item.code=='smartValid'">
-                          <span style="color:#666">{{shopMsgData.data[scope.$index].endtime| format}}</span>
-                          <span @click="openDinggou(shopMsgData.data[scope.$index].id)">续费</span>
-                        </p>
-                      </div>
-                    </template>
-                  </el-table-column>
-                </template>
-                <template v-else-if="item.com=='flag'">
-                  <el-table-column
-                    :key="index"
-                    :width="item.width"
-                    :prop="item.code"
-                    :label="item.name"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      <div class="plate">
-                        <p v-if="shopMsgData.data[scope.$index]['status']==0">未审核</p>
-                        <p v-else-if="shopMsgData.data[scope.$index]['status']==1">审核不通过</p>
-                        <p v-else-if="shopMsgData.data[scope.$index]['status']==2">审核通过</p>
-                        <p v-else>其他</p>
-                      </div>
-                    </template>
-                  </el-table-column>
-                </template>
-                <template v-else>
-                  <el-table-column
-                    :key="index"
-                    :width="item.width"
-                    :prop="item.code"
-                    :label="item.name"
-                    align="center"
-                  ></el-table-column>
-                </template>
-              </template>
+            <table-com :data="tableData.data" :columns="tableData.columns" :total='totle' edit @handleCurrentChange='currentChange'>
+
             </table-com>
           </div>
         </div>
       </el-col>
     </el-row>
     <div class="settingDialogCom">
-      <el-dialog
-        title="提示"
-        :visible.sync="powerDialogShow"
-        width="30%"
-      >
+      <el-dialog title="提示" :visible.sync="powerDialogShow" width="30%">
         <span>您是否授权成功？</span>
-        <span
-          slot="footer"
-          class="dialog-footer"
-        >
+        <span slot="footer" class="dialog-footer">
           <el-button @click="powerDialogShow = false">授权遇到问题</el-button>
-          <el-button
-            type="primary"
-            @click="powerDialogShow = false"
-          >授权成功</el-button>
+          <el-button type="primary" @click="powerDialogShow = false">授权成功</el-button>
         </span>
       </el-dialog>
     </div>
-    <renew-dialog
-      :shopid="shopid"
-      @dialogClose="dialogClose"
-      :dialog-table-visible="renewDialogShow"
-    ></renew-dialog>
-    <look-detail-dialog
-      @dialogClose="lookDetailDialogClose"
-      :dialog-table-visible="lookDetailDialogShow"
-      :passdata="editData"
-    ></look-detail-dialog>
-    <flag-dialog
-      :shopid="shopid"
-      @dialogClose="dialogClose"
-      :dialog-table-visible="renewDialogShow"
-    ></flag-dialog>
+    <renew-dialog :shopid="shopid" @dialogClose="dialogClose" :dialog-table-visible="renewDialogShow"></renew-dialog>
+    <look-detail-dialog @dialogClose="lookDetailDialogClose" :dialog-table-visible="lookDetailDialogShow" :passdata="editData"></look-detail-dialog>
+    <flag-dialog :shopid="shopid" @dialogClose="dialogClose" :dialog-table-visible="renewDialogShow"></flag-dialog>
   </div>
 </template>
 <script>
@@ -388,7 +192,7 @@ export default {
     flagDialog
   },
   props: {},
-  data() {
+  data () {
     return {
       lookDetailDialogShow: false,
       editData: {},
@@ -447,9 +251,9 @@ export default {
           { name: "店铺名称", code: "shop_name", width: "" },
           { name: "买号名称", code: "taobao", width: "" },
           { name: "订单编号", code: "ordersn", width: "180" },
-          { name: "标记反馈状态", code: "flag", width: "" },
+          { name: "标记反馈状态", code: "flag", width: "", com: 'hongqi' },
           { name: "下单支付时间", code: "ct", width: "220" },
-          { name: "操作", code: "btn", width: "",com:'btn' }
+          { name: "操作", code: "btn", width: "", com: 'btn' }
         ]
       },
       shopid: 0,
@@ -457,27 +261,27 @@ export default {
       currentPage: 1
     };
   },
-  created() {
+  created () {
     this.getShopList();
     this.getOrderList();
   },
   methods: {
-    currentChange(page) {
+    currentChange (page) {
       this.currentPage = page;
       this.getOrderList("param");
     },
-    lookDetailDialogClose(val) {
+    lookDetailDialogClose (val) {
       this.lookDetailDialogShow = val;
     },
-    handleEdit(a, b) {
+    handleEdit (a, b) {
       this.editData = b;
       this.lookDetailDialogShow = true;
     },
-    openDinggou(id) {
+    openDinggou (id) {
       this.shopid = id;
       this.renewDialogShow = true;
     },
-    getShopList() {
+    getShopList () {
       this.$ajax.get("shop/index").then(res => {
         // console.log("店铺列表", res);
         if (res && res.data && res.data.code === 1) {
@@ -491,7 +295,7 @@ export default {
         }
       });
     },
-    getOrderList(param) {
+    getOrderList (param) {
       let queryParams = {
         params: {
           token: this.$getToken()
@@ -519,10 +323,10 @@ export default {
         }
       });
     },
-    dialogClose(val) {
+    dialogClose (val) {
       this.renewDialogShow = val;
     },
-    navListClick(val) {
+    navListClick (val) {
       this.$router.push({ name: val, param: { tab: val } });
     }
   }
