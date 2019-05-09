@@ -12,11 +12,11 @@
             </p>
             <p>
               存款：
-              <span class="red">{{detail.Money|percent}}</span>元
+              <span class="red">{{detail.Money/100}}</span>元
             </p>
             <p>
               发布点：
-              <span class="red">{{detail.MinLi}}</span>个
+              <span class="red">{{detail.MinLi/100}}</span>个
             </p>
             <p>
               绑定店铺：
@@ -57,7 +57,7 @@
               <el-row>
                 <el-col :span="12">
                   <a
-                    href="#/business/funds/transfer/pending"
+                    href="#"
                     class="woent_a"
                     style="padding-left: 20px; display: block;"
                   >
@@ -67,7 +67,7 @@
                 </el-col>
                 <el-col :span="12">
                   <a
-                    href="#/business/funds/transfer/pending"
+                    href="#"
                     class="woent_a"
                     style="padding-left: 20px; display: block;"
                   >
@@ -79,7 +79,7 @@
               <el-row>
                 <el-col :span="12">
                   <a
-                    href="#/business/funds/transfer/pending"
+                    href="#"
                     class="woent_a"
                     style="padding-left: 20px; display: block;"
                   >
@@ -89,7 +89,7 @@
                 </el-col>
                 <el-col :span="12">
                   <a
-                    href="#/business/funds/transfer/pending"
+                    href="#"
                     class="woent_a"
                     style="padding-left: 20px; display: block;"
                   >
@@ -106,7 +106,7 @@
               <el-row>
                 <el-col :span="12">
                   <a
-                    href="#/business/funds/transfer/pending"
+                    href="#"
                     class="woent_a"
                     style="padding-left: 20px; display: block;"
                   >
@@ -122,7 +122,7 @@
             <div class="tabContent">
               <el-row>
                 <el-col :span="8">
-                  <a href="#/business/member/notice" style="text-align: center;">
+                  <a href="#/platformNotice" style="text-align: center;">
                     <div
                       class="wcpwoet"
                       style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;"
@@ -133,7 +133,7 @@
                   </a>
                 </el-col>
                 <el-col :span="8">
-                  <a href="#/business/member/notice" style="text-align: center;">
+                  <a href="#/platformNotice" style="text-align: center;">
                     <div
                       class="wcpwoet"
                       style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;"
@@ -144,7 +144,7 @@
                   </a>
                 </el-col>
                 <el-col :span="8">
-                  <a href="#/business/member/notice" style="text-align: center;">
+                  <a href="#/platformNotice" style="text-align: center;">
                     <div
                       class="wcpwoet"
                       style="width: 75px; height: 64px; background-color: rgb(241, 245, 255); border-radius: 100%; padding-top: 11px; display: block; margin: 0px auto;"
@@ -173,7 +173,7 @@ export default {
   },
   created() {
     this.getHome();
-    console.log(this.getdata)
+   // console.log(this.getdata)
   },
   computed: {...mapGetters(['getdata'])},
   methods: {

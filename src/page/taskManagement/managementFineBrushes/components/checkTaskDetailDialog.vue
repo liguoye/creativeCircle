@@ -1,6 +1,11 @@
 <template>
   <div class="settingDialogCom">
-    <el-dialog title="查看任务详情" :visible.sync="dialogShow" @close="dialogClose" width="60%">
+    <el-dialog
+      title="查看任务详情"
+      :visible.sync="dialogShow"
+      @close="dialogClose"
+      width="60%"
+    >
       <div class="content">
         <h5>任务基本信息</h5>
         <el-row>
@@ -117,12 +122,19 @@
             <p>{{rowData.url}}</p>
           </el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="24">
             <p>商品展现图:</p>
             <p><img :src="rowData.img" /></p>
           </el-col>
-        </el-row>
+        </el-row> -->
+        <div style="margin-top:30px">
+          <span>
+            商品展现图:
+          </span>
+          <img style="width:60%;" :src="rowData.img" />
+        </div>
+
       </div>
     </el-dialog>
   </div>
@@ -132,47 +144,47 @@ export default {
   props: {
     visible: {
       type: Boolean,
-      default () {
-        return false
+      default() {
+        return false;
       }
     },
     data: {
       type: Object,
-      default () {
-        return {}
+      default() {
+        return {};
       }
     }
   },
   watch: {
-    visible (val) {
-      this.dialogShow = val
+    visible(val) {
+      this.dialogShow = val;
     },
-    data (val) {
-      this.rowData = JSON.parse(JSON.stringify(val))
+    data(val) {
+      this.rowData = JSON.parse(JSON.stringify(val));
     }
   },
-  data () {
+  data() {
     return {
       rowData: {},
       dialogShow: false
-    }
+    };
   },
   methods: {
-    dialogClose () {
-      this.$emit('dialogClose', false)
+    dialogClose() {
+      this.$emit("dialogClose", false);
       for (let item in this.formData) {
-        this.formData[item].check = false
+        this.formData[item].check = false;
       }
     },
-    dialogConfirm () {
-      this.$emit('dialogConfirm', {
+    dialogConfirm() {
+      this.$emit("dialogConfirm", {
         id: this.rowData.id,
         sellerRemark: this.rowData.sellerRemark
-      })
-      this.$emit('dialogClose', false)
+      });
+      this.$emit("dialogClose", false);
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .el-dialog {

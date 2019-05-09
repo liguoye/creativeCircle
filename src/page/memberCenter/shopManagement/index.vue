@@ -46,6 +46,12 @@
                         size="mini"
                         @click="lookDetailClick(scope.$index, scope.row)"
                       >查看详情</el-button>
+                      <el-button
+                        class="tableCellBtn"
+                        type="danger"
+                        size="mini"
+                        @click="lookDetailClick(scope.$index, scope.row)"
+                      >查看详情</el-button>
                     </template>
                   </el-table-column>
                 </template>
@@ -211,7 +217,7 @@ export default {
     //   获取店铺列表
     getShopList() {
       this.$ajax.get("shop/index").then(res => {
-        console.log(res);
+        // console.log(res);
         if (res && res.data && res.data.code == 1) {
           this.tableData = res.data.data.data;
         }
@@ -219,6 +225,7 @@ export default {
     },
     editDialogClose(val) {
       this.editDialogShow = val;
+      this.getShopList();
     },
     lookDetailDialogClose(val) {
       this.lookDetailDialogShow = val;
@@ -227,7 +234,7 @@ export default {
       this.$router.push({ name: val, param: { tab: val } });
     },
     lookDetailClick(index, row) {
-      console.log(index, row);
+    //   console.log(index, row);
       this.$ajax
         .get("shop/shopInfo", {
           params: { shopid: row.id}
@@ -253,7 +260,7 @@ export default {
       this.editDialogShow = true;
     },
     handleDelete(index, row) {
-      console.log(row);
+    //   console.log(row);
       this.$confirm("确认删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -263,7 +270,7 @@ export default {
           this.$ajax
             .get("shop/delete", { params: { shopid: row.id } })
             .then(res => {
-              console.log(res);
+            //   console.log(res);
               if (res && res.data && res.data.code == 1) {
                 this.$notify({
                   title: "删除成功",
@@ -276,7 +283,7 @@ export default {
         .catch(() => {});
     },
     shopStateChange(index, row) {
-      console.log(index, row);
+    //   console.log(index, row);
     },
     addDialogClose(val) {
       this.addDialogShow = val;

@@ -306,7 +306,7 @@ export default {
   },
   methods: {
     handleSelectionChange (val) {
-      console.log(val)
+     // console.log(val)
       this.tableSelectData = val
     },
     changeCard (type) {
@@ -315,7 +315,7 @@ export default {
     bindCard () {
       let id = this.sortOrder.value
       let list = this.sortOrder.options
-      console.log(list)
+    //  console.log(list)
       list.forEach(item => {
         if (item.id === id) {
           this.bankName = item.bank_name
@@ -331,7 +331,7 @@ export default {
           id: this.sortOrder.value
         })
         .then(res => {
-          console.log('结果', res)
+        //  console.log('结果', res)
           if (res && res.data && res.data.code === 1) {
             this.$notify({
               title: '修改成功',
@@ -343,7 +343,7 @@ export default {
     },
     getUserInfo () {
       this.$ajax.get('shopmember/index').then(res => {
-        console.log('余额', res)
+       // console.log('余额', res)
         if (res && res.data && res.data.code === 1) {
           this.user = res.data.data
         }
@@ -351,7 +351,7 @@ export default {
     },
     getBankList () {
       this.$ajax.get('/member/bankList').then(res => {
-        console.log('银行列表', res)
+       // console.log('银行列表', res)
         if (res && res.data && res.data.code === 1) {
           this.sortOrder.options = res.data.data
         }
@@ -412,7 +412,7 @@ export default {
         }
       }
       this.$ajax.get('shopmember/accountsList', queryParams).then(res => {
-        console.log('转账列表', res)
+       // console.log('转账列表', res)
         if (res && res.data && res.data.code === 1) {
           this.tableData.data = res.data.data
         }

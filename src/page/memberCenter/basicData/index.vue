@@ -9,15 +9,15 @@
           <el-col :span="14" class="accountManageLeft">
             <p>
               <span class="left">姓名：</span>
-              <span class="right">{{userInfo.Username}}</span>
+              <span class="right">{{userInfo.TrueName}}</span>
             </p>
             <p>
               <span class="left">会员名：</span>
-              <span class="right">{{userInfo.NickName}}</span>
+              <span class="right">{{userInfo.Username}}</span>
             </p>
             <p>
               <span class="left">总资产：</span>
-              <span class="right">{{userInfo.Money}}（存款＋发布点）</span>
+              <span class="right">{{userInfo.Money/100+userInfo2.MinLi/100}}（存款＋发布点）</span>
             </p>
             <p>
               <span class="left">登录密码：</span>
@@ -49,11 +49,11 @@
                 </p>
                 <p>
                   帐户存款：
-                  <span class="red">{{userInfo2.Money}}</span> 元
+                  <span class="red">{{userInfo2.Money/100}}</span> 元
                 </p>
                 <p>
                   账户发布点：
-                  <span class="red">{{userInfo2.MinLi}}</span> 个
+                  <span class="red">{{userInfo2.MinLi/100}}</span> 个
                 </p>
                 <p>
                   绑定店铺：
@@ -223,7 +223,7 @@ export default {
         })
         .then(res => {
           if (res && res.data && res.data.code === 1) {
-            console.log(res)
+          //  console.log(res)
             this.formData = {
               phone: '',
               imgCode: '',
@@ -257,7 +257,7 @@ export default {
         })
         .then(res => {
           if (res && res.data && res.data.code === 1) {
-            console.log(res)
+           // console.log(res)
             this.formData = {
               phone: '',
               imgCode: '',
@@ -283,7 +283,7 @@ export default {
         })
         .then(res => {
           if (res && res.data && res.data.code === 1) {
-            console.log(res)
+          //  console.log(res)
             this.formData = {
               phone: '',
               imgCode: '',
@@ -354,7 +354,7 @@ export default {
     getUserInfo () {
       this.$ajax.get('/shopmember/memberInfo').then(res => {
         if (res && res.data && res.data.code === 1) {
-          console.log(res)
+         // console.log(res)
           this.userInfo = res.data.data
           this.formData.qq = res.data.data.QQToken
           this.formData.wx = res.data.data.wx

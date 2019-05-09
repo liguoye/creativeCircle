@@ -2,17 +2,6 @@ var state = {
   goods: {
     releaseFlowList: [
         {
-            flowList: {
-              value: "",
-              options: [
-                { label: "APP自然搜索", value: 1 },
-                { label: "APP淘口令", value: 2 },
-                { label: "PC直通车", value: 3 },
-                { label: "APP二维码", value: 4 },
-                { label: "PC自然搜索", value: 5 },
-                { label: "APP直通车", value: 6 }
-              ]
-            },
             flowid:'',
             keyword1: "",
             keyword: "",
@@ -21,7 +10,8 @@ var state = {
             beginPrice: "", // 价格区间起始
             endPrice: "", // 价格区间最大值
             shipment: "", // 发货地
-            otherCondition: "" // 其他
+            otherCondition: "", // 其他
+            repurchaseType:''
           }
     ], //来路设置
     sellerRemark: '', //备注信息

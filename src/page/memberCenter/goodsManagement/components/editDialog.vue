@@ -18,21 +18,10 @@
           <el-input v-model="ruleForm.title" :disabled="checkDetail"></el-input>
         </el-form-item>
         <el-form-item label="商品主图：" prop="img">
-          <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadGoods"
-            :file-list="goodsImgList" list-type="picture" :on-remove="removePic" :disabled="checkDetail">
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              将文件拖到此处，或
-              <em>点击上传</em>
-            </div>
-            <div class="el-upload__tip" slot="tip">
-              请上传商品主图的图片
-              <a href="http://www.baidu.com">aaaa</a>
-            </div>
-          </el-upload>
+          <img style="width200px;height:200px" :src="ruleForm.img" alt srcset>
         </el-form-item>
         <el-form-item label="无线端商品主图：" prop="mobile_img">
-          <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadUnless"
+          <!-- <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadUnless"
             :file-list="unlessList" list-type="picture" :on-remove="removePic">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -43,7 +32,17 @@
               请上传无线端商品主图的图片
               <a href="http://www.baidu.com">aaaa</a>
             </div>
+          </el-upload> -->
+          <el-upload
+            class="avatar-uploader"
+            action="http://h5om.knowsea.cn/shop/Upload/uploadFile"
+            :show-file-list="false"
+            :on-success="uploadUnless"
+          >
+            <img v-if="ruleForm.mobile_img" :src="ruleForm.mobile_img" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+
         </el-form-item>
         <div class="horizontal-rule">
           <span>商品自定义信息</span>
@@ -62,7 +61,7 @@
           <span>商品图片信息 ( 选填 )</span>
         </div>
         <el-form-item label="天猫展示图：" prop="tmall_img">
-          <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadTianmao"
+          <!-- <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadTianmao"
             :file-list="tianmaoList" list-type="picture" :on-remove="removePic" :disabled="checkDetail">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -73,10 +72,19 @@
               请上传天猫展示的图片
               <a href="http://www.baidu.com">aaaa</a>
             </div>
+          </el-upload> -->
+          <el-upload
+            class="avatar-uploader"
+            action="http://h5om.knowsea.cn/shop/Upload/uploadFile"
+            :show-file-list="false"
+            :on-success="uploadTianmao"
+          >
+            <img v-if="ruleForm.tmall_img" :src="ruleForm.tmall_img" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="直通车展示图：" prop="through_train_img">
-          <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadZhitongche"
+          <!-- <el-upload class="upload-demo" :limit="1" drag action="http://h5om.knowsea.cn/shop/Upload/uploadFile" multiple :on-success="uploadZhitongche"
             :file-list="zhitongcheList" list-type="picture" :on-remove="removePic" :disabled="checkDetail">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -87,6 +95,15 @@
               请上传直通车展示的图片
               <a href="http://www.baidu.com">aaaa</a>
             </div>
+          </el-upload> -->
+          <el-upload
+            class="avatar-uploader"
+            action="http://h5om.knowsea.cn/shop/Upload/uploadFile"
+            :show-file-list="false"
+            :on-success="uploadZhitongche"
+          >
+            <img v-if="ruleForm.through_train_img" :src="ruleForm.through_train_img" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <div style="text-align:center;margin-bottom:50px;" v-if="!checkDetail">
@@ -98,6 +115,26 @@
   </div>
 </template>
 <script>
+function GetUrlParam(url, paraName) {
+  var curl = url.toString();
+  var arrObj = curl.split("?");
+
+  if (arrObj.length > 1) {
+    var arrPara = arrObj[1].split("&");
+    var arr;
+
+    for (var i = 0; i < arrPara.length; i++) {
+      arr = arrPara[i].split("=");
+
+      if (arr != null && arr[0] == paraName) {
+        return arr[1];
+      }
+    }
+    return "";
+  } else {
+    return "";
+  }
+}
 export default {
   props: {
     dialogTableVisible: {
@@ -130,9 +167,10 @@ export default {
       this.dialogShow = val
     },
     checkDetail (val) {
-      console.log('check', val)
+     // console.log('check', val)
     },
     tableRowData (val) {
+      //  console.log(val)
       if (val) {
         for (let item in val) {
           if (typeof val[item] !== 'undefined' && val[item] !== null && val[item] !== '') {
@@ -181,26 +219,54 @@ export default {
         kg: '',
         class_name: '',
         tmall_img: '',
-        through_train_img: ''
+        through_train_img: '',
+        tb_goodsid:''
       }
     }
   },
   created () {
   },
   methods: {
-    openGoodsDetail () {
-      if (!this.ruleForm.goods_url) {
+   openGoodsDetail() {
+       if (!this.ruleForm.shop_id) {
         this.$notify.error({
-          title: '请输入链接'
-        })
-        return
+          title: "请选择店铺"
+        });
+        return;
       }
-      window.open(this.ruleForm.goods_url)
+      if (!this.ruleForm.url) {
+        this.$notify.error({
+          title: "请输入链接"
+        });
+        return;
+      }
+       // console.log(this.ruleForm);
+      let id = GetUrlParam(this.ruleForm.url, "id");
+      this.ruleForm.tb_goodsid=id
+      if (!id) {
+        this.$notify.error({
+          title: "没有检测到商品id"
+        });
+        return;
+      }
+      this.$ajax
+        .post("shopmember/getTaobaoGoods", {
+          shopid: this.ruleForm.shop_id,
+          goodsid: id
+        })
+        .then(res => {
+         // console.log(res);
+          if (res.data.code == "1") {
+            this.ruleForm.img = res.data.data.picUrl;
+            this.ruleForm.title = res.data.data.title;
+            // console.log(this.ruleForm.goods_img);
+          }
+        });
     },
     removePic () { },
     uploadGoods (data) {
       if (data.code === 1) {
-        this.ruleForm.goods_img = data.data
+        this.ruleForm.img = "http://h5om.knowsea.cn" +data.data
       } else {
         this.$notify.error({
           title: '上传图片失败'
@@ -210,7 +276,7 @@ export default {
     },
     uploadUnless (data) {
       if (data.code === 1) {
-        this.ruleForm.unless_img = data.data
+        this.ruleForm.mobile_img = "http://h5om.knowsea.cn" +data.data
       } else {
         this.$notify.error({
           title: '上传图片失败'
@@ -220,7 +286,7 @@ export default {
     },
     uploadTianmao (data) {
       if (data.code === 1) {
-        this.ruleForm.tianmao_img = data.data
+        this.ruleForm.tmall_img = "http://h5om.knowsea.cn" +data.data
       } else {
         this.$notify.error({
           title: '上传图片失败'
@@ -230,7 +296,7 @@ export default {
     },
     uploadZhitongche (data) {
       if (data.code === 1) {
-        this.ruleForm.zhitongche_img = data.data
+        this.ruleForm.through_train_img ="http://h5om.knowsea.cn" + data.data
       } else {
         this.$notify.error({
           title: '上传图片失败'
@@ -243,7 +309,7 @@ export default {
         if (valid) {
           this.editConfirm()
         } else {
-          console.log('error edit!!')
+         // console.log('error edit!!')
           return false
         }
       })

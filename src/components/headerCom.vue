@@ -1,42 +1,71 @@
 <template>
   <div class="header con_width">
     <div class="logo">
-      <a href="#/business/index" class="router-link-exact-active router-link-active"><img src="../assets/picture/logo.png" />></a>
+      <a
+        href="#/business/index"
+        class="router-link-exact-active router-link-active"
+      ><img src="../assets/picture/logo.png" /></a>
     </div>
-    <div class="fr" style="margin-top: 29px;">
-      <div class="dwoent">
-        <div class="rpamet colort">
+    <div
+      class="fr"
+      style="margin-top: 29px;"
+    >
+      <div class="dwoent" >
+        <div class="rpamet colort" @click="click('1')">
           <div class="wpet">
             <div class="roamet">
-              <div class="poemt"><img src="../assets/picture/roader.png" /></div>
+              <div class="poemt" v-if="activeIndex=='1'"><img src="../assets/picture/roader.png" /></div>
               <div class="poanet"></div>
             </div>
           </div>
-          <div>显示任务</div>
+          <div >显示任务</div>
         </div>
-        <div class="wpamet">
+        <div class="wpamet"  @click="click('2')">
           <div class="wpet">
             <div class="roamet">
               <!---->
+              <div class="poemt" v-if="activeIndex=='2'"><img src="../assets/picture/roader.png" /></div>
               <div class="poanet"></div>
             </div>
           </div>
-          <div>隐藏任务</div>
+          <div  >隐藏任务</div>
         </div>
       </div>
-      574014209
-      <a class="outBtn">退出</a>
+      <span>欢迎您，{{username}}</span>
+      <span
+        class="outBtn"
+        @click="loginOut"
+      >退出</span>
     </div>
   </div>
 </template>
 <script>
+import cookie from 'js-cookie'
 export default {
-  data () {
+  data() {
     return {
-      activeIndex: '1'
+      activeIndex: "1",
+      username:''
+    };
+  },
+  created(){
+      let username=cookie.get('username')||''
+      this.username=username
+  },
+  methods: {
+      click(index){
+          this.activeIndex=index
+      },
+    loginOut() {
+      this.$ajax.post("member/loginOut").then(res => {
+        if (res && res.data && res.data.code === 1) {
+           cookie.remove('logined');
+           location.href='/'
+        }
+      });
     }
   }
-}
+};
 </script>
 <style  lang="less">
 .header {
@@ -73,7 +102,7 @@ export default {
         float: left;
         width: 110px;
         cursor: pointer;
-        color: #d8d8d8;
+        // color: #d8d8d8;
       }
       .wpamet {
         cursor: pointer;
@@ -97,7 +126,7 @@ export default {
         }
       }
       .colort {
-        color: red;
+        // color: red;
         .wpet {
           float: left;
           margin-right: 4px;
@@ -128,6 +157,7 @@ export default {
       line-height: 25px;
       margin-left: 10px;
       font-size: 13px;
+      cursor: pointer;
     }
   }
 }

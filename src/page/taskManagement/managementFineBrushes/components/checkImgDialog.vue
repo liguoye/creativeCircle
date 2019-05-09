@@ -1,6 +1,6 @@
 <template>
   <div class="settingDialogCom">
-    <el-dialog title="已查看截图" :visible.sync="dialogShow" @close="dialogClose">
+    <el-dialog title="查看截图" :visible.sync="dialogShow" @close="dialogClose">
       <div class="content">
         <img :src="rowData.divKeyImg" />
         <img :src="rowData.evaluateImg" />

@@ -10,7 +10,7 @@
             <p>
               <span class="left">账户余额：</span>
               <span class="right">
-                <em class="red">{{user.Money}}</em>元</span>
+                <em class="red">{{user.Money/100}}</em>元</span>
             </p>
             <p>
               <span class="left">充值方式：</span>
@@ -141,7 +141,7 @@ export default {
           // qq: ''
         }
       }).then(res => {
-        console.log('zhifubao', res)
+      //  console.log('zhifubao', res)
         if (res && res.data && res.data.code === 1) {
           this.getUser()
           this.$notify({
@@ -153,7 +153,7 @@ export default {
     },
     getUser () {
       this.$ajax.get('shopmember/index').then(res => {
-        console.log('yonghuxinxi', res)
+       // console.log('yonghuxinxi', res)
         if (res && res.data && res.data.code === 1) {
           this.user = res.data.data
         }
@@ -167,8 +167,12 @@ export default {
           price: this.price
         }
       }).then(res => {
-        console.log('tijiaoprice', res)
+       // console.log('tijiaoprice', res)
         if (res && res.data && res.data.code === 1) {
+             this.$notify({
+            title: '提交成功',
+            type: 'success'
+          })
         }
       })
     }

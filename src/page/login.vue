@@ -80,7 +80,7 @@ export default {
         if (valid) {
           this.login()
         } else {
-          console.log('error submit!!')
+        //  console.log('error submit!!')
           return false
         }
       })
@@ -92,19 +92,20 @@ export default {
           pwd: this.ruleForm2.checkPass
         })
         .then(res => {
-          console.log(res)
+         // console.log(res)
           if (res.data.code == '1') {
             this.$notify({
               title: '登陆成功',
               type: 'success'
             })
             cookie.set('token', res.data.data.token)
+            cookie.set('username', this.ruleForm2.pass)
             cookie.set('logined', true)
             setTimeout(() => {
               location.href = '/';
             }, 1000)
           }
-          console.log(res)
+         // console.log(res)
         })
         .catch(err => { })
     },

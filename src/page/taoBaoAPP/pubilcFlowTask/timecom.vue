@@ -85,7 +85,7 @@
               :disabled="priceType==1"
               v-model="releaseDateList[index].beginTime"
               :picker-options="{
-      start: nowtime,
+      start: releaseDateList[index].beginTime,
       step: '00:05',
       end: '23:59'
     }"
@@ -97,7 +97,7 @@
               placeholder="结束时间"
               v-model="releaseDateList[index].endTime"
               :picker-options="{
-      start: nowtime,
+      start: limitTime,
       step: '00:05',
       end: '23:59'
     }"
@@ -108,7 +108,7 @@
               placeholder="超时时间"
               v-model="releaseDateList[index].tiemout"
               :picker-options="{
-      start: nowtime,
+      start: limitTime,
       step: '00:05',
       end: '23:59'
     }"
@@ -129,71 +129,75 @@ export default {
       pctotle: "0",
       apptotle: "0",
       btnActive: 0,
-      priceType: 1,
+      priceType: 0,
       releaseDateList: [
         {
           isadd: true,
           taskNum: 0, //任务数量
-          beginTime: "", //开始时间
-          endTime: "", //结束时间
-          tiemout: "", //超时取消
+          beginTime: this.nowtime(), //开始时间
+          endTime: "23:59", //结束时间
+          tiemout: "23:59", //超时取消
           releaseDay: "" //发布日期
         }
       ],
-      dateList: []
+      dateList: [],
+      limitTime: this.endtime()
     };
   },
   computed: {
     ...mapGetters(["getdate"]),
-    ...mapGetters(["gettask"]),
-    nowtime() {
-      var myDate = new Date(); //实例一个时间对象；
-      let min = myDate.getHours(); //获取系统时，
-      let sec = myDate.getMinutes(); //分
-      console.log(min + "" + sec);
-      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
-    }
+    ...mapGetters(["gettask"])
   },
   watch: {
+    getdate(n) {
+        this.dataList=n.data
+      this.priceType = 1;
+      this.formatTime();
+    },
     priceType(newValue, oldValue) {
       let list = this.releaseDateList;
       let arr = [];
       arr.push(list[0]);
-      console.log(arr);
+      //   console.log(arr);
+      let dlist = this.dateList;
       switch (newValue) {
         case 1:
-          this.releaseDateList = arr;
-          this.releaseDateList[0].releaseDay = this.dateList[0];
-          this.releaseDateList[0].taskNum = this.gettask.totle;
+          this.releaseDateList = [
+            {
+              isadd: true,
+              taskNum: 0, //任务数量
+              beginTime: this.nowtime(), //开始时间
+              endTime: "23:59", //结束时间
+              tiemout: "23:59", //超时取消
+              releaseDay: dlist[0] //发布日期
+            }
+          ];
           break;
         case 2:
-          let blist = this.dateList;
-          if (blist.length == 0) {
-            return;
-          }
-          this.releaseDateList = arr;
-          this.releaseDateList[0].isadd = true;
-          this.releaseDateList[0].releaseDay = this.dateList[0];
-          this.releaseDateList[0].taskNum = 1;
+          this.releaseDateList = [
+            {
+              isadd: true,
+              taskNum: 0, //任务数量
+              beginTime: this.nowtime(), //开始时间
+              endTime: this.endtime(), //结束时间
+              tiemout: this.endtime(), //超时取消
+              releaseDay: dlist[0] //发布日期
+            }
+          ];
           break;
         case 3:
-          let dlist = this.dateList;
-          if (dlist.length == 0) {
-            return;
-          }
           let lpList = [];
           for (let i in dlist) {
             lpList.push({
               isadd: true,
               taskNum: 0, //任务数量
-              beginTime: "", //开始时间
-              endTime: "", //结束时间
-              tiemout: "", //超时取消
+              beginTime: "00:00", //开始时间
+              endTime: "23:59", //结束时间
+              tiemout: "23:59", //超时取消
               releaseDay: dlist[i] //发布日期
             });
           }
           this.releaseDateList = lpList;
-
           break;
 
         default:
@@ -202,12 +206,10 @@ export default {
     },
     releaseDateList: {
       handler(val, oldVal) {
-          
         let num = 0;
         val.forEach(item => {
           num += item.taskNum;
         });
-        // alert(num)
         if (num > this.gettask.totle) {
           this.$notify.error({
             title: "超过上一步任务数"
@@ -216,30 +218,42 @@ export default {
         this.$store.commit("update", { name: "releaseDateList", value: val });
       },
       deep: true
-    },
-    getdate(n, o) {
-      this.formatTime();
     }
   },
   created() {
-    this.formatTime();
+    
   },
   methods: {
+    nowtime() {
+      var myDate = new Date(); //实例一个时间对象；
+      let min = myDate.getHours(); //获取系统时，
+      let sec = myDate.getMinutes(); //分
+      //   console.log(min + "" + sec);
+      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+    },
+    endtime() {
+      let curDate = new Date();
+      var myDate = new Date(curDate.getTime() + 90 * 60 * 1000); //实例一个时间对象；
+
+      let min = myDate.getHours(); //获取系统时，
+      let sec = myDate.getMinutes(); //分
+      //   console.log(min + "" + sec);
+      return (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+    },
     formatTime() {
       let time = this.getdate.data;
       let list = [];
-      console.log(time);
+      //   console.log(time);
       if (time) {
         Object.keys(time).forEach(function(key) {
-          console.log(key, time[key]);
+          //   console.log(key, time[key]);
           list.push(key);
         });
         this.dateList = list;
-        console.log(list);
+        // console.log(list);
         this.releaseDateList[0].taskNum = this.gettask.totle;
         this.releaseDateList[0].releaseDay = this.dateList[0];
       }
-      
     },
     btnClick(val) {
       if (val === "back") {
@@ -259,7 +273,7 @@ export default {
     },
     reduceData(index) {
       let len = this.releaseDateList.length;
-      console.log(index, len);
+      //   console.log(index, len);
       this.releaseDateList.splice(index, 1);
     }
   }

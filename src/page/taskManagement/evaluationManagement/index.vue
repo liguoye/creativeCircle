@@ -90,7 +90,7 @@
             <template v-else-if="item.code=='btn'">
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
-                  <el-button type="primary" size="mini" style="border-radius:25px;;cursor:pointer" @click="pingjiaPub(scope.$index)">设置评价内容</el-button>
+                  <el-button type="primary" v-if="tableData.data[scope.$index]['status']=='4'" size="mini" style="border-radius:25px;;cursor:pointer" @click="pingjiaPub(scope.$index)">设置评价内容</el-button>
                 </template>
               </el-table-column>
             </template>
@@ -300,7 +300,7 @@ export default {
       this.$refs['ruleForm'].resetFields()
     },
     img1 (data) {
-      console.log(data)
+    //   console.log(data)
       if (data.code === 1) {
         this.ruleForm.img1 = 'http://h5om.knowsea.cn' + data.data
       } else {
@@ -311,7 +311,7 @@ export default {
       }
     },
     img2 (data) {
-      console.log(data)
+    //   console.log(data)
       if (data.code === 1) {
         this.ruleForm.img2 = 'http://h5om.knowsea.cn' + data.data
       } else {
@@ -322,7 +322,7 @@ export default {
       }
     },
     img3 (data) {
-      console.log(data)
+    //   console.log(data)
       if (data.code === 1) {
         this.ruleForm.img3 = 'http://h5om.knowsea.cn' + data.data
       } else {
@@ -333,7 +333,7 @@ export default {
       }
     },
     img4 (data) {
-      console.log(data)
+    //   console.log(data)
       if (data.code === 1) {
         this.ruleForm.img4 = 'http://h5om.knowsea.cn' + data.data
       } else {
@@ -344,7 +344,7 @@ export default {
       }
     },
     img5 (data) {
-      console.log(data)
+    //   console.log(data)
       if (data.code === 1) {
         this.ruleForm.img5 = 'http://h5om.knowsea.cn' + data.data
       } else {

@@ -40,7 +40,7 @@ export default {
       this.$router.push({ name: val, param: { tab: val } })
     },
     toPNavChangeTab (val) {
-      console.log(val)
+     // console.log(val)
       this.topTabCurrent = val
     }
   }

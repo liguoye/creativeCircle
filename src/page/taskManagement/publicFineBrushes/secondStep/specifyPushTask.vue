@@ -43,7 +43,7 @@
               :span="14"
               style="text-align:center;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"
             >
-              <span>{{getgoods.url}}</span>
+              <a :href="getgoods.url" target="_blank">{{getgoods.url}}</a>
             </el-col>
           </el-row>
           <img
@@ -82,7 +82,7 @@
                     </span>
                     <span style="margin-right: 10px;">
                       无线端:
-                      <em class="red">{{item2.app}}</em>
+                      <em class="red">{{item2.apptotle}}</em>
                     </span>
                   </div>
                 </el-col>
@@ -133,7 +133,7 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="clist in allList[key2].list[index].flowList.options"
+                    v-for="clist in flowList.options"
                     :key="clist.value"
                     :label="clist.label"
                     :value="clist.value"
@@ -150,16 +150,17 @@
                   action="http://h5om.knowsea.cn/shop/Upload/uploadFile"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
-                  :before-upload="beforeAvatarUpload(key2,index)"
                 >
                   <img
                     v-if="allList[key2].list[index].keyword1"
                     :src="allList[key2].list[index].keyword1"
                     class="avatar"
+                    @click="beforeAvatarUpload(key2,index)"
                   >
                   <i
                     v-else
                     class="el-icon-plus avatar-uploader-icon"
+                    @click="beforeAvatarUpload(key2,index)"
                   ></i>
                 </el-upload>
                 <el-input
@@ -178,16 +179,17 @@
                   action="http://h5om.knowsea.cn/shop/Upload/uploadFile"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess2"
-                  :before-upload="beforeAvatarUpload(key2,index)"
                 >
                   <img
                     v-if="allList[key2].list[index].keyword"
                     :src="allList[key2].list[index].keyword"
                     class="avatar"
+                    @click="beforeAvatarUpload(key2,index)"
                   >
                   <i
                     v-else
                     class="el-icon-plus avatar-uploader-icon"
+                    @click="beforeAvatarUpload(key2,index)"
                   ></i>
                 </el-upload>
                 <el-input
@@ -213,6 +215,7 @@
                 <el-input-number
                   size="mini"
                   :min='0'
+                  :max="5"
                   v-model="allList[key2].list[index].appointmentDays"
                 ></el-input-number>
               </el-col>
@@ -250,12 +253,12 @@
       @btnClick="btnClick"
     ></btn-group>
 
-    <div
+    <!-- <div
       v-for="(item,key,index) in allList"
       :key="index"
     >
       {{key}}:<br />{{item}}
-    </div>
+    </div> -->
     <setting-dialog-com
       :dialog-table-visible="dialogTableVisible"
       @dialogClose="settingDialogClose"
@@ -293,15 +296,7 @@ export default {
       pathSetIndex2: 0,
       pathSetIndex: 0,
       goodsData: {},
-      allList: {
-        zuji: {
-          title: "足迹",
-          totle: "0",
-          pctotle: "0",
-          apptotle: "0",
-          list: [
-            {
-              flowList: {
+      flowList: {
                 value: "",
                 options: [
                   { label: "APP自然搜索", value: 1 },
@@ -312,17 +307,25 @@ export default {
                   { label: "APP直通车", value: 6 }
                 ]
               },
+      allList: {
+        zuji: {
+          title: "足迹",
+          totle: "0",
+          pctotle: "0",
+          apptotle: "0",
+          list: [
+            {
               flowid: "",
               keyword1: "",
               keyword: "",
               taskNum: "1",
-              sortOrder: "111111111111111111", // 排序方式(综合，销量，价格高到低，价格低到高)
+              sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
               beginPrice: "", // 价格区间起始
               endPrice: "", // 价格区间最大值
               shipment: "", // 发货地
               otherCondition: "", // 其他
               appointmentType: "1", //预约任务必填，预约类型1足      迹，2加购物车，3收藏商品，4微淘，5猜你喜欢
-              appointmentDays: "", //预约天数
+              appointmentDays: "1", //预约天数
               repurchaseType: "" //复购任务类型，1店铺复购，2商品复购
             }
           ]
@@ -334,17 +337,6 @@ export default {
           apptotle: "0",
           list: [
             {
-              flowList: {
-                value: "",
-                options: [
-                  { label: "APP自然搜索", value: 1 },
-                  { label: "APP淘口令", value: 2 },
-                  { label: "PC直通车", value: 3 },
-                  { label: "APP二维码", value: 4 },
-                  { label: "PC自然搜索", value: 5 },
-                  { label: "APP直通车", value: 6 }
-                ]
-              },
               flowid: "",
               keyword1: "",
               keyword: "",
@@ -355,7 +347,7 @@ export default {
               shipment: "", // 发货地
               otherCondition: "", // 其他
               appointmentType: "2", //预约任务必填，预约类型1足      迹，2加购物车，3收藏商品，4微淘，5猜你喜欢
-              appointmentDays: "", //预约天数
+              appointmentDays: "1", //预约天数
               repurchaseType: "" //复购任务类型，1店铺复购，2商品复购
             }
           ]
@@ -367,17 +359,6 @@ export default {
           apptotle: "0",
           list: [
             {
-              flowList: {
-                value: "",
-                options: [
-                  { label: "APP自然搜索", value: 1 },
-                  { label: "APP淘口令", value: 2 },
-                  { label: "PC直通车", value: 3 },
-                  { label: "APP二维码", value: 4 },
-                  { label: "PC自然搜索", value: 5 },
-                  { label: "APP直通车", value: 6 }
-                ]
-              },
               flowid: "",
               keyword1: "",
               keyword: "",
@@ -388,7 +369,7 @@ export default {
               shipment: "", // 发货地
               otherCondition: "", // 其他
               appointmentType: "3", //预约任务必填，预约类型1足      迹，2加购物车，3收藏商品，4微淘，5猜你喜欢
-              appointmentDays: "", //预约天数
+              appointmentDays: "1", //预约天数
               repurchaseType: "" //复购任务类型，1店铺复购，2商品复购
             }
           ]
@@ -400,17 +381,6 @@ export default {
           apptotle: "0",
           list: [
             {
-              flowList: {
-                value: "",
-                options: [
-                  { label: "APP自然搜索", value: 1 },
-                  { label: "APP淘口令", value: 2 },
-                  { label: "PC直通车", value: 3 },
-                  { label: "APP二维码", value: 4 },
-                  { label: "PC自然搜索", value: 5 },
-                  { label: "APP直通车", value: 6 }
-                ]
-              },
               flowid: "",
               keyword1: "",
               keyword: "",
@@ -421,7 +391,7 @@ export default {
               shipment: "", // 发货地
               otherCondition: "", // 其他
               appointmentType: "4", //预约任务必填，预约类型1足      迹，2加购物车，3收藏商品，4微淘，5猜你喜欢
-              appointmentDays: "", //预约天数
+              appointmentDays: "1", //预约天数
               repurchaseType: "" //复购任务类型，1店铺复购，2商品复购
             }
           ]
@@ -433,17 +403,6 @@ export default {
           apptotle: "0",
           list: [
             {
-              flowList: {
-                value: "",
-                options: [
-                  { label: "APP自然搜索", value: 1 },
-                  { label: "APP淘口令", value: 2 },
-                  { label: "PC直通车", value: 3 },
-                  { label: "APP二维码", value: 4 },
-                  { label: "PC自然搜索", value: 5 },
-                  { label: "APP直通车", value: 6 }
-                ]
-              },
               flowid: "",
               keyword1: "",
               keyword: "",
@@ -454,7 +413,7 @@ export default {
               shipment: "", // 发货地
               otherCondition: "", // 其他
               appointmentType: "5", //预约任务必填，预约类型1足      迹，2加购物车，3收藏商品，4微淘，5猜你喜欢
-              appointmentDays: "", //预约天数
+              appointmentDays: "1", //预约天数
               repurchaseType: "" //复购任务类型，1店铺复购，2商品复购
             }
           ]
@@ -466,17 +425,6 @@ export default {
           apptotle: "0",
           list: [
             {
-              flowList: {
-                value: "",
-                options: [
-                  { label: "APP自然搜索", value: 1 },
-                  { label: "APP淘口令", value: 2 },
-                  { label: "PC直通车", value: 3 },
-                  { label: "APP二维码", value: 4 },
-                  { label: "PC自然搜索", value: 5 },
-                  { label: "APP直通车", value: 6 }
-                ]
-              },
               flowid: "",
               keyword1: "",
               keyword: "",
@@ -487,7 +435,7 @@ export default {
               shipment: "", // 发货地
               otherCondition: "", // 其他
               appointmentType: "6", //预约任务必填，预约类型1足      迹，2加购物车，3收藏商品，4微淘，5猜你喜欢
-              appointmentDays: "", //预约天数
+              appointmentDays: "1", //预约天数
               repurchaseType: "" //复购任务类型，1店铺复购，2商品复购
             }
           ]
@@ -500,36 +448,191 @@ export default {
     };
   },
   watch: {
-    pathSettingData: {
+    "allList.zuji": {
       handler(val, oldVal) {
+        //   console.log(val)
         let totle = 0,
           pctotle = 0,
           apptotle = 0;
-        val.forEach(item => {
+        val.list.forEach(item => {
+          // console.log(item)
           totle += item.taskNum;
           if (item.flowid == 3 || item.flowid == 5) {
             pctotle += item.taskNum;
           }
-          if (item.flowid == 1 || item.flowid == 2 || item.flowid == 5) {
+          if (
+            item.flowid == 1 ||
+            item.flowid == 2 ||
+            item.flowid == 4 ||
+            item.flowid == 6
+          ) {
             apptotle += item.taskNum;
           }
-          if (item.flowid == "" || item.keyword == "") {
-            this.showGoBtn = "1";
-          } else if (parseFloat(item.beginPrice) >= parseFloat(item.endPrice)) {
-            this.showGoBtn = "1";
-          } else {
-            this.showGoBtn = "2";
+        });
+        this.allList.zuji.totle = totle;
+        this.allList.zuji.pctotle = pctotle;
+        this.allList.zuji.apptotle = apptotle;
+      },
+      deep: true
+    },
+    "allList.gouwuche": {
+      handler(val, oldVal) {
+        //   console.log(val)
+        let totle = 0,
+          pctotle = 0,
+          apptotle = 0;
+        val.list.forEach(item => {
+          // console.log(item)
+          totle += item.taskNum;
+          if (item.flowid == 3 || item.flowid == 5) {
+            pctotle += item.taskNum;
           }
-          if (item.beginPrice == "" || item.endPrice == "") {
-            this.showGoBtn = "1";
+          if (
+            item.flowid == 1 ||
+            item.flowid == 2 ||
+            item.flowid == 4 ||
+            item.flowid == 6
+          ) {
+            apptotle += item.taskNum;
           }
         });
-        this.totle = totle;
-        this.pctotle = pctotle;
-        this.apptotle = apptotle;
-        if (this.totle < 1) {
+        this.allList.gouwuche.totle = totle;
+        this.allList.gouwuche.pctotle = pctotle;
+        this.allList.gouwuche.apptotle = apptotle;
+      },
+      deep: true
+    },
+    "allList.shoucang": {
+      handler(val, oldVal) {
+        //   console.log(val)
+        let totle = 0,
+          pctotle = 0,
+          apptotle = 0;
+        val.list.forEach(item => {
+          // console.log(item)
+          totle += item.taskNum;
+          if (item.flowid == 3 || item.flowid == 5) {
+            pctotle += item.taskNum;
+          }
+          if (
+            item.flowid == 1 ||
+            item.flowid == 2 ||
+            item.flowid == 4 ||
+            item.flowid == 6
+          ) {
+            apptotle += item.taskNum;
+          }
+        });
+        this.allList.shoucang.totle = totle;
+        this.allList.shoucang.pctotle = pctotle;
+        this.allList.shoucang.apptotle = apptotle;
+      },
+      deep: true
+    },
+    "allList.weitao": {
+      handler(val, oldVal) {
+        //   console.log(val)
+        let totle = 0,
+          pctotle = 0,
+          apptotle = 0;
+        val.list.forEach(item => {
+          // console.log(item)
+          totle += item.taskNum;
+          if (item.flowid == 3 || item.flowid == 5) {
+            pctotle += item.taskNum;
+          }
+          if (
+            item.flowid == 1 ||
+            item.flowid == 2 ||
+            item.flowid == 4 ||
+            item.flowid == 6
+          ) {
+            apptotle += item.taskNum;
+          }
+        });
+        this.allList.weitao.totle = totle;
+        this.allList.weitao.pctotle = pctotle;
+        this.allList.weitao.apptotle = apptotle;
+      },
+      deep: true
+    },
+    "allList.xihuan": {
+      handler(val, oldVal) {
+        //   console.log(val)
+        let totle = 0,
+          pctotle = 0,
+          apptotle = 0;
+        val.list.forEach(item => {
+          // console.log(item)
+          totle += item.taskNum;
+          if (item.flowid == 3 || item.flowid == 5) {
+            pctotle += item.taskNum;
+          }
+          if (
+            item.flowid == 1 ||
+            item.flowid == 2 ||
+            item.flowid == 4 ||
+            item.flowid == 6
+          ) {
+            apptotle += item.taskNum;
+          }
+        });
+        this.allList.xihuan.totle = totle;
+        this.allList.xihuan.pctotle = pctotle;
+        this.allList.xihuan.apptotle = apptotle;
+      },
+      deep: true
+    },
+    "allList.guanjianzi": {
+      handler(val, oldVal) {
+        //   console.log(val)
+        let totle = 0,
+          pctotle = 0,
+          apptotle = 0;
+        val.list.forEach(item => {
+          // console.log(item)
+          totle += item.taskNum;
+          if (item.flowid == 3 || item.flowid == 5) {
+            pctotle += item.taskNum;
+          }
+          if (
+            item.flowid == 1 ||
+            item.flowid == 2 ||
+            item.flowid == 4 ||
+            item.flowid == 6
+          ) {
+            apptotle += item.taskNum;
+          }
+        });
+        this.allList.guanjianzi.totle = totle;
+        this.allList.guanjianzi.pctotle = pctotle;
+        this.allList.guanjianzi.apptotle = apptotle;
+      },
+      deep: true
+    },
+    allList: {
+      handler(val, oldVal) {
+        let totle = 0,
+          pctotle = 0,
+          apptotle = 0;
           this.showGoBtn = "1";
-        }
+        Object.keys(val).forEach(item => {
+          totle += val[item].totle;
+          pctotle += val[item].pctotle;
+          apptotle += val[item].apptotle;
+          val[item].list.forEach(item2 => {
+            if (item2.keyword != "" && item2.flowid != "") {
+              this.showGoBtn = "2";
+            }
+          });
+        });
+        console.log(totle, pctotle, apptotle);
+        let task = {};
+        task.totle = totle;
+        task.pctotle = pctotle;
+        task.apptotle = apptotle;
+
+        this.$store.commit("settask", task);
       },
       deep: true
     }
@@ -569,12 +672,12 @@ export default {
     },
     addPathData(key2) {
       console.log(key2);
-      //   if (this.getdata.goodsid == "") {
-      //     this.$notify.error({
-      //       title: "请先选择产品"
-      //     });
-      //     return;
-      //   }
+      if (this.getdata.goodsid == "") {
+        this.$notify.error({
+          title: "请先选择产品"
+        });
+        return;
+      }
       let type = "";
       switch (key2) {
         case "zuji":
@@ -600,33 +703,22 @@ export default {
           break;
       }
       this.allList[key2].list.push({
-        flowList: {
-          value: "",
-          options: [
-            { label: "APP自然搜索", value: 1 },
-            { label: "APP淘口令", value: 2 },
-            { label: "PC直通车", value: 3 },
-            { label: "APP二维码", value: 4 },
-            { label: "PC自然搜索", value: 5 },
-            { label: "APP直通车", value: 6 }
-          ]
-        },
         flowid: "",
         keyword1: "",
         keyword: "",
-        taskNum: "1",
+        taskNum: "0",
         sortOrder: "", // 排序方式(综合，销量，价格高到低，价格低到高)
         beginPrice: "", // 价格区间起始
         endPrice: "", // 价格区间最大值
         shipment: "", // 发货地
         otherCondition: "", // 其他
-        appointmentType: type, //预约任务必填，预约类型1足      迹，2加购物车，3收藏商品，4微淘，5猜你喜欢
-        appointmentDays: "", //预约天数
+        appointmentType: type, //预约任务必填，预约类型1足迹，2加购物车，3收藏商品，4微淘，5猜你喜欢
+        appointmentDays: "1", //预约天数
         repurchaseType: "" //复购任务类型，1店铺复购，2商品复购
       });
     },
-    deletePathData(key2,index) {
-        let type = "";
+    deletePathData(key2, index) {
+      let type = "";
       switch (key2) {
         case "zuji":
           type = 1;
@@ -653,13 +745,6 @@ export default {
       this.allList[key2].list.splice(index, 1);
     },
     btnClick(val) {
-      if (this.getdata.goodsid == "") {
-        this.$notify.error({
-          title: "请先选择商品"
-        });
-        return;
-      }
-
       if (val === "back") {
         this.$emit("changeState", { state: "firstStep" });
       } else {
@@ -667,19 +752,32 @@ export default {
         console.log(isval);
         if (isval == "1") {
           if (this.showGoBtn === "2") {
-            let task = {};
-            task.totle = this.totle;
-            task.pctotle = this.pctotle;
-            task.apptotle = this.apptotle;
-
-            this.$store.commit("settask", task);
-            this.$emit("changeState", { state: "thirdStep" });
+            if (this.getdata.goodsid == "") {
+              this.$notify.error({
+                title: "请先选择商品"
+              });
+              return;
+            }
+            let allList = this.allList;
+            let arr = [];
+            Object.keys(allList).forEach(item => {
+              allList[item].list.forEach(item2 => {
+                arr.push(item2);
+              });
+            });
             this.$store.commit("update", {
               name: "releaseFlowList",
-              value: this.pathSettingData
+              value: arr
             });
+            this.$emit("changeState", { state: "thirdStep" });
           }
         } else {
+             if (this.getdata.goodsid == "") {
+              this.$notify.error({
+                title: "请先选择商品"
+              });
+              return;
+            }
           this.$notify.error({
             title: "智能助手已过期"
           });
@@ -689,18 +787,18 @@ export default {
     handleAvatarSuccess(data) {
       console.log(data);
       let index = this.itemindex;
-       this.allList[this.pathSetIndex2].list[this.pathSetIndex].keyword1 =
+      this.allList[this.pathSetIndex2].list[this.pathSetIndex].keyword1 =
         "http://h5om.knowsea.cn" + data.data;
     },
-    beforeAvatarUpload(key2,index) {
-      this.pathSetIndex2= key2
-      this.pathSetIndex= index
-      console.log(key2,index)
+    beforeAvatarUpload(key2, index) {
+      this.pathSetIndex2 = key2;
+      this.pathSetIndex = index;
+      //   console.log(key2, index);
     },
     handleAvatarSuccess2(data) {
       console.log(data);
       let index = this.itemindex;
-       this.allList[this.pathSetIndex2].list[this.pathSetIndex].keyword =
+      this.allList[this.pathSetIndex2].list[this.pathSetIndex].keyword =
         "http://h5om.knowsea.cn" + data.data;
     },
     change(index) {

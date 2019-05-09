@@ -54,7 +54,7 @@ export default {
       this.$ajax.get("login/noticeList").then(res => {
         if (res && res.data && res.data.code == 1) {
           this.tableData.data = res.data.data;
-          console.log(res);
+         // console.log(res);
         }
       });
     }

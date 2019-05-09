@@ -81,6 +81,12 @@
             <el-input v-model="form.qq" placeholder="请输入QQ号"></el-input>
           </span>
         </p>
+        <p>
+          <span class="left">邀请码（选填）</span>
+          <span class="right">
+            <el-input v-model="form.rqcode" placeholder="请输入邀请码"></el-input>
+          </span>
+        </p>
         <p style="text-align:center">
           <el-button type="primary" size="small" @click="register" style="width:245px;border-radius:40px;margin:20px 0;height:40px;">注册</el-button>
         </p>
@@ -90,6 +96,26 @@
 </template>
 <script>
 let phoneReg = /^1[345678]\d{9}$/
+function GetUrlParam(url, paraName) {
+  var curl = url.toString();
+  var arrObj = curl.split("?");
+
+  if (arrObj.length > 1) {
+    var arrPara = arrObj[1].split("&");
+    var arr;
+
+    for (var i = 0; i < arrPara.length; i++) {
+      arr = arrPara[i].split("=");
+
+      if (arr != null && arr[0] == paraName) {
+        return decodeURIComponent(arr[1]);
+      }
+    }
+    return "";
+  } else {
+    return "";
+  }
+}
 export default {
   data () {
     return {
@@ -104,7 +130,8 @@ export default {
         NickName: '',
         password: '',
         confirmPass: '',
-        qq: ''
+        qq: '',
+        rqcode:''
       },
       phoneNumTest: true,
       codeCount: 60,
@@ -115,8 +142,14 @@ export default {
   },
   created () {
     this.getImg()
+    this.getCode()
   },
   methods: {
+      getCode(){
+          let url=location.href
+          let code=GetUrlParam(url,'code')
+          this.form.rqcode=code
+      },
     //   注册
     register () {
       if (!this.form.phone || !phoneReg.test(this.form.phone)) {
@@ -163,8 +196,8 @@ export default {
           Username: this.form.userName,
           NickName: this.form.NickName,
           QQToken: this.form.qq,
-          code: this.form.code
-
+          code: this.form.code,
+          qrCode:this.form.rqcode
         })
         .then(res => {
           if (res && res.data && res.data.code == '1') {

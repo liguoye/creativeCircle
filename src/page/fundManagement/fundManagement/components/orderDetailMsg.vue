@@ -22,7 +22,7 @@
         </el-row>
       </div>
       <div class="table">
-        <table-com :columns="tableData.columns" :data="tableData.data" @handleCurrentChange="handleCurrentChange" :total="total"
+        <table-com :columns="tableData.columns" :data="list" @handleCurrentChange="handleCurrentChange" :total="total"
           :table-height="400"></table-com>
       </div>
     </div>
@@ -89,6 +89,17 @@ export default {
       }
     }
   },
+  computed:{
+      list(){
+          let data=this.tableData.data
+          data.forEach(item=>{
+              item.before_publishing=item.before_publishing/100
+              item.publishing=item.publishing/100
+              item.b_publishing=item.b_publishing/100
+          })
+          return data
+      }
+  },
   methods: {
     handleCurrentChange (val) {
       this.page = val
@@ -115,6 +126,81 @@ export default {
       }
       this.$ajax.get('shopmember/detailed', queryParams).then(res => {
         if (res && res.data && res.data.code === 1) {
+            let list=res.data.data.data
+          list.forEach(item => {
+              switch (item.type) {
+                    case 1:
+                      item.type='发布任务'
+                      break;
+                    case 2:
+                      item.type='取消任务'
+                      break;
+                    case 3:
+                      item.type='充值'
+                      break;
+                    case 4:
+                      item.type='购买流量'
+                      break;
+                    case 5:
+                      item.type='多退少补'
+                      break;
+                    case 6:
+                      item.type='任务处罚'
+                      break;
+                    case 7:
+                      item.type='财务增'
+                      break;
+                    case 8:
+                      item.type='财务扣'
+                      break;
+                    case 9:
+                      item.type='购买发布点'
+                      break;
+                    case 10:
+                      item.type='兑换资金'
+                      break;
+                    case 11:
+                      item.type='返回待支付退差价'
+                      break;
+                    case 12:
+                      item.type='返回待支付退担保金'
+                      break;
+                    case 13:
+                      item.type='取消流量'
+                      break;
+                    case 14:
+                      item.type='返回待支付退处罚'
+                      break;
+                    case 15:
+                      item.type='工单处罚'
+                      break;
+                    case 16:
+                      item.type='退出任务退处罚'
+                      break;
+                    case 17:
+                      item.type='退出任务退多退少补'
+                      break;
+                    case 18:
+                      item.type='购买智能助手基础版'
+                      break;
+                    case 19:
+                      item.type='购买评价'
+                      break;
+                    case 20:
+                      item.type='取消评价'
+                      break;
+                    case 21:
+                      item.type='返还购买评价'
+                      break;
+              
+                  default:
+                      break;
+              }
+              item.b_price=item.b_price/100
+              item.MinLi=item.b_publishing/100
+              item.before_price=item.before_price/100
+              item.price=item.price/100
+          });
           this.tableData.data = res.data.data.data
           this.total = res.data.data.total
           this.page = 1

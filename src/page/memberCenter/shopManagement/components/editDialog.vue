@@ -1,13 +1,22 @@
 <template>
   <div class="settingDialogCom">
-    <el-dialog title="编辑发货人信息" :visible.sync="dialogShow" @close="dialogClose" width="50%">
+    <el-dialog
+      title="编辑发货人信息"
+      :visible.sync="dialogShow"
+      @close="dialogClose"
+      width="50%"
+    >
       <div class="content">
         <el-row>
           <el-col :span="6">
             <p>掌柜号：</p>
           </el-col>
           <el-col :span="18">
-            <el-input v-model="passdata.shop_name" :placeholder="passdata.shop_name" diisabled></el-input>
+            <el-input
+              v-model="passdata.shop_name"
+              :placeholder="passdata.shop_name"
+              diisabled
+            ></el-input>
           </el-col>
         </el-row>
         <el-row>
@@ -15,7 +24,10 @@
             <p class="must">发货人：</p>
           </el-col>
           <el-col :span="18">
-            <el-input v-model="name" placeholder></el-input>
+            <el-input
+              v-model="name"
+              placeholder
+            ></el-input>
           </el-col>
         </el-row>
         <el-row>
@@ -23,7 +35,10 @@
             <p class="must">发货人手机号：</p>
           </el-col>
           <el-col :span="18">
-            <el-input v-model="others.value" placeholder></el-input>
+            <el-input
+              v-model="others.value"
+              placeholder
+            ></el-input>
           </el-col>
         </el-row>
         <el-row>
@@ -32,19 +47,52 @@
           </el-col>
           <el-col :span="18">
             <el-row>
-              <el-col :span="8" style="padding-right:5px;">
-                <el-select style="width:100%" v-model="province" placeholder="请选择省份">
-                  <el-option v-for="item in provinceList" :key="item" :label="item" :value="item"></el-option>
+              <el-col
+                :span="8"
+                style="padding-right:5px;"
+              >
+                <el-select
+                  style="width:100%"
+                  v-model="province"
+                  placeholder="请选择省份"
+                >
+                  <el-option
+                    v-for="item in provinceList"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
                 </el-select>
               </el-col>
-              <el-col :span="8" style="padding-right:5px;">
-                <el-select style="width:100%" v-model="city" placeholder="请选择市区">
-                  <el-option v-for="item in cityList" :key="item" :label="item" :value="item"></el-option>
+              <el-col
+                :span="8"
+                style="padding-right:5px;"
+              >
+                <el-select
+                  style="width:100%"
+                  v-model="city"
+                  placeholder="请选择市区"
+                >
+                  <el-option
+                    v-for="item in cityList"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
                 </el-select>
               </el-col>
               <el-col :span="8">
-                <el-select style="width:100%" v-model="area" placeholder="请选择地区">
-                  <el-option v-for="item in disList" :key="item" :label="item" :value="item"></el-option>
+                <el-select
+                  style="width:100%"
+                  v-model="area"
+                  placeholder="请选择地区"
+                >
+                  <el-option
+                    v-for="item in disList"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
                 </el-select>
               </el-col>
             </el-row>
@@ -55,21 +103,30 @@
             <p class="must">发货详细地址：</p>
           </el-col>
           <el-col :span="18">
-            <el-input type="textarea" v-model="address"></el-input>
+            <el-input
+              type="textarea"
+              v-model="address"
+            ></el-input>
           </el-col>
         </el-row>
         <div style="text-align:center;margin-top:30px;">温馨提示：发货人信息会显示在快递单上，所以请如实填写</div>
       </div>
-      <div slot="footer" class="dialog-footer">
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogShow = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="submit"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
 import json from "../../../../utils/province";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 export default {
   props: {
     dialogTableVisible: {
@@ -88,7 +145,7 @@ export default {
   watch: {
     dialogTableVisible(val) {
       this.dialogShow = val;
-      this.start=true
+      this.start = true;
     },
     passdata(newData) {
       this.name = newData.name;
@@ -146,26 +203,37 @@ export default {
   mounted() {
     this.allList = json;
     this.getProvince();
-    setTimeout(()=>{
-        this.start=false
-    },1000)
+    setTimeout(() => {
+      this.start = false;
+    }, 1000);
   },
   methods: {
-      submit(){
-          console.log()
-          this.$ajax.get('shop/upd',{params:{
-              shopid:this.passdata.id,
-              name:this.name,
-              phone:this.others.value,
-              province:this.province,
-              city:this.city,
-              area:this.area,
-              address:this.address,
-          }}).then(res=>{
-              console.log(res)
-          })
-      },
-    
+    submit() {
+      //  console.log()
+      this.$ajax
+        .get("shop/upd", {
+          params: {
+            shopid: this.passdata.id,
+            name: this.name,
+            phone: this.others.value,
+            province: this.province,
+            city: this.city,
+            area: this.area,
+            address: this.address
+          }
+        })
+        .then(res => {
+          //  console.log(res)
+          if (res.data.code == 1) {
+            this.$notify({
+              title: "修改成功",
+              type: "success"
+            });
+            this.dialogClose()
+          }
+        });
+    },
+
     dialogClose() {
       this.$emit("dialogClose", false);
     },
@@ -200,7 +268,7 @@ export default {
       let dis = [];
       for (let i in list) {
         if (list[i].name == newValue) {
-        //   console.log(list[i].name);
+          //   console.log(list[i].name);
           dis = list[i].area;
         }
       }

@@ -18,10 +18,10 @@ export default {
   methods: {
     getHome() {
         let id=this.$route.params.id
-        console.log(id)
+       // console.log(id)
       this.$ajax.get("login/noticeList").then(res => {
         if (res && res.data && res.data.code == 1) {
-          console.log(res)
+       //   console.log(res)
           let data=res.data.data
           data.forEach(item => {
               if(item.id==id){

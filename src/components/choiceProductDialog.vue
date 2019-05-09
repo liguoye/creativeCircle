@@ -125,7 +125,7 @@ export default {
     },
     getShop() {
       this.$ajax("shop/index").then(res => {
-        console.log("shopshop", res);
+        // console.log("shopshop", res);
         if (res && res.data && res.data.code === 1) {
           this.shop_name.options = res.data.data.data;
         }
@@ -141,7 +141,7 @@ export default {
           page: this.pagination.currentPage
         }
       }).then(res => {
-        console.log("goods", res);
+        // console.log("goods", res);
         if (res && res.data && res.data.code === 1) {
           this.data = res.data.data.data;
           this.pagination.total = res.data.data.total;
@@ -150,7 +150,7 @@ export default {
     },
     onRowClick(row) {
       this.activeRow = row;
-      console.log(row);
+      //console.log(row);
     },
     rowDbClick(row) {
       this.activeRow = row;
@@ -173,7 +173,7 @@ export default {
       this.$ajax
         .post("goods/number", { shopid: goodsid, type: "1" })
         .then(res => {
-          console.log("shopshop", res);
+          //console.log("shopshop", res);
           if (res && res.data && res.data.code === 1) {
               this.gridData=res.data
               this.tipsTableVisible=true

@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     handleSelectionChange (val) {
-      console.log(val)
+     // console.log(val)
       this.tableSelectData = val
     },
     // 导出功能
@@ -147,7 +147,7 @@ export default {
         }
       }
       this.$ajax.get('shopmember/accountsList', queryParams).then(res => {
-        console.log('转账列表', res)
+      //  console.log('转账列表', res)
         if (res && res.data && res.data.code === 1) {
           this.tableData.data = res.data.data
         }

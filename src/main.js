@@ -19,6 +19,10 @@ import * as custom from './utils/filter'
 Object.keys(custom).forEach(key => {
   Vue.filter(key, custom[key])
 })
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+
+
 
 import store from './store/index'; //引入store
 /* eslint-disable no-new */

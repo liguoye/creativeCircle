@@ -1,12 +1,20 @@
 <template>
   <div class="service-control">
-    <div class="service-bar" @click="barClick"><a :class="barOpen ? 'service-bar-opening' : 'service-bar-closed'"></a></div>
+    <div
+      class="service-bar"
+      @click="barClick"
+    ><a :class="barOpen ? 'service-bar-opening' : 'service-bar-closed'"></a></div>
     <div :class="barOpen ? 'service-box opening' : 'service-box closed'">
       <div class="service-container">
         <h3>客服列表</h3>
         <ul>
-          <li><span>商家顾问</span> <a target="_blank" href=""><img border="0" src="../assets/picture/button_111.jpg"></a></li>
-          <li><span>商家招募</span> <a target="_blank" href=""><img border="0" src="../assets/picture/button_111.jpg"></a></li>
+          <li
+            v-for="(item,index) in list"
+            :key="index"
+          ><span>商家顾问</span> <a
+              target="_blank"
+              :href="'http://wpa.qq.com/msgrd?v=3&uin='+item+'&site=qq&menu=yes'"
+            ><img src="../assets/picture/button_111.jpg"></a></li>
         </ul>
       </div>
     </div>
@@ -14,22 +22,34 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      barOpen: false
-    }
+      barOpen: false,
+      list: []
+    };
+  },
+  created() {
+    this.getHome();
   },
   methods: {
-    barClick () {
-      console.log(111111111)
+    barClick() {
+     // console.log(111111111);
       if (this.barOpen) {
-        this.barOpen = false
+        this.barOpen = false;
       } else {
-        this.barOpen = true
+        this.barOpen = true;
       }
+    },
+    getHome() {
+      this.$ajax.get("login/qq").then(res => {
+        if (res && res.data && res.data.code == 1) {
+         // console.log(res.data.data);
+          this.list = res.data.data;
+        }
+      });
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .service-control {
@@ -80,8 +100,8 @@ export default {
       ul {
         padding: 0 0 0 8px;
         li {
-          line-height: 38px;
-          height: 38px;
+          //   line-height: 38px;
+          height: 50px;
           border-bottom: 1px solid #e6e4e4;
           overflow: hidden;
           span {

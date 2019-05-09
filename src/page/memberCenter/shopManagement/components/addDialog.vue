@@ -193,7 +193,7 @@ export default {
   methods: {
     removePic() {},
     upload(data) {
-      console.log(data);
+     // console.log(data);
       if (data.code == 1) {
         this.ruleForm.img = data.data;
         this.fileList.push({
@@ -210,7 +210,7 @@ export default {
         if (valid) {
           this.submit();
         } else {
-          console.log("error submit!!");
+        //  console.log("error submit!!");
           return false;
         }
       });
@@ -296,7 +296,7 @@ export default {
       let dis = [];
       for (let i in list) {
         if (list[i].name == newValue) {
-          console.log(list[i].name);
+        //  console.log(list[i].name);
           dis = list[i].area;
         }
       }

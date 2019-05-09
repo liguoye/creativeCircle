@@ -14,14 +14,14 @@
           <p>
             <span class="left W210px">资金余额：</span>
             <span class="right">
-              {{user.Money}} 元
+              {{user.Money/100}} 元
               <em class="red">（存款用于支付贷款）</em>
             </span>
           </p>
           <p>
             <span class="left W210px">可用发布点：</span>
             <span class="right">
-              {{user.MinLi}} 点
+              {{user.MinLi/100}} 点
               <em class="red">（发布点用于支付佣金）</em>
             </span>
           </p>
@@ -46,11 +46,11 @@
         <div class="tabContent">
           <p>
             <span class="left W210px">可用发布点:</span>
-            <span class="right">{{user.MinLi}} 点</span>
+            <span class="right">{{user.MinLi/100}} 点</span>
           </p>
           <p>
             <span class="left W210px">资金余额：</span>
-            <span class="right"> {{user.Money}} 元</span>
+            <span class="right"> {{user.Money/100}} 元</span>
           </p>
           <p>
             <span class="left W210px">&nbsp;</span>
@@ -93,7 +93,7 @@ export default {
       this.$router.push({ name: val, param: { tab: val } })
     },
     toPNavChangeTab (val) {
-      console.log(val)
+     // console.log(val)
       this.topTabCurrent = val
     },
     exchange (val) {
@@ -104,7 +104,7 @@ export default {
           price: val === '1' ? this.pubMoney : this.pubPoint
         }
       }).then(res => {
-        console.log('兑换点', res)
+       // console.log('兑换点', res)
         if (res && res.data && res.data.code === 1) {
           this.$notify({
             title: res.data.msg,
@@ -116,7 +116,7 @@ export default {
     },
     getUserInfo () {
       this.$ajax.get('shopmember/memberInfo').then(res => {
-        console.log('余额', res)
+       // console.log('余额', res)
         if (res && res.data && res.data.code === 1) {
           this.user = res.data.data
         }

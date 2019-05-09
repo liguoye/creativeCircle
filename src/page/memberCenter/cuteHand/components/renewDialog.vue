@@ -89,7 +89,7 @@ export default {
         type: this.renewDuration,
         paypwd: this.password
       }).then(res => {
-        console.log(res)
+       // console.log(res)
         if (res && res.data && res.data.code === 1) {
           this.$notify({
             title: '订购成功',

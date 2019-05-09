@@ -38,8 +38,8 @@
             <template v-else-if="item.com=='danbao'">
               <el-table-column :key="index" :width="item.width" :prop="item.code" :label="item.name" align="center">
                 <template slot-scope="scope">
-                  <p v-if="tableData.data[scope.$index][item.code]['price'] > 198">198</p>
-                  <p v-else>{{tableData.data[scope.$index][item.code]['price']}}</p>
+                  <p v-if="tableData.data[scope.$index][item.code] > 198">198</p>
+                  <p v-else>{{tableData.data[scope.$index][item.code]}}</p>
                 </template>
               </el-table-column>
             </template>
@@ -80,7 +80,7 @@ export default {
         columns: [
           { name: '任务号', code: 'id', width: '' },
           { name: '订单编号', code: 'ordersn', width: '' },
-          { name: '商品简称', code: 'abbreviation', width: '' },
+          { name: '商品简称', code: 'title', width: '' },
           { name: '掌柜号', code: 'shop_name', width: '' },
           { name: '任务类型', code: 'taskType', width: '', com: 'taskType' },
           { name: '担保金额', code: 'danbao', width: '', com: 'danbao' },
@@ -88,7 +88,7 @@ export default {
           { name: '发布点', code: 'MinLi', width: '' },
           { name: '置顶费用', code: 'zdfee', width: '' },
           { name: '自发空包减免费用', code: 'expressType', width: '140', com: 'expressType' },
-          { name: '支付时间', code: 'tasktime', width: '150' }
+          { name: '支付时间', code: 'ct', width: '150' }
         ]
       }
     }
@@ -103,7 +103,8 @@ export default {
       let queryParams = {
         params: {
           token: this.$getToken(),
-          type: 1
+          type: 1,
+          status:4
         }
       }
       if (param) {
@@ -113,13 +114,22 @@ export default {
             type: 1,
             page: this.page,
             start: this.formData.date[0],
-            end: this.formData.date[1]
+            end: this.formData.date[1],
+            status:4
           }
         }
       }
       this.$ajax.get('shopmember/releaseList', queryParams).then(res => {
         if (res && res.data && res.data.code === 1) {
-          this.tableData.data = res.data.data.data
+           // console.log(res)
+         
+          let list=res.data.data.data
+          list.forEach(item => {
+              item.price=item.price/100
+              item.MinLi=item.MinLi/100
+              item.zdfee=item.zdfee/100
+          });
+           this.tableData.data =list
           this.total = res.data.data.total
           this.page = 1
         }

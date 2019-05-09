@@ -4,11 +4,15 @@
      let value =payload.value
      goods[name]=value
   }
-  
  const init = (state, payload) => {
-     let goods=state.goods
-     goods=value
+     let goods=state
+     let name=payload.name;
+     let value =payload.value
+     goods[name]=value
   }
+ 
+  
+
   
 
   const setgoods=(state, payload)=>{

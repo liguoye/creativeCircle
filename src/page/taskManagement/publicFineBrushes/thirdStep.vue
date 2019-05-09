@@ -3,14 +3,20 @@
     <div class="colTable">
       <div class="title">
         <el-row>
-          <el-col :span="12" class="left">
+          <el-col
+            :span="12"
+            class="left"
+          >
             <span>定价类型:</span>
             <el-radio-group v-model="priceType">
               <el-radio :label="1">单型号价格</el-radio>
               <el-radio :label="2">多型号价格</el-radio>
             </el-radio-group>
           </el-col>
-          <el-col :span="12" class="right">
+          <el-col
+            :span="12"
+            class="right"
+          >
             <el-row>
               <el-col :span="20">
                 <div class="right-container">
@@ -30,7 +36,11 @@
                 </div>
               </el-col>
               <el-col :span="4">
-                <el-button class="tableBtn" type="primary" @click="addPathData">新增</el-button>
+                <el-button
+                  class="tableBtn"
+                  type="primary"
+                  @click="addPathData"
+                >新增</el-button>
               </el-col>
             </el-row>
           </el-col>
@@ -45,7 +55,7 @@
           </el-col>
           <el-col :span="2">指定型号</el-col>
           <el-col :span="3">拍下件数</el-col>
-          <el-col :span="3">任务数量(1)</el-col>
+          <el-col :span="3">任务数量</el-col>
           <el-col :span="3">单任务成交金额</el-col>
           <el-col :span="2">单任务佣金</el-col>
           <el-col :span="2">单任务快递费</el-col>
@@ -53,12 +63,25 @@
           <el-col :span="2">操作</el-col>
         </el-row>
         <template v-for="(item,index) in releasePriceList">
-          <el-row class="tableContent" :key="index">
-            <el-col :span="3" class="flowEnterSelect">
+          <el-row
+            class="tableContent"
+            :key="index"
+          >
+            <el-col
+              :span="3"
+              class="flowEnterSelect"
+            >
               <!-- <el-input-number :min="0" size="mini" v-model="releasePriceList[index].goodPrice"></el-input-number> -->
-              <el-input min="0" type="number" v-model="releasePriceList[index].goodPrice"></el-input>
+              <el-input
+                min="0"
+                type="number"
+                v-model="releasePriceList[index].goodPrice"
+              ></el-input>
             </el-col>
-            <el-col :span="2" class="textInput">
+            <el-col
+              :span="2"
+              class="textInput"
+            >
               <el-input
                 :min="0"
                 type="number"
@@ -66,23 +89,35 @@
                 placeholder="快递费"
               ></el-input>
             </el-col>
-            <el-col :span="2" class="textInput">
+            <el-col
+              :span="2"
+              class="textInput"
+            >
               <el-input
                 v-model="releasePriceList[index].goodSize"
                 :disabled="priceType==1"
                 placeholder="指定型号"
               ></el-input>
             </el-col>
-            <el-col :span="3" class>
-              <el-input-number :min="1" size="mini" v-model="releasePriceList[index].goodNumber"></el-input-number>
+            <el-col
+              :span="3"
+              class
+            >
+              <el-input-number
+                :min="1"
+                size="mini"
+                v-model="releasePriceList[index].goodNumber"
+              ></el-input-number>
               <!-- <el-input v-model="releasePriceList[index].goodNumber" placeholder="拍下件数"></el-input> -->
             </el-col>
             <el-col :span="3">
-              <el-input-number :min="1" size="mini" v-model="releasePriceList[index].taskNum"></el-input-number>
+              <el-input-number
+                :min="1"
+                size="mini"
+                v-model="releasePriceList[index].taskNum"
+              ></el-input-number>
             </el-col>
-            <el-col
-              :span="3"
-            >{{releasePriceList[index].goodPrice*releasePriceList[index].goodNumber |percent}}</el-col>
+            <el-col :span="3">{{releasePriceList[index].goodPrice*releasePriceList[index].goodNumber |percent}}</el-col>
             <el-col :span="2">{{releasePriceList[index].commission}}</el-col>
             <el-col :span="2">{{releasePriceList[index].courierFee}}</el-col>
             <el-col :span="2">{{releasePriceList[index].totlePrice}}</el-col>
@@ -100,16 +135,33 @@
       </div>
       <div class="totle">
         <el-row>
-          <el-col :span="6" class="left">成交总金额: {{alltotle.totalAmount}}元</el-col>
-          <el-col :span="6" class="right">佣金总金额: {{alltotle.commissionAmount}}元</el-col>
-          <el-col :span="6" class="right">其中快递费总金额: {{alltotle.feeAmount}}元</el-col>
-          <el-col :span="6" class="right">合计: {{alltotle.all}}</el-col>
+          <el-col
+            :span="6"
+            class="left"
+          >成交总金额: {{alltotle.totalAmount}}元</el-col>
+          <el-col
+            :span="6"
+            class="right"
+          >佣金总金额: {{alltotle.commissionAmount}}元</el-col>
+          <el-col
+            :span="6"
+            class="right"
+          >其中快递费总金额: {{alltotle.feeAmount}}元</el-col>
+          <el-col
+            :span="6"
+            class="right"
+          >合计: {{alltotle.all}}</el-col>
         </el-row>
       </div>
-    <time-com></time-com>
+
+      <time-com></time-com>
 
     </div>
-    <btn-group :btn-active="btnActive" @btnClick="btnClick"></btn-group>
+    <btn-group
+      :btn-active="btnActive"
+      show-go-btn="0"
+      @btnClick="btnClick"
+    ></btn-group>
   </div>
 </template>
 <script>
@@ -118,7 +170,8 @@ import timeCom from "./components/timecom.vue";
 import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
-    btnGroup,timeCom
+    btnGroup,
+    timeCom
   },
   data() {
     return {
@@ -188,12 +241,30 @@ export default {
           feeAmount += parseFloat(item.courierFee) * parseFloat(item.taskNum);
           // 总金额
           all += item.totlePrice;
+          if (item.goodPrice > 100) {
+            this.$notify.error({
+              title: "该任务风险较大，平台只能尽量匹配安全系数高的账号，但平台不承担相应风险，建议商家使用隐藏优惠券"
+            });
+          }
         });
-        this.alltotle.totalAmount = totalAmount;
+        this.alltotle.totalAmount = totalAmount.toFixed(2);
         this.alltotle.commissionAmount = commissionAmount;
         this.alltotle.feeAmount = feeAmount;
         this.alltotle.all = all.toFixed(2);
-        this.$store.commit("update", { name: "releasePriceList", value: newValue });
+        let taskTotle = 0;
+        this.releasePriceList.forEach(item => {
+          taskTotle += item.taskNum;
+        });
+        this.alltask = taskTotle;
+        if (taskTotle > this.gettask.totle) {
+          this.$notify.error({
+            title: "任务数超过上一步骤"
+          });
+        }
+        this.$store.commit("update", {
+          name: "releasePriceList",
+          value: newValue
+        });
       },
       deep: true
     }
@@ -206,6 +277,26 @@ export default {
       if (val === "back") {
         this.$emit("changeState", { state: "secondStep" });
       } else {
+        if (this.alltask != this.gettask.totle) {
+          this.$notify.error({
+            title: "请确认任务数一致"
+          });
+          return;
+        }
+        let list = this.releasePriceList;
+        let flag = false;
+        list.forEach(item => {
+          if (item.goodPrice <= 0) {
+            flag = true;
+          }
+        });
+        if (flag) {
+          this.$notify.error({
+            title: "商品价格不能为0"
+          });
+          return;
+        }
+
         this.$emit("changeState", { state: "fourStep" });
       }
     },

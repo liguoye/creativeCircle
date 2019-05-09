@@ -205,13 +205,19 @@ export default {
   },
   methods: {
     openGoodsDetail() {
+      if (!this.ruleForm.shop_id) {
+        this.$notify.error({
+          title: "请选择店铺"
+        });
+        return;
+      }
       if (!this.ruleForm.goods_url) {
         this.$notify.error({
           title: "请输入链接"
         });
         return;
       }
-        console.log(this.ruleForm);
+       // console.log(this.ruleForm);
       let id = GetUrlParam(this.ruleForm.goods_url, "id");
       this.ruleForm.tb_goodsid=id
       if (!id) {
@@ -220,18 +226,18 @@ export default {
         });
         return;
       }
-      console.log(this.ruleForm.shop_id);
+     // console.log(this.ruleForm.shop_id);
       this.$ajax
         .post("shopmember/getTaobaoGoods", {
-          shopid: 2,
+          shopid: this.ruleForm.shop_id,
           goodsid: id
         })
         .then(res => {
-          console.log(res);
+        //  console.log(res);
           if (res.data.code == "1") {
             this.ruleForm.goods_img = res.data.data.picUrl;
             this.ruleForm.goods_name = res.data.data.title;
-            console.log(this.ruleForm.goods_img);
+           // console.log(this.ruleForm.goods_img);
           }
         });
     },
@@ -247,7 +253,7 @@ export default {
       }
     },
     uploadUnless(data) {
-      console.log(data);
+     // console.log(data);
       if (data.code === 1) {
         this.ruleForm.unless_img = "http://h5om.knowsea.cn" + data.data;
       } else {
@@ -285,12 +291,55 @@ export default {
         if (valid) {
           this.submit();
         } else {
-          console.log("error submit!!");
+        //  console.log("error submit!!");
           return false;
         }
       });
     },
     submit() {
+        if(this.ruleForm.shop_id==''){
+            this.$notify({
+              title: "请选择商铺",
+              type: "error"
+            });
+
+            return
+        }
+        if(this.ruleForm.goods_url==''){
+            this.$notify({
+              title: "请选择淘宝商品",
+              type: "error"
+            });
+             return
+        }
+        if(this.ruleForm.goods_name==''){
+            this.$notify({
+              title: "请输入商品名称",
+              type: "error"
+            });
+             return
+        }
+        if(this.ruleForm.unless_img==''){
+            this.$notify({
+              title: "请上传无线图片",
+              type: "error"
+            });
+             return
+        }
+        if(this.ruleForm.tianmao_img==''){
+            this.$notify({
+              title: "请上传天猫图片",
+              type: "error"
+            });
+             return
+        }
+        if(this.ruleForm.zhitongche_img==''){
+            this.$notify({
+              title: "请上传直通车图片",
+              type: "error"
+            });
+             return
+        }
       this.$ajax
         .get("goods/add", {
           params: {
@@ -366,7 +415,7 @@ export default {
       let dis = [];
       for (let i in list) {
         if (list[i].name === newValue) {
-          console.log(list[i].name);
+         // console.log(list[i].name);
           dis = list[i].area;
         }
       }

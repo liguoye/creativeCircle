@@ -8,7 +8,7 @@
         <div class="taskManagementNavList topList">
           <ul>
             <li @click="toPNavChangeTab('1')" :class="topTabCurrent=='1'? 'current' :''">精刷单订单详情信息</li>
-            <li @click="toPNavChangeTab('2')" :class="topTabCurrent=='2'? 'current' :''">日常订单详情信息</li>
+            <!-- <li @click="toPNavChangeTab('2')" :class="topTabCurrent=='2'? 'current' :''">日常订单详情信息</li> -->
           </ul>
         </div>
         <div class="tabContent">
@@ -41,7 +41,7 @@ export default {
       this.$router.push({ name: val, param: { tab: val } })
     },
     toPNavChangeTab (val) {
-      console.log(val)
+      //console.log(val)
       this.topTabCurrent = val
     }
   }
